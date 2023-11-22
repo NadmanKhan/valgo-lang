@@ -12,7 +12,7 @@ using namespace antlr4;
 int main() {
 
     std::cout << "hello\n";
-    ANTLRInputStream input("1+2");
+    ANTLRInputStream input("1  + 2");
     ValgoLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
 

@@ -1,79 +1,61 @@
 grammar Valgo;
 
-prog
-    : (func | proc)+
+COMMENT : ('//' ~[\r\n]* | '/*' .*? '*/') -> skip;
+WS      : ([ \t]+ | NL) -> skip;
+NL      : '\r'? '\n' | '\r';
+ID      : [a-zA-Z]+[a-zA-Z0-9_]*;
+INT     : [0-9]+;
+BINOP   : ('+'|'-'|'*'|'/'|'<'|'>'|'<='|'>='|'=='|'and'|'or');
+UNOP    : ('+'|'-'|'not');
+
+
+expr
+    :   atom op=BINOP expr #binaryExpr
+    |   atom #atomExpr
+    |   '(' expr ')' #parenExpr
     ;
 
-proc
-    : 'proc' proto block
-    ;
-
-func
-    : 'func' proto block
+atom
+    :   INT #intLiteral
+    |   ID #variable
+    |   UNOP expr #unaryOp
+    |   ID '(' (expr (',' expr)*)? ')' #funcCall
     ;
 
 proto
     : ID '(' (ID (',' ID)*)? ')'
     ;
 
-block
-    : '{' stmt* '}'
-    ;
-
 stmt
-    : ( decl
-      | assign
-      | print
-      | return
-      | call
-      | ifElse
-      ) ((NEWLINE | ';') (NEWLINE* stmt))?
+    :   'return' (expr)? #returnStmt
+    |   'var' ID '=' expr (',' ID '=' expr)* #declStmt
+    |   ID '=' expr (',' ID '=' expr)* #assignStmt
+    |   'print' expr (',' expr)* #printStmt
+    |   ID '(' (expr (',' expr)*)? ')' #procCallStmt
     ;
 
-expr
-    :   atom BINOP expr
-    |   atom
+block
+    :   outerBlock #normal
+    |   'if' cond=expr thenBlock=outerBlock ('else' elseBlock=block)? #ifElse
     ;
 
-atom
-    :   '(' expr ')'
-    |   INT
-    |   ID
-    |   UNOP expr
-    |   call
+blockElement
+    :   stmt
+    |   block
     ;
 
-call
-    : ID '(' (expr (',' expr)*)? ')'
+outerBlock
+    : '{' (blockElement (NL+ blockElement*))? '}'
     ;
 
-ifElse
-    : 'if' expr block ('else if' expr block)* ('else' block)?
+func
+    : 'func' proto outerBlock
     ;
 
-decl
-    : 'let' assign
+proc
+    : 'proc' proto outerBlock
     ;
 
-assign
-    : ID '=' expr (',' ID '=' expr)*
+prog
+    : (func | proc)+
     ;
-
-print
-    : 'print' expr (',' expr)*
-    ;
-
-return
-    : 'return' expr
-    ;
-
-COMMENT
-    : ('//' ~[\r\n]* | '/*' .*? '*/') -> skip
-    ;
-
-ID      : [a-zA-Z]+[a-zA-Z0-9_]*;
-INT     : [0-9]+;
-BINOP   : ('+'|'-'|'*'|'/'|'<'|'>'|'<='|'>='|'=='|' and '|' or ');
-UNOP    : ('+'|'-'|'not');
-NEWLINE : '\r'? '\n' -> skip;
-WS      : [ \t]+ -> skip;

@@ -15,15 +15,31 @@
 class  ValgoBaseVisitor : public ValgoVisitor {
 public:
 
-  virtual std::any visitProg(ValgoParser::ProgContext *ctx) override {
+  virtual std::any visitBinaryExpr(ValgoParser::BinaryExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitProc(ValgoParser::ProcContext *ctx) override {
+  virtual std::any visitAtomExpr(ValgoParser::AtomExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFunc(ValgoParser::FuncContext *ctx) override {
+  virtual std::any visitParenExpr(ValgoParser::ParenExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitIntLiteral(ValgoParser::IntLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitVariable(ValgoParser::VariableContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitUnaryOp(ValgoParser::UnaryOpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFuncCall(ValgoParser::FuncCallContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -31,23 +47,27 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitBlock(ValgoParser::BlockContext *ctx) override {
+  virtual std::any visitReturnStmt(ValgoParser::ReturnStmtContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitStmt(ValgoParser::StmtContext *ctx) override {
+  virtual std::any visitDeclStmt(ValgoParser::DeclStmtContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitExpr(ValgoParser::ExprContext *ctx) override {
+  virtual std::any visitAssignStmt(ValgoParser::AssignStmtContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAtom(ValgoParser::AtomContext *ctx) override {
+  virtual std::any visitPrintStmt(ValgoParser::PrintStmtContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitCall(ValgoParser::CallContext *ctx) override {
+  virtual std::any visitProcCallStmt(ValgoParser::ProcCallStmtContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNormal(ValgoParser::NormalContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -55,19 +75,23 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitDecl(ValgoParser::DeclContext *ctx) override {
+  virtual std::any visitBlockElement(ValgoParser::BlockElementContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAssign(ValgoParser::AssignContext *ctx) override {
+  virtual std::any visitOuterBlock(ValgoParser::OuterBlockContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitPrint(ValgoParser::PrintContext *ctx) override {
+  virtual std::any visitFunc(ValgoParser::FuncContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitReturn(ValgoParser::ReturnContext *ctx) override {
+  virtual std::any visitProc(ValgoParser::ProcContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitProg(ValgoParser::ProgContext *ctx) override {
     return visitChildren(ctx);
   }
 
