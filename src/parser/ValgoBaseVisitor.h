@@ -75,19 +75,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitIntLiteral(ValgoParser::IntLiteralContext *ctx) override {
+  virtual std::any visitIntLiteralExpr(ValgoParser::IntLiteralExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitVariable(ValgoParser::VariableContext *ctx) override {
+  virtual std::any visitVariableExpr(ValgoParser::VariableExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitParenthsized(ValgoParser::ParenthsizedContext *ctx) override {
+  virtual std::any visitParenthsizedExpr(ValgoParser::ParenthsizedExprContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFuncCall(ValgoParser::FuncCallContext *ctx) override {
+  virtual std::any visitFuncCallExpr(ValgoParser::FuncCallExprContext *ctx) override {
     return visitChildren(ctx);
   }
 

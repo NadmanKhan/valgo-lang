@@ -61,17 +61,17 @@ public:
   virtual void enterExpr(ValgoParser::ExprContext * /*ctx*/) override { }
   virtual void exitExpr(ValgoParser::ExprContext * /*ctx*/) override { }
 
-  virtual void enterIntLiteral(ValgoParser::IntLiteralContext * /*ctx*/) override { }
-  virtual void exitIntLiteral(ValgoParser::IntLiteralContext * /*ctx*/) override { }
+  virtual void enterIntLiteralExpr(ValgoParser::IntLiteralExprContext * /*ctx*/) override { }
+  virtual void exitIntLiteralExpr(ValgoParser::IntLiteralExprContext * /*ctx*/) override { }
 
-  virtual void enterVariable(ValgoParser::VariableContext * /*ctx*/) override { }
-  virtual void exitVariable(ValgoParser::VariableContext * /*ctx*/) override { }
+  virtual void enterVariableExpr(ValgoParser::VariableExprContext * /*ctx*/) override { }
+  virtual void exitVariableExpr(ValgoParser::VariableExprContext * /*ctx*/) override { }
 
-  virtual void enterParenthsized(ValgoParser::ParenthsizedContext * /*ctx*/) override { }
-  virtual void exitParenthsized(ValgoParser::ParenthsizedContext * /*ctx*/) override { }
+  virtual void enterParenthsizedExpr(ValgoParser::ParenthsizedExprContext * /*ctx*/) override { }
+  virtual void exitParenthsizedExpr(ValgoParser::ParenthsizedExprContext * /*ctx*/) override { }
 
-  virtual void enterFuncCall(ValgoParser::FuncCallContext * /*ctx*/) override { }
-  virtual void exitFuncCall(ValgoParser::FuncCallContext * /*ctx*/) override { }
+  virtual void enterFuncCallExpr(ValgoParser::FuncCallExprContext * /*ctx*/) override { }
+  virtual void exitFuncCallExpr(ValgoParser::FuncCallExprContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

@@ -54,7 +54,7 @@ void valgoParserInitialize() {
   auto staticData = std::make_unique<ValgoParserStaticData>(
     std::vector<std::string>{
       "prog", "func", "proc", "proto", "block", "stmt", "ifElse", "expr", 
-      "primary"
+      "primaryExpr"
     },
     std::vector<std::string>{
       "", "'func'", "'proc'", "'('", "','", "')'", "'{'", "'}'", "'exit'", 
@@ -1073,8 +1073,8 @@ ValgoParser::ExprContext::ExprContext(ParserRuleContext *parent, size_t invoking
   : ParserRuleContext(parent, invokingState) {
 }
 
-ValgoParser::PrimaryContext* ValgoParser::ExprContext::primary() {
-  return getRuleContext<ValgoParser::PrimaryContext>(0);
+ValgoParser::PrimaryExprContext* ValgoParser::ExprContext::primaryExpr() {
+  return getRuleContext<ValgoParser::PrimaryExprContext>(0);
 }
 
 ValgoParser::ExprContext* ValgoParser::ExprContext::expr() {
@@ -1139,7 +1139,7 @@ ValgoParser::ExprContext* ValgoParser::expr() {
       }
     }
     setState(116);
-    primary();
+    primaryExpr();
     setState(119);
     _errHandler->sync(this);
 
@@ -1171,132 +1171,132 @@ ValgoParser::ExprContext* ValgoParser::expr() {
   return _localctx;
 }
 
-//----------------- PrimaryContext ------------------------------------------------------------------
+//----------------- PrimaryExprContext ------------------------------------------------------------------
 
-ValgoParser::PrimaryContext::PrimaryContext(ParserRuleContext *parent, size_t invokingState)
+ValgoParser::PrimaryExprContext::PrimaryExprContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
 
-size_t ValgoParser::PrimaryContext::getRuleIndex() const {
-  return ValgoParser::RulePrimary;
+size_t ValgoParser::PrimaryExprContext::getRuleIndex() const {
+  return ValgoParser::RulePrimaryExpr;
 }
 
-void ValgoParser::PrimaryContext::copyFrom(PrimaryContext *ctx) {
+void ValgoParser::PrimaryExprContext::copyFrom(PrimaryExprContext *ctx) {
   ParserRuleContext::copyFrom(ctx);
 }
 
-//----------------- ParenthsizedContext ------------------------------------------------------------------
+//----------------- VariableExprContext ------------------------------------------------------------------
 
-ValgoParser::ExprContext* ValgoParser::ParenthsizedContext::expr() {
-  return getRuleContext<ValgoParser::ExprContext>(0);
+tree::TerminalNode* ValgoParser::VariableExprContext::ID() {
+  return getToken(ValgoParser::ID, 0);
 }
 
-ValgoParser::ParenthsizedContext::ParenthsizedContext(PrimaryContext *ctx) { copyFrom(ctx); }
+ValgoParser::VariableExprContext::VariableExprContext(PrimaryExprContext *ctx) { copyFrom(ctx); }
 
-void ValgoParser::ParenthsizedContext::enterRule(tree::ParseTreeListener *listener) {
+void ValgoParser::VariableExprContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterParenthsized(this);
+    parserListener->enterVariableExpr(this);
 }
-void ValgoParser::ParenthsizedContext::exitRule(tree::ParseTreeListener *listener) {
+void ValgoParser::VariableExprContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitParenthsized(this);
+    parserListener->exitVariableExpr(this);
 }
 
-std::any ValgoParser::ParenthsizedContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any ValgoParser::VariableExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ValgoVisitor*>(visitor))
-    return parserVisitor->visitParenthsized(this);
+    return parserVisitor->visitVariableExpr(this);
   else
     return visitor->visitChildren(this);
 }
-//----------------- IntLiteralContext ------------------------------------------------------------------
+//----------------- IntLiteralExprContext ------------------------------------------------------------------
 
-tree::TerminalNode* ValgoParser::IntLiteralContext::INT() {
+tree::TerminalNode* ValgoParser::IntLiteralExprContext::INT() {
   return getToken(ValgoParser::INT, 0);
 }
 
-ValgoParser::IntLiteralContext::IntLiteralContext(PrimaryContext *ctx) { copyFrom(ctx); }
+ValgoParser::IntLiteralExprContext::IntLiteralExprContext(PrimaryExprContext *ctx) { copyFrom(ctx); }
 
-void ValgoParser::IntLiteralContext::enterRule(tree::ParseTreeListener *listener) {
+void ValgoParser::IntLiteralExprContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterIntLiteral(this);
+    parserListener->enterIntLiteralExpr(this);
 }
-void ValgoParser::IntLiteralContext::exitRule(tree::ParseTreeListener *listener) {
+void ValgoParser::IntLiteralExprContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitIntLiteral(this);
+    parserListener->exitIntLiteralExpr(this);
 }
 
-std::any ValgoParser::IntLiteralContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any ValgoParser::IntLiteralExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ValgoVisitor*>(visitor))
-    return parserVisitor->visitIntLiteral(this);
+    return parserVisitor->visitIntLiteralExpr(this);
   else
     return visitor->visitChildren(this);
 }
-//----------------- VariableContext ------------------------------------------------------------------
+//----------------- ParenthsizedExprContext ------------------------------------------------------------------
 
-tree::TerminalNode* ValgoParser::VariableContext::ID() {
-  return getToken(ValgoParser::ID, 0);
+ValgoParser::ExprContext* ValgoParser::ParenthsizedExprContext::expr() {
+  return getRuleContext<ValgoParser::ExprContext>(0);
 }
 
-ValgoParser::VariableContext::VariableContext(PrimaryContext *ctx) { copyFrom(ctx); }
+ValgoParser::ParenthsizedExprContext::ParenthsizedExprContext(PrimaryExprContext *ctx) { copyFrom(ctx); }
 
-void ValgoParser::VariableContext::enterRule(tree::ParseTreeListener *listener) {
+void ValgoParser::ParenthsizedExprContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterVariable(this);
+    parserListener->enterParenthsizedExpr(this);
 }
-void ValgoParser::VariableContext::exitRule(tree::ParseTreeListener *listener) {
+void ValgoParser::ParenthsizedExprContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitVariable(this);
+    parserListener->exitParenthsizedExpr(this);
 }
 
-std::any ValgoParser::VariableContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any ValgoParser::ParenthsizedExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ValgoVisitor*>(visitor))
-    return parserVisitor->visitVariable(this);
+    return parserVisitor->visitParenthsizedExpr(this);
   else
     return visitor->visitChildren(this);
 }
-//----------------- FuncCallContext ------------------------------------------------------------------
+//----------------- FuncCallExprContext ------------------------------------------------------------------
 
-tree::TerminalNode* ValgoParser::FuncCallContext::ID() {
+tree::TerminalNode* ValgoParser::FuncCallExprContext::ID() {
   return getToken(ValgoParser::ID, 0);
 }
 
-std::vector<ValgoParser::ExprContext *> ValgoParser::FuncCallContext::expr() {
+std::vector<ValgoParser::ExprContext *> ValgoParser::FuncCallExprContext::expr() {
   return getRuleContexts<ValgoParser::ExprContext>();
 }
 
-ValgoParser::ExprContext* ValgoParser::FuncCallContext::expr(size_t i) {
+ValgoParser::ExprContext* ValgoParser::FuncCallExprContext::expr(size_t i) {
   return getRuleContext<ValgoParser::ExprContext>(i);
 }
 
-ValgoParser::FuncCallContext::FuncCallContext(PrimaryContext *ctx) { copyFrom(ctx); }
+ValgoParser::FuncCallExprContext::FuncCallExprContext(PrimaryExprContext *ctx) { copyFrom(ctx); }
 
-void ValgoParser::FuncCallContext::enterRule(tree::ParseTreeListener *listener) {
+void ValgoParser::FuncCallExprContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterFuncCall(this);
+    parserListener->enterFuncCallExpr(this);
 }
-void ValgoParser::FuncCallContext::exitRule(tree::ParseTreeListener *listener) {
+void ValgoParser::FuncCallExprContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitFuncCall(this);
+    parserListener->exitFuncCallExpr(this);
 }
 
-std::any ValgoParser::FuncCallContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any ValgoParser::FuncCallExprContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ValgoVisitor*>(visitor))
-    return parserVisitor->visitFuncCall(this);
+    return parserVisitor->visitFuncCallExpr(this);
   else
     return visitor->visitChildren(this);
 }
-ValgoParser::PrimaryContext* ValgoParser::primary() {
-  PrimaryContext *_localctx = _tracker.createInstance<PrimaryContext>(_ctx, getState());
-  enterRule(_localctx, 16, ValgoParser::RulePrimary);
+ValgoParser::PrimaryExprContext* ValgoParser::primaryExpr() {
+  PrimaryExprContext *_localctx = _tracker.createInstance<PrimaryExprContext>(_ctx, getState());
+  enterRule(_localctx, 16, ValgoParser::RulePrimaryExpr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1311,7 +1311,7 @@ ValgoParser::PrimaryContext* ValgoParser::primary() {
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 15, _ctx)) {
     case 1: {
-      _localctx = _tracker.createInstance<ValgoParser::IntLiteralContext>(_localctx);
+      _localctx = _tracker.createInstance<ValgoParser::IntLiteralExprContext>(_localctx);
       enterOuterAlt(_localctx, 1);
       setState(121);
       match(ValgoParser::INT);
@@ -1319,7 +1319,7 @@ ValgoParser::PrimaryContext* ValgoParser::primary() {
     }
 
     case 2: {
-      _localctx = _tracker.createInstance<ValgoParser::VariableContext>(_localctx);
+      _localctx = _tracker.createInstance<ValgoParser::VariableExprContext>(_localctx);
       enterOuterAlt(_localctx, 2);
       setState(122);
       match(ValgoParser::ID);
@@ -1327,7 +1327,7 @@ ValgoParser::PrimaryContext* ValgoParser::primary() {
     }
 
     case 3: {
-      _localctx = _tracker.createInstance<ValgoParser::ParenthsizedContext>(_localctx);
+      _localctx = _tracker.createInstance<ValgoParser::ParenthsizedExprContext>(_localctx);
       enterOuterAlt(_localctx, 3);
       setState(123);
       match(ValgoParser::T__2);
@@ -1339,7 +1339,7 @@ ValgoParser::PrimaryContext* ValgoParser::primary() {
     }
 
     case 4: {
-      _localctx = _tracker.createInstance<ValgoParser::FuncCallContext>(_localctx);
+      _localctx = _tracker.createInstance<ValgoParser::FuncCallExprContext>(_localctx);
       enterOuterAlt(_localctx, 4);
       setState(127);
       match(ValgoParser::ID);

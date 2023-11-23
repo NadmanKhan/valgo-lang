@@ -17,14 +17,14 @@ stmt:
     ;
 ifElse: 'if' expr block ('else' (ifElse | block))?;
 expr:   unop=('+' | '-' | 'not' | '~')?
-        primary
+        primaryExpr
         (binop=('+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' |
         '<=' | '>=' | 'and' | 'or' | '&' | '|' | '~' | '<<' | '>>') expr)?;
-primary:
-        INT #intLiteral
-    |   ID #variable
-    |   '(' expr ')' #parenthsized
-    |   ID '(' (expr (',' expr)*)? ')' #funcCall
+primaryExpr:
+        INT #intLiteralExpr
+    |   ID #variableExpr
+    |   '(' expr ')' #parenthsizedExpr
+    |   ID '(' (expr (',' expr)*)? ')' #funcCallExpr
     ;
 
 ID:         [a-zA-Z]+[a-zA-Z0-9_]*;

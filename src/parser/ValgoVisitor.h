@@ -49,13 +49,13 @@ public:
 
     virtual std::any visitExpr(ValgoParser::ExprContext *context) = 0;
 
-    virtual std::any visitIntLiteral(ValgoParser::IntLiteralContext *context) = 0;
+    virtual std::any visitIntLiteralExpr(ValgoParser::IntLiteralExprContext *context) = 0;
 
-    virtual std::any visitVariable(ValgoParser::VariableContext *context) = 0;
+    virtual std::any visitVariableExpr(ValgoParser::VariableExprContext *context) = 0;
 
-    virtual std::any visitParenthsized(ValgoParser::ParenthsizedContext *context) = 0;
+    virtual std::any visitParenthsizedExpr(ValgoParser::ParenthsizedExprContext *context) = 0;
 
-    virtual std::any visitFuncCall(ValgoParser::FuncCallContext *context) = 0;
+    virtual std::any visitFuncCallExpr(ValgoParser::FuncCallExprContext *context) = 0;
 
 
 };

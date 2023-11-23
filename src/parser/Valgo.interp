@@ -89,7 +89,7 @@ block
 stmt
 ifElse
 expr
-primary
+primaryExpr
 
 
 atn:

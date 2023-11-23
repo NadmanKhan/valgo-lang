@@ -22,7 +22,7 @@ public:
 
   enum {
     RuleProg = 0, RuleFunc = 1, RuleProc = 2, RuleProto = 3, RuleBlock = 4, 
-    RuleStmt = 5, RuleIfElse = 6, RuleExpr = 7, RulePrimary = 8
+    RuleStmt = 5, RuleIfElse = 6, RuleExpr = 7, RulePrimaryExpr = 8
   };
 
   explicit ValgoParser(antlr4::TokenStream *input);
@@ -50,7 +50,7 @@ public:
   class StmtContext;
   class IfElseContext;
   class ExprContext;
-  class PrimaryContext; 
+  class PrimaryExprContext; 
 
   class  ProgContext : public antlr4::ParserRuleContext {
   public:
@@ -266,7 +266,7 @@ public:
     antlr4::Token *binop = nullptr;
     ExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    PrimaryContext *primary();
+    PrimaryExprContext *primaryExpr();
     ExprContext *expr();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -278,12 +278,12 @@ public:
 
   ExprContext* expr();
 
-  class  PrimaryContext : public antlr4::ParserRuleContext {
+  class  PrimaryExprContext : public antlr4::ParserRuleContext {
   public:
-    PrimaryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    PrimaryExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
    
-    PrimaryContext() = default;
-    void copyFrom(PrimaryContext *context);
+    PrimaryExprContext() = default;
+    void copyFrom(PrimaryExprContext *context);
     using antlr4::ParserRuleContext::copyFrom;
 
     virtual size_t getRuleIndex() const override;
@@ -291,31 +291,9 @@ public:
    
   };
 
-  class  ParenthsizedContext : public PrimaryContext {
+  class  VariableExprContext : public PrimaryExprContext {
   public:
-    ParenthsizedContext(PrimaryContext *ctx);
-
-    ExprContext *expr();
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  IntLiteralContext : public PrimaryContext {
-  public:
-    IntLiteralContext(PrimaryContext *ctx);
-
-    antlr4::tree::TerminalNode *INT();
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
-  class  VariableContext : public PrimaryContext {
-  public:
-    VariableContext(PrimaryContext *ctx);
+    VariableExprContext(PrimaryExprContext *ctx);
 
     antlr4::tree::TerminalNode *ID();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -324,9 +302,31 @@ public:
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  FuncCallContext : public PrimaryContext {
+  class  IntLiteralExprContext : public PrimaryExprContext {
   public:
-    FuncCallContext(PrimaryContext *ctx);
+    IntLiteralExprContext(PrimaryExprContext *ctx);
+
+    antlr4::tree::TerminalNode *INT();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ParenthsizedExprContext : public PrimaryExprContext {
+  public:
+    ParenthsizedExprContext(PrimaryExprContext *ctx);
+
+    ExprContext *expr();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  FuncCallExprContext : public PrimaryExprContext {
+  public:
+    FuncCallExprContext(PrimaryExprContext *ctx);
 
     antlr4::tree::TerminalNode *ID();
     std::vector<ExprContext *> expr();
@@ -337,7 +337,7 @@ public:
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  PrimaryContext* primary();
+  PrimaryExprContext* primaryExpr();
 
 
   // By default the static state used to implement the parser is lazily initialized during the first

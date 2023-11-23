@@ -59,17 +59,17 @@ public:
   virtual void enterExpr(ValgoParser::ExprContext *ctx) = 0;
   virtual void exitExpr(ValgoParser::ExprContext *ctx) = 0;
 
-  virtual void enterIntLiteral(ValgoParser::IntLiteralContext *ctx) = 0;
-  virtual void exitIntLiteral(ValgoParser::IntLiteralContext *ctx) = 0;
+  virtual void enterIntLiteralExpr(ValgoParser::IntLiteralExprContext *ctx) = 0;
+  virtual void exitIntLiteralExpr(ValgoParser::IntLiteralExprContext *ctx) = 0;
 
-  virtual void enterVariable(ValgoParser::VariableContext *ctx) = 0;
-  virtual void exitVariable(ValgoParser::VariableContext *ctx) = 0;
+  virtual void enterVariableExpr(ValgoParser::VariableExprContext *ctx) = 0;
+  virtual void exitVariableExpr(ValgoParser::VariableExprContext *ctx) = 0;
 
-  virtual void enterParenthsized(ValgoParser::ParenthsizedContext *ctx) = 0;
-  virtual void exitParenthsized(ValgoParser::ParenthsizedContext *ctx) = 0;
+  virtual void enterParenthsizedExpr(ValgoParser::ParenthsizedExprContext *ctx) = 0;
+  virtual void exitParenthsizedExpr(ValgoParser::ParenthsizedExprContext *ctx) = 0;
 
-  virtual void enterFuncCall(ValgoParser::FuncCallContext *ctx) = 0;
-  virtual void exitFuncCall(ValgoParser::FuncCallContext *ctx) = 0;
+  virtual void enterFuncCallExpr(ValgoParser::FuncCallExprContext *ctx) = 0;
+  virtual void exitFuncCallExpr(ValgoParser::FuncCallExprContext *ctx) = 0;
 
 
 };
