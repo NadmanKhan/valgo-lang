@@ -1,20 +1,32 @@
+
+// Compare two numbers.
+// Functions take arguments by value and return a value.
 func compare(a, b) {
   if a < b {
-    return -1
+    return -1;
   } else if a > b {
-    return 1
+    return 1;
   } else {
-    return 0
+    return 0;
   }
 }
 
+/*
+ * Add two numbers and set the result to the first number.
+ * Procedures take arguments by reference and return nothing.
+ */
 proc add(a, b) {
-    a = a + b
+    a = a + b;
 }
 
 proc main() {
-    var a = 1
-    print compare(a, 3)
-    add(a, 10)
-    print compare(a, 3)
+    var a = 1;
+
+    print compare(a, 3);
+    add(a, 10); // a is passed by reference, and incremented by 10
+    print compare(a, 3);
+
+    var b = 0;
+    var c = compare(a, b);
+    print a, b, c;
 }

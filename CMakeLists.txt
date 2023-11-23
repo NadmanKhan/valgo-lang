@@ -13,8 +13,6 @@ file(GLOB_RECURSE SOURCE
 
 add_executable(valgo
         ${SOURCE}
-        src/parser/ValgoASTBuilderVisitor.cpp
-        src/parser/ValgoASTBuilderVisitor.h
 )
 
 add_subdirectory(antlr4-runtime)

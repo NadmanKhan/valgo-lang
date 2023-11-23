@@ -12,23 +12,20 @@ using namespace antlr4;
 int main() {
 
     std::cout << "hello\n";
-    ANTLRInputStream input("1  + 2");
-    ValgoLexer lexer(&input);
-    CommonTokenStream tokens(&lexer);
 
+    // Parse `example-program.valgo` and print the parse tree
+    ANTLRFileStream fileStream;
+    fileStream.loadFromFile("../example-program.valgo");
+    ValgoLexer lexer(&fileStream);
+    CommonTokenStream tokens(&lexer);
     tokens.fill();
     for (auto token : tokens.getTokens()) {
         std::cout << token->toString() << std::endl;
     }
 
     ValgoParser parser(&tokens);
-    tree::ParseTree* tree = parser.expr();
-
+    tree::ParseTree *tree = parser.prog();
     std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
-
-    // Visit the tree with a visitor
-    // ValgoASTBuilderVisitor visitor;
-    // visitor.visit(tree);
 
     return 0;
 }
