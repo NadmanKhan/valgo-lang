@@ -21,8 +21,8 @@ public:
   };
 
   enum {
-    RuleProg = 0, RuleFunc = 1, RuleProc = 2, RuleProto = 3, RuleBlock = 4, 
-    RuleStmt = 5, RuleIfElse = 6, RuleExpr = 7, RulePrimaryExpr = 8
+    RuleProg = 0, RuleSubr = 1, RuleProto = 2, RuleBlock = 3, RuleStmt = 4, 
+    RuleIfElse = 5, RuleExpr = 6, RulePrimaryExpr = 7
   };
 
   explicit ValgoParser(antlr4::TokenStream *input);
@@ -43,8 +43,7 @@ public:
 
 
   class ProgContext;
-  class FuncContext;
-  class ProcContext;
+  class SubrContext;
   class ProtoContext;
   class BlockContext;
   class StmtContext;
@@ -57,10 +56,8 @@ public:
     ProgContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *EOF();
-    std::vector<FuncContext *> func();
-    FuncContext* func(size_t i);
-    std::vector<ProcContext *> proc();
-    ProcContext* proc(size_t i);
+    std::vector<SubrContext *> subr();
+    SubrContext* subr(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -71,9 +68,10 @@ public:
 
   ProgContext* prog();
 
-  class  FuncContext : public antlr4::ParserRuleContext {
+  class  SubrContext : public antlr4::ParserRuleContext {
   public:
-    FuncContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    antlr4::Token *type = nullptr;
+    SubrContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     ProtoContext *proto();
     BlockContext *block();
@@ -85,23 +83,7 @@ public:
    
   };
 
-  FuncContext* func();
-
-  class  ProcContext : public antlr4::ParserRuleContext {
-  public:
-    ProcContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    ProtoContext *proto();
-    BlockContext *block();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ProcContext* proc();
+  SubrContext* subr();
 
   class  ProtoContext : public antlr4::ParserRuleContext {
   public:

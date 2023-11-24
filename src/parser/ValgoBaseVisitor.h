@@ -19,11 +19,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFunc(ValgoParser::FuncContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitProc(ValgoParser::ProcContext *ctx) override {
+  virtual std::any visitSubr(ValgoParser::SubrContext *ctx) override {
     return visitChildren(ctx);
   }
 

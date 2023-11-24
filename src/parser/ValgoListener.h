@@ -17,11 +17,8 @@ public:
   virtual void enterProg(ValgoParser::ProgContext *ctx) = 0;
   virtual void exitProg(ValgoParser::ProgContext *ctx) = 0;
 
-  virtual void enterFunc(ValgoParser::FuncContext *ctx) = 0;
-  virtual void exitFunc(ValgoParser::FuncContext *ctx) = 0;
-
-  virtual void enterProc(ValgoParser::ProcContext *ctx) = 0;
-  virtual void exitProc(ValgoParser::ProcContext *ctx) = 0;
+  virtual void enterSubr(ValgoParser::SubrContext *ctx) = 0;
+  virtual void exitSubr(ValgoParser::SubrContext *ctx) = 0;
 
   virtual void enterProto(ValgoParser::ProtoContext *ctx) = 0;
   virtual void exitProto(ValgoParser::ProtoContext *ctx) = 0;

@@ -53,8 +53,7 @@ void valgoParserInitialize() {
 #endif
   auto staticData = std::make_unique<ValgoParserStaticData>(
     std::vector<std::string>{
-      "prog", "func", "proc", "proto", "block", "stmt", "ifElse", "expr", 
-      "primaryExpr"
+      "prog", "subr", "proto", "block", "stmt", "ifElse", "expr", "primaryExpr"
     },
     std::vector<std::string>{
       "", "'func'", "'proc'", "'('", "','", "')'", "'{'", "'}'", "'exit'", 
@@ -69,51 +68,49 @@ void valgoParserInitialize() {
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,38,143,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
-  	7,7,7,2,8,7,8,1,0,1,0,4,0,21,8,0,11,0,12,0,22,1,0,1,0,1,1,1,1,1,1,1,1,
-  	1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,5,3,40,8,3,10,3,12,3,43,9,3,3,3,45,
-  	8,3,1,3,1,3,1,4,1,4,5,4,51,8,4,10,4,12,4,54,9,4,1,4,1,4,1,5,1,5,1,5,1,
-  	5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,
-  	5,5,79,8,5,10,5,12,5,82,9,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,91,8,5,10,
-  	5,12,5,94,9,5,3,5,96,8,5,1,5,1,5,1,5,1,5,3,5,102,8,5,1,6,1,6,1,6,1,6,
-  	1,6,1,6,3,6,110,8,6,3,6,112,8,6,1,7,3,7,115,8,7,1,7,1,7,1,7,3,7,120,8,
-  	7,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,133,8,8,10,8,12,8,136,
-  	9,8,3,8,138,8,8,1,8,3,8,141,8,8,1,8,0,0,9,0,2,4,6,8,10,12,14,16,0,2,1,
-  	0,16,19,2,0,16,17,19,34,157,0,20,1,0,0,0,2,26,1,0,0,0,4,30,1,0,0,0,6,
-  	34,1,0,0,0,8,48,1,0,0,0,10,101,1,0,0,0,12,103,1,0,0,0,14,114,1,0,0,0,
-  	16,140,1,0,0,0,18,21,3,2,1,0,19,21,3,4,2,0,20,18,1,0,0,0,20,19,1,0,0,
-  	0,21,22,1,0,0,0,22,20,1,0,0,0,22,23,1,0,0,0,23,24,1,0,0,0,24,25,5,0,0,
-  	1,25,1,1,0,0,0,26,27,5,1,0,0,27,28,3,6,3,0,28,29,3,8,4,0,29,3,1,0,0,0,
-  	30,31,5,2,0,0,31,32,3,6,3,0,32,33,3,8,4,0,33,5,1,0,0,0,34,35,5,35,0,0,
-  	35,44,5,3,0,0,36,41,5,35,0,0,37,38,5,4,0,0,38,40,5,35,0,0,39,37,1,0,0,
-  	0,40,43,1,0,0,0,41,39,1,0,0,0,41,42,1,0,0,0,42,45,1,0,0,0,43,41,1,0,0,
-  	0,44,36,1,0,0,0,44,45,1,0,0,0,45,46,1,0,0,0,46,47,5,5,0,0,47,7,1,0,0,
-  	0,48,52,5,6,0,0,49,51,3,10,5,0,50,49,1,0,0,0,51,54,1,0,0,0,52,50,1,0,
-  	0,0,52,53,1,0,0,0,53,55,1,0,0,0,54,52,1,0,0,0,55,56,5,7,0,0,56,9,1,0,
-  	0,0,57,58,5,8,0,0,58,102,5,9,0,0,59,60,5,10,0,0,60,61,3,14,7,0,61,62,
-  	5,9,0,0,62,102,1,0,0,0,63,64,5,11,0,0,64,65,5,35,0,0,65,66,5,12,0,0,66,
-  	67,3,14,7,0,67,68,5,9,0,0,68,102,1,0,0,0,69,70,5,35,0,0,70,71,5,12,0,
-  	0,71,72,3,14,7,0,72,73,5,9,0,0,73,102,1,0,0,0,74,75,5,13,0,0,75,80,3,
-  	14,7,0,76,77,5,4,0,0,77,79,3,14,7,0,78,76,1,0,0,0,79,82,1,0,0,0,80,78,
-  	1,0,0,0,80,81,1,0,0,0,81,83,1,0,0,0,82,80,1,0,0,0,83,84,5,9,0,0,84,102,
-  	1,0,0,0,85,86,5,35,0,0,86,95,5,3,0,0,87,92,3,14,7,0,88,89,5,4,0,0,89,
-  	91,3,14,7,0,90,88,1,0,0,0,91,94,1,0,0,0,92,90,1,0,0,0,92,93,1,0,0,0,93,
-  	96,1,0,0,0,94,92,1,0,0,0,95,87,1,0,0,0,95,96,1,0,0,0,96,97,1,0,0,0,97,
-  	98,5,5,0,0,98,102,5,9,0,0,99,102,3,12,6,0,100,102,3,8,4,0,101,57,1,0,
-  	0,0,101,59,1,0,0,0,101,63,1,0,0,0,101,69,1,0,0,0,101,74,1,0,0,0,101,85,
-  	1,0,0,0,101,99,1,0,0,0,101,100,1,0,0,0,102,11,1,0,0,0,103,104,5,14,0,
-  	0,104,105,3,14,7,0,105,111,3,8,4,0,106,109,5,15,0,0,107,110,3,12,6,0,
-  	108,110,3,8,4,0,109,107,1,0,0,0,109,108,1,0,0,0,110,112,1,0,0,0,111,106,
-  	1,0,0,0,111,112,1,0,0,0,112,13,1,0,0,0,113,115,7,0,0,0,114,113,1,0,0,
-  	0,114,115,1,0,0,0,115,116,1,0,0,0,116,119,3,16,8,0,117,118,7,1,0,0,118,
-  	120,3,14,7,0,119,117,1,0,0,0,119,120,1,0,0,0,120,15,1,0,0,0,121,141,5,
-  	36,0,0,122,141,5,35,0,0,123,124,5,3,0,0,124,125,3,14,7,0,125,126,5,5,
-  	0,0,126,141,1,0,0,0,127,128,5,35,0,0,128,137,5,3,0,0,129,134,3,14,7,0,
-  	130,131,5,4,0,0,131,133,3,14,7,0,132,130,1,0,0,0,133,136,1,0,0,0,134,
-  	132,1,0,0,0,134,135,1,0,0,0,135,138,1,0,0,0,136,134,1,0,0,0,137,129,1,
-  	0,0,0,137,138,1,0,0,0,138,139,1,0,0,0,139,141,5,5,0,0,140,121,1,0,0,0,
-  	140,122,1,0,0,0,140,123,1,0,0,0,140,127,1,0,0,0,141,17,1,0,0,0,16,20,
-  	22,41,44,52,80,92,95,101,109,111,114,119,134,137,140
+  	4,1,38,136,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	7,7,7,1,0,4,0,18,8,0,11,0,12,0,19,1,0,1,0,1,1,1,1,1,1,1,1,1,2,1,2,1,2,
+  	1,2,1,2,5,2,33,8,2,10,2,12,2,36,9,2,3,2,38,8,2,1,2,1,2,1,3,1,3,5,3,44,
+  	8,3,10,3,12,3,47,9,3,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,
+  	1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,5,4,72,8,4,10,4,12,4,75,9,
+  	4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,5,4,84,8,4,10,4,12,4,87,9,4,3,4,89,8,4,
+  	1,4,1,4,1,4,1,4,3,4,95,8,4,1,5,1,5,1,5,1,5,1,5,1,5,3,5,103,8,5,3,5,105,
+  	8,5,1,6,3,6,108,8,6,1,6,1,6,1,6,3,6,113,8,6,1,7,1,7,1,7,1,7,1,7,1,7,1,
+  	7,1,7,1,7,1,7,1,7,5,7,126,8,7,10,7,12,7,129,9,7,3,7,131,8,7,1,7,3,7,134,
+  	8,7,1,7,0,0,8,0,2,4,6,8,10,12,14,0,3,1,0,1,2,1,0,16,19,2,0,16,17,19,34,
+  	150,0,17,1,0,0,0,2,23,1,0,0,0,4,27,1,0,0,0,6,41,1,0,0,0,8,94,1,0,0,0,
+  	10,96,1,0,0,0,12,107,1,0,0,0,14,133,1,0,0,0,16,18,3,2,1,0,17,16,1,0,0,
+  	0,18,19,1,0,0,0,19,17,1,0,0,0,19,20,1,0,0,0,20,21,1,0,0,0,21,22,5,0,0,
+  	1,22,1,1,0,0,0,23,24,7,0,0,0,24,25,3,4,2,0,25,26,3,6,3,0,26,3,1,0,0,0,
+  	27,28,5,35,0,0,28,37,5,3,0,0,29,34,5,35,0,0,30,31,5,4,0,0,31,33,5,35,
+  	0,0,32,30,1,0,0,0,33,36,1,0,0,0,34,32,1,0,0,0,34,35,1,0,0,0,35,38,1,0,
+  	0,0,36,34,1,0,0,0,37,29,1,0,0,0,37,38,1,0,0,0,38,39,1,0,0,0,39,40,5,5,
+  	0,0,40,5,1,0,0,0,41,45,5,6,0,0,42,44,3,8,4,0,43,42,1,0,0,0,44,47,1,0,
+  	0,0,45,43,1,0,0,0,45,46,1,0,0,0,46,48,1,0,0,0,47,45,1,0,0,0,48,49,5,7,
+  	0,0,49,7,1,0,0,0,50,51,5,8,0,0,51,95,5,9,0,0,52,53,5,10,0,0,53,54,3,12,
+  	6,0,54,55,5,9,0,0,55,95,1,0,0,0,56,57,5,11,0,0,57,58,5,35,0,0,58,59,5,
+  	12,0,0,59,60,3,12,6,0,60,61,5,9,0,0,61,95,1,0,0,0,62,63,5,35,0,0,63,64,
+  	5,12,0,0,64,65,3,12,6,0,65,66,5,9,0,0,66,95,1,0,0,0,67,68,5,13,0,0,68,
+  	73,3,12,6,0,69,70,5,4,0,0,70,72,3,12,6,0,71,69,1,0,0,0,72,75,1,0,0,0,
+  	73,71,1,0,0,0,73,74,1,0,0,0,74,76,1,0,0,0,75,73,1,0,0,0,76,77,5,9,0,0,
+  	77,95,1,0,0,0,78,79,5,35,0,0,79,88,5,3,0,0,80,85,3,12,6,0,81,82,5,4,0,
+  	0,82,84,3,12,6,0,83,81,1,0,0,0,84,87,1,0,0,0,85,83,1,0,0,0,85,86,1,0,
+  	0,0,86,89,1,0,0,0,87,85,1,0,0,0,88,80,1,0,0,0,88,89,1,0,0,0,89,90,1,0,
+  	0,0,90,91,5,5,0,0,91,95,5,9,0,0,92,95,3,10,5,0,93,95,3,6,3,0,94,50,1,
+  	0,0,0,94,52,1,0,0,0,94,56,1,0,0,0,94,62,1,0,0,0,94,67,1,0,0,0,94,78,1,
+  	0,0,0,94,92,1,0,0,0,94,93,1,0,0,0,95,9,1,0,0,0,96,97,5,14,0,0,97,98,3,
+  	12,6,0,98,104,3,6,3,0,99,102,5,15,0,0,100,103,3,10,5,0,101,103,3,6,3,
+  	0,102,100,1,0,0,0,102,101,1,0,0,0,103,105,1,0,0,0,104,99,1,0,0,0,104,
+  	105,1,0,0,0,105,11,1,0,0,0,106,108,7,1,0,0,107,106,1,0,0,0,107,108,1,
+  	0,0,0,108,109,1,0,0,0,109,112,3,14,7,0,110,111,7,2,0,0,111,113,3,12,6,
+  	0,112,110,1,0,0,0,112,113,1,0,0,0,113,13,1,0,0,0,114,134,5,36,0,0,115,
+  	134,5,35,0,0,116,117,5,3,0,0,117,118,3,12,6,0,118,119,5,5,0,0,119,134,
+  	1,0,0,0,120,121,5,35,0,0,121,130,5,3,0,0,122,127,3,12,6,0,123,124,5,4,
+  	0,0,124,126,3,12,6,0,125,123,1,0,0,0,126,129,1,0,0,0,127,125,1,0,0,0,
+  	127,128,1,0,0,0,128,131,1,0,0,0,129,127,1,0,0,0,130,122,1,0,0,0,130,131,
+  	1,0,0,0,131,132,1,0,0,0,132,134,5,5,0,0,133,114,1,0,0,0,133,115,1,0,0,
+  	0,133,116,1,0,0,0,133,120,1,0,0,0,134,15,1,0,0,0,15,19,34,37,45,73,85,
+  	88,94,102,104,107,112,127,130,133
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -172,20 +169,12 @@ tree::TerminalNode* ValgoParser::ProgContext::EOF() {
   return getToken(ValgoParser::EOF, 0);
 }
 
-std::vector<ValgoParser::FuncContext *> ValgoParser::ProgContext::func() {
-  return getRuleContexts<ValgoParser::FuncContext>();
+std::vector<ValgoParser::SubrContext *> ValgoParser::ProgContext::subr() {
+  return getRuleContexts<ValgoParser::SubrContext>();
 }
 
-ValgoParser::FuncContext* ValgoParser::ProgContext::func(size_t i) {
-  return getRuleContext<ValgoParser::FuncContext>(i);
-}
-
-std::vector<ValgoParser::ProcContext *> ValgoParser::ProgContext::proc() {
-  return getRuleContexts<ValgoParser::ProcContext>();
-}
-
-ValgoParser::ProcContext* ValgoParser::ProgContext::proc(size_t i) {
-  return getRuleContext<ValgoParser::ProcContext>(i);
+ValgoParser::SubrContext* ValgoParser::ProgContext::subr(size_t i) {
+  return getRuleContext<ValgoParser::SubrContext>(i);
 }
 
 
@@ -227,35 +216,19 @@ ValgoParser::ProgContext* ValgoParser::prog() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(20); 
+    setState(17); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(20);
-      _errHandler->sync(this);
-      switch (_input->LA(1)) {
-        case ValgoParser::T__0: {
-          setState(18);
-          func();
-          break;
-        }
-
-        case ValgoParser::T__1: {
-          setState(19);
-          proc();
-          break;
-        }
-
-      default:
-        throw NoViableAltException(this);
-      }
-      setState(22); 
+      setState(16);
+      subr();
+      setState(19); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == ValgoParser::T__0
 
     || _la == ValgoParser::T__1);
-    setState(24);
+    setState(21);
     match(ValgoParser::EOF);
    
   }
@@ -268,48 +241,49 @@ ValgoParser::ProgContext* ValgoParser::prog() {
   return _localctx;
 }
 
-//----------------- FuncContext ------------------------------------------------------------------
+//----------------- SubrContext ------------------------------------------------------------------
 
-ValgoParser::FuncContext::FuncContext(ParserRuleContext *parent, size_t invokingState)
+ValgoParser::SubrContext::SubrContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-ValgoParser::ProtoContext* ValgoParser::FuncContext::proto() {
+ValgoParser::ProtoContext* ValgoParser::SubrContext::proto() {
   return getRuleContext<ValgoParser::ProtoContext>(0);
 }
 
-ValgoParser::BlockContext* ValgoParser::FuncContext::block() {
+ValgoParser::BlockContext* ValgoParser::SubrContext::block() {
   return getRuleContext<ValgoParser::BlockContext>(0);
 }
 
 
-size_t ValgoParser::FuncContext::getRuleIndex() const {
-  return ValgoParser::RuleFunc;
+size_t ValgoParser::SubrContext::getRuleIndex() const {
+  return ValgoParser::RuleSubr;
 }
 
-void ValgoParser::FuncContext::enterRule(tree::ParseTreeListener *listener) {
+void ValgoParser::SubrContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterFunc(this);
+    parserListener->enterSubr(this);
 }
 
-void ValgoParser::FuncContext::exitRule(tree::ParseTreeListener *listener) {
+void ValgoParser::SubrContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ValgoListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitFunc(this);
+    parserListener->exitSubr(this);
 }
 
 
-std::any ValgoParser::FuncContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any ValgoParser::SubrContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ValgoVisitor*>(visitor))
-    return parserVisitor->visitFunc(this);
+    return parserVisitor->visitSubr(this);
   else
     return visitor->visitChildren(this);
 }
 
-ValgoParser::FuncContext* ValgoParser::func() {
-  FuncContext *_localctx = _tracker.createInstance<FuncContext>(_ctx, getState());
-  enterRule(_localctx, 2, ValgoParser::RuleFunc);
+ValgoParser::SubrContext* ValgoParser::subr() {
+  SubrContext *_localctx = _tracker.createInstance<SubrContext>(_ctx, getState());
+  enterRule(_localctx, 2, ValgoParser::RuleSubr);
+  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -320,80 +294,21 @@ ValgoParser::FuncContext* ValgoParser::func() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(26);
-    match(ValgoParser::T__0);
-    setState(27);
+    setState(23);
+    antlrcpp::downCast<SubrContext *>(_localctx)->type = _input->LT(1);
+    _la = _input->LA(1);
+    if (!(_la == ValgoParser::T__0
+
+    || _la == ValgoParser::T__1)) {
+      antlrcpp::downCast<SubrContext *>(_localctx)->type = _errHandler->recoverInline(this);
+    }
+    else {
+      _errHandler->reportMatch(this);
+      consume();
+    }
+    setState(24);
     proto();
-    setState(28);
-    block();
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- ProcContext ------------------------------------------------------------------
-
-ValgoParser::ProcContext::ProcContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-ValgoParser::ProtoContext* ValgoParser::ProcContext::proto() {
-  return getRuleContext<ValgoParser::ProtoContext>(0);
-}
-
-ValgoParser::BlockContext* ValgoParser::ProcContext::block() {
-  return getRuleContext<ValgoParser::BlockContext>(0);
-}
-
-
-size_t ValgoParser::ProcContext::getRuleIndex() const {
-  return ValgoParser::RuleProc;
-}
-
-void ValgoParser::ProcContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ValgoListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterProc(this);
-}
-
-void ValgoParser::ProcContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ValgoListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitProc(this);
-}
-
-
-std::any ValgoParser::ProcContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<ValgoVisitor*>(visitor))
-    return parserVisitor->visitProc(this);
-  else
-    return visitor->visitChildren(this);
-}
-
-ValgoParser::ProcContext* ValgoParser::proc() {
-  ProcContext *_localctx = _tracker.createInstance<ProcContext>(_ctx, getState());
-  enterRule(_localctx, 4, ValgoParser::RuleProc);
-
-#if __cplusplus > 201703L
-  auto onExit = finally([=, this] {
-#else
-  auto onExit = finally([=] {
-#endif
-    exitRule();
-  });
-  try {
-    enterOuterAlt(_localctx, 1);
-    setState(30);
-    match(ValgoParser::T__1);
-    setState(31);
-    proto();
-    setState(32);
+    setState(25);
     block();
    
   }
@@ -447,7 +362,7 @@ std::any ValgoParser::ProtoContext::accept(tree::ParseTreeVisitor *visitor) {
 
 ValgoParser::ProtoContext* ValgoParser::proto() {
   ProtoContext *_localctx = _tracker.createInstance<ProtoContext>(_ctx, getState());
-  enterRule(_localctx, 6, ValgoParser::RuleProto);
+  enterRule(_localctx, 4, ValgoParser::RuleProto);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -459,31 +374,31 @@ ValgoParser::ProtoContext* ValgoParser::proto() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(34);
+    setState(27);
     match(ValgoParser::ID);
-    setState(35);
+    setState(28);
     match(ValgoParser::T__2);
-    setState(44);
+    setState(37);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == ValgoParser::ID) {
-      setState(36);
+      setState(29);
       match(ValgoParser::ID);
-      setState(41);
+      setState(34);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == ValgoParser::T__3) {
-        setState(37);
+        setState(30);
         match(ValgoParser::T__3);
-        setState(38);
+        setState(31);
         match(ValgoParser::ID);
-        setState(43);
+        setState(36);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
     }
-    setState(46);
+    setState(39);
     match(ValgoParser::T__4);
    
   }
@@ -537,7 +452,7 @@ std::any ValgoParser::BlockContext::accept(tree::ParseTreeVisitor *visitor) {
 
 ValgoParser::BlockContext* ValgoParser::block() {
   BlockContext *_localctx = _tracker.createInstance<BlockContext>(_ctx, getState());
-  enterRule(_localctx, 8, ValgoParser::RuleBlock);
+  enterRule(_localctx, 6, ValgoParser::RuleBlock);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -549,20 +464,20 @@ ValgoParser::BlockContext* ValgoParser::block() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(48);
+    setState(41);
     match(ValgoParser::T__5);
-    setState(52);
+    setState(45);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 34359766336) != 0)) {
-      setState(49);
+      setState(42);
       stmt();
-      setState(54);
+      setState(47);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(55);
+    setState(48);
     match(ValgoParser::T__6);
    
   }
@@ -808,7 +723,7 @@ std::any ValgoParser::ExitStmtContext::accept(tree::ParseTreeVisitor *visitor) {
 }
 ValgoParser::StmtContext* ValgoParser::stmt() {
   StmtContext *_localctx = _tracker.createInstance<StmtContext>(_ctx, getState());
-  enterRule(_localctx, 10, ValgoParser::RuleStmt);
+  enterRule(_localctx, 8, ValgoParser::RuleStmt);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -819,15 +734,15 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     exitRule();
   });
   try {
-    setState(101);
+    setState(94);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 8, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 7, _ctx)) {
     case 1: {
       _localctx = _tracker.createInstance<ValgoParser::ExitStmtContext>(_localctx);
       enterOuterAlt(_localctx, 1);
-      setState(57);
+      setState(50);
       match(ValgoParser::T__7);
-      setState(58);
+      setState(51);
       match(ValgoParser::T__8);
       break;
     }
@@ -835,11 +750,11 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 2: {
       _localctx = _tracker.createInstance<ValgoParser::ReturnStmtContext>(_localctx);
       enterOuterAlt(_localctx, 2);
-      setState(59);
+      setState(52);
       match(ValgoParser::T__9);
-      setState(60);
+      setState(53);
       expr();
-      setState(61);
+      setState(54);
       match(ValgoParser::T__8);
       break;
     }
@@ -847,15 +762,15 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 3: {
       _localctx = _tracker.createInstance<ValgoParser::DeclStmtContext>(_localctx);
       enterOuterAlt(_localctx, 3);
-      setState(63);
+      setState(56);
       match(ValgoParser::T__10);
-      setState(64);
+      setState(57);
       match(ValgoParser::ID);
-      setState(65);
+      setState(58);
       match(ValgoParser::T__11);
-      setState(66);
+      setState(59);
       expr();
-      setState(67);
+      setState(60);
       match(ValgoParser::T__8);
       break;
     }
@@ -863,13 +778,13 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 4: {
       _localctx = _tracker.createInstance<ValgoParser::AssignStmtContext>(_localctx);
       enterOuterAlt(_localctx, 4);
-      setState(69);
+      setState(62);
       match(ValgoParser::ID);
-      setState(70);
+      setState(63);
       match(ValgoParser::T__11);
-      setState(71);
+      setState(64);
       expr();
-      setState(72);
+      setState(65);
       match(ValgoParser::T__8);
       break;
     }
@@ -877,23 +792,23 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 5: {
       _localctx = _tracker.createInstance<ValgoParser::PrintStmtContext>(_localctx);
       enterOuterAlt(_localctx, 5);
-      setState(74);
+      setState(67);
       match(ValgoParser::T__12);
-      setState(75);
+      setState(68);
       expr();
-      setState(80);
+      setState(73);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == ValgoParser::T__3) {
-        setState(76);
+        setState(69);
         match(ValgoParser::T__3);
-        setState(77);
+        setState(70);
         expr();
-        setState(82);
+        setState(75);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
-      setState(83);
+      setState(76);
       match(ValgoParser::T__8);
       break;
     }
@@ -901,34 +816,34 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 6: {
       _localctx = _tracker.createInstance<ValgoParser::ProcCallStmtContext>(_localctx);
       enterOuterAlt(_localctx, 6);
-      setState(85);
+      setState(78);
       match(ValgoParser::ID);
-      setState(86);
+      setState(79);
       match(ValgoParser::T__2);
-      setState(95);
+      setState(88);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
         ((1ULL << _la) & 103080198152) != 0)) {
-        setState(87);
+        setState(80);
         expr();
-        setState(92);
+        setState(85);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == ValgoParser::T__3) {
-          setState(88);
+          setState(81);
           match(ValgoParser::T__3);
-          setState(89);
+          setState(82);
           expr();
-          setState(94);
+          setState(87);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
       }
-      setState(97);
+      setState(90);
       match(ValgoParser::T__4);
-      setState(98);
+      setState(91);
       match(ValgoParser::T__8);
       break;
     }
@@ -936,7 +851,7 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 7: {
       _localctx = _tracker.createInstance<ValgoParser::IfElseStmtContext>(_localctx);
       enterOuterAlt(_localctx, 7);
-      setState(99);
+      setState(92);
       ifElse();
       break;
     }
@@ -944,7 +859,7 @@ ValgoParser::StmtContext* ValgoParser::stmt() {
     case 8: {
       _localctx = _tracker.createInstance<ValgoParser::BlockStmtContext>(_localctx);
       enterOuterAlt(_localctx, 8);
-      setState(100);
+      setState(93);
       block();
       break;
     }
@@ -1012,7 +927,7 @@ std::any ValgoParser::IfElseContext::accept(tree::ParseTreeVisitor *visitor) {
 
 ValgoParser::IfElseContext* ValgoParser::ifElse() {
   IfElseContext *_localctx = _tracker.createInstance<IfElseContext>(_ctx, getState());
-  enterRule(_localctx, 12, ValgoParser::RuleIfElse);
+  enterRule(_localctx, 10, ValgoParser::RuleIfElse);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1024,30 +939,30 @@ ValgoParser::IfElseContext* ValgoParser::ifElse() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(103);
+    setState(96);
     match(ValgoParser::T__13);
-    setState(104);
+    setState(97);
     expr();
-    setState(105);
+    setState(98);
     block();
-    setState(111);
+    setState(104);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == ValgoParser::T__14) {
-      setState(106);
+      setState(99);
       match(ValgoParser::T__14);
-      setState(109);
+      setState(102);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
         case ValgoParser::T__13: {
-          setState(107);
+          setState(100);
           ifElse();
           break;
         }
 
         case ValgoParser::T__5: {
-          setState(108);
+          setState(101);
           block();
           break;
         }
@@ -1108,7 +1023,7 @@ std::any ValgoParser::ExprContext::accept(tree::ParseTreeVisitor *visitor) {
 
 ValgoParser::ExprContext* ValgoParser::expr() {
   ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, getState());
-  enterRule(_localctx, 14, ValgoParser::RuleExpr);
+  enterRule(_localctx, 12, ValgoParser::RuleExpr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1120,13 +1035,13 @@ ValgoParser::ExprContext* ValgoParser::expr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(114);
+    setState(107);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 983040) != 0)) {
-      setState(113);
+      setState(106);
       antlrcpp::downCast<ExprContext *>(_localctx)->unop = _input->LT(1);
       _la = _input->LA(1);
       if (!((((_la & ~ 0x3fULL) == 0) &&
@@ -1138,15 +1053,15 @@ ValgoParser::ExprContext* ValgoParser::expr() {
         consume();
       }
     }
-    setState(116);
+    setState(109);
     primaryExpr();
-    setState(119);
+    setState(112);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 34359410688) != 0)) {
-      setState(117);
+      setState(110);
       antlrcpp::downCast<ExprContext *>(_localctx)->binop = _input->LT(1);
       _la = _input->LA(1);
       if (!((((_la & ~ 0x3fULL) == 0) &&
@@ -1157,7 +1072,7 @@ ValgoParser::ExprContext* ValgoParser::expr() {
         _errHandler->reportMatch(this);
         consume();
       }
-      setState(118);
+      setState(111);
       expr();
     }
    
@@ -1296,7 +1211,7 @@ std::any ValgoParser::FuncCallExprContext::accept(tree::ParseTreeVisitor *visito
 }
 ValgoParser::PrimaryExprContext* ValgoParser::primaryExpr() {
   PrimaryExprContext *_localctx = _tracker.createInstance<PrimaryExprContext>(_ctx, getState());
-  enterRule(_localctx, 16, ValgoParser::RulePrimaryExpr);
+  enterRule(_localctx, 14, ValgoParser::RulePrimaryExpr);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1307,13 +1222,13 @@ ValgoParser::PrimaryExprContext* ValgoParser::primaryExpr() {
     exitRule();
   });
   try {
-    setState(140);
+    setState(133);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 15, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx)) {
     case 1: {
       _localctx = _tracker.createInstance<ValgoParser::IntLiteralExprContext>(_localctx);
       enterOuterAlt(_localctx, 1);
-      setState(121);
+      setState(114);
       match(ValgoParser::INT);
       break;
     }
@@ -1321,7 +1236,7 @@ ValgoParser::PrimaryExprContext* ValgoParser::primaryExpr() {
     case 2: {
       _localctx = _tracker.createInstance<ValgoParser::VariableExprContext>(_localctx);
       enterOuterAlt(_localctx, 2);
-      setState(122);
+      setState(115);
       match(ValgoParser::ID);
       break;
     }
@@ -1329,11 +1244,11 @@ ValgoParser::PrimaryExprContext* ValgoParser::primaryExpr() {
     case 3: {
       _localctx = _tracker.createInstance<ValgoParser::ParenthsizedExprContext>(_localctx);
       enterOuterAlt(_localctx, 3);
-      setState(123);
+      setState(116);
       match(ValgoParser::T__2);
-      setState(124);
+      setState(117);
       expr();
-      setState(125);
+      setState(118);
       match(ValgoParser::T__4);
       break;
     }
@@ -1341,32 +1256,32 @@ ValgoParser::PrimaryExprContext* ValgoParser::primaryExpr() {
     case 4: {
       _localctx = _tracker.createInstance<ValgoParser::FuncCallExprContext>(_localctx);
       enterOuterAlt(_localctx, 4);
-      setState(127);
+      setState(120);
       match(ValgoParser::ID);
-      setState(128);
+      setState(121);
       match(ValgoParser::T__2);
-      setState(137);
+      setState(130);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
         ((1ULL << _la) & 103080198152) != 0)) {
-        setState(129);
+        setState(122);
         expr();
-        setState(134);
+        setState(127);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == ValgoParser::T__3) {
-          setState(130);
+          setState(123);
           match(ValgoParser::T__3);
-          setState(131);
+          setState(124);
           expr();
-          setState(136);
+          setState(129);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
       }
-      setState(139);
+      setState(132);
       match(ValgoParser::T__4);
       break;
     }

@@ -19,11 +19,8 @@ public:
   virtual void enterProg(ValgoParser::ProgContext * /*ctx*/) override { }
   virtual void exitProg(ValgoParser::ProgContext * /*ctx*/) override { }
 
-  virtual void enterFunc(ValgoParser::FuncContext * /*ctx*/) override { }
-  virtual void exitFunc(ValgoParser::FuncContext * /*ctx*/) override { }
-
-  virtual void enterProc(ValgoParser::ProcContext * /*ctx*/) override { }
-  virtual void exitProc(ValgoParser::ProcContext * /*ctx*/) override { }
+  virtual void enterSubr(ValgoParser::SubrContext * /*ctx*/) override { }
+  virtual void exitSubr(ValgoParser::SubrContext * /*ctx*/) override { }
 
   virtual void enterProto(ValgoParser::ProtoContext * /*ctx*/) override { }
   virtual void exitProto(ValgoParser::ProtoContext * /*ctx*/) override { }

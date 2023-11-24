@@ -21,9 +21,7 @@ public:
    */
     virtual std::any visitProg(ValgoParser::ProgContext *context) = 0;
 
-    virtual std::any visitFunc(ValgoParser::FuncContext *context) = 0;
-
-    virtual std::any visitProc(ValgoParser::ProcContext *context) = 0;
+    virtual std::any visitSubr(ValgoParser::SubrContext *context) = 0;
 
     virtual std::any visitProto(ValgoParser::ProtoContext *context) = 0;
 
