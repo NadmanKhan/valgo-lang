@@ -1,8 +1,7 @@
 grammar Valgo;
 
-prog:   (func | proc)+ EOF;
-func:   'func' proto block;
-proc:   'proc' proto block;
+prog:   subr+ EOF;
+subr:   type=('func' | 'proc') proto block;
 proto:  ID '(' (ID (',' ID)*)? ')';
 block:  '{' stmt* '}';
 stmt:

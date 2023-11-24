@@ -8,6 +8,7 @@ cmake_policy(SET CMP0135 NEW)
 
 file(GLOB_RECURSE SOURCE
         "${CMAKE_SOURCE_DIR}/src/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/*.hpp"
         "${CMAKE_SOURCE_DIR}/src/*.h"
 )
 

@@ -2,7 +2,10 @@
 
 std::any ASTBuilderVisitor::visitProg(ValgoParser::ProgContext *ctx)
 {
-    return ValgoBaseVisitor::visitProg(ctx);
+    vector<unique_ptr<SubroutineAST>> subroutines;
+    for (auto &subroutine : ctx->subroutine()) {
+        subroutines.push_back(visit(subroutine));
+    }
 }
 
 std::any ASTBuilderVisitor::visitFunc(ValgoParser::FuncContext *ctx)
