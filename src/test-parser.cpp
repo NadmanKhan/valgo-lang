@@ -24,7 +24,7 @@ int main() {
     }
 
     ValgoParser parser(&tokens);
-    tree::ParseTree *tree = parser.prog();
+    tree::ParseTree *tree = parser.program();
     std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
 
     return 0;

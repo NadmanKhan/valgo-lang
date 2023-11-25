@@ -14,6 +14,10 @@ file(GLOB_RECURSE SOURCE
 
 add_executable(valgo
         ${SOURCE}
+        "${CMAKE_SOURCE_DIR}/src/parser/AST.h"
+        "${CMAKE_SOURCE_DIR}/src/parser/AST.cpp"
+        "${CMAKE_SOURCE_DIR}/src/parser/ASTBuilderVisitor.h"
+        "${CMAKE_SOURCE_DIR}/src/parser/ASTBuilderVisitor.cpp"
 )
 
 add_subdirectory(antlr4-runtime)

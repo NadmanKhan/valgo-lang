@@ -19,41 +19,61 @@ public:
   /**
    * Visit parse trees produced by ValgoParser.
    */
-    virtual std::any visitProg(ValgoParser::ProgContext *context) = 0;
+    virtual std::any visitProgram(ValgoParser::ProgramContext *context) = 0;
 
-    virtual std::any visitSubr(ValgoParser::SubrContext *context) = 0;
+    virtual std::any visitFunction(ValgoParser::FunctionContext *context) = 0;
 
-    virtual std::any visitProto(ValgoParser::ProtoContext *context) = 0;
+    virtual std::any visitProcedure(ValgoParser::ProcedureContext *context) = 0;
 
     virtual std::any visitBlock(ValgoParser::BlockContext *context) = 0;
 
-    virtual std::any visitExitStmt(ValgoParser::ExitStmtContext *context) = 0;
+    virtual std::any visitReturnStatement(ValgoParser::ReturnStatementContext *context) = 0;
 
-    virtual std::any visitReturnStmt(ValgoParser::ReturnStmtContext *context) = 0;
+    virtual std::any visitPrintStatement(ValgoParser::PrintStatementContext *context) = 0;
 
-    virtual std::any visitDeclStmt(ValgoParser::DeclStmtContext *context) = 0;
+    virtual std::any visitVarDeclarationStatement(ValgoParser::VarDeclarationStatementContext *context) = 0;
 
-    virtual std::any visitAssignStmt(ValgoParser::AssignStmtContext *context) = 0;
+    virtual std::any visitAssignmentStatement(ValgoParser::AssignmentStatementContext *context) = 0;
 
-    virtual std::any visitPrintStmt(ValgoParser::PrintStmtContext *context) = 0;
+    virtual std::any visitCallStatement(ValgoParser::CallStatementContext *context) = 0;
 
-    virtual std::any visitProcCallStmt(ValgoParser::ProcCallStmtContext *context) = 0;
+    virtual std::any visitBlockStatement(ValgoParser::BlockStatementContext *context) = 0;
 
-    virtual std::any visitIfElseStmt(ValgoParser::IfElseStmtContext *context) = 0;
+    virtual std::any visitIfStatement(ValgoParser::IfStatementContext *context) = 0;
 
-    virtual std::any visitBlockStmt(ValgoParser::BlockStmtContext *context) = 0;
+    virtual std::any visitWhileStatement(ValgoParser::WhileStatementContext *context) = 0;
 
-    virtual std::any visitIfElse(ValgoParser::IfElseContext *context) = 0;
+    virtual std::any visitExpression(ValgoParser::ExpressionContext *context) = 0;
 
-    virtual std::any visitExpr(ValgoParser::ExprContext *context) = 0;
+    virtual std::any visitBinaryExpression(ValgoParser::BinaryExpressionContext *context) = 0;
 
-    virtual std::any visitIntLiteralExpr(ValgoParser::IntLiteralExprContext *context) = 0;
+    virtual std::any visitUnaryExpression(ValgoParser::UnaryExpressionContext *context) = 0;
 
-    virtual std::any visitVariableExpr(ValgoParser::VariableExprContext *context) = 0;
+    virtual std::any visitIntegerLiteral(ValgoParser::IntegerLiteralContext *context) = 0;
 
-    virtual std::any visitParenthsizedExpr(ValgoParser::ParenthsizedExprContext *context) = 0;
+    virtual std::any visitArrayLiteral(ValgoParser::ArrayLiteralContext *context) = 0;
 
-    virtual std::any visitFuncCallExpr(ValgoParser::FuncCallExprContext *context) = 0;
+    virtual std::any visitCharLiteral(ValgoParser::CharLiteralContext *context) = 0;
+
+    virtual std::any visitFloatLiteral(ValgoParser::FloatLiteralContext *context) = 0;
+
+    virtual std::any visitArrayAccess(ValgoParser::ArrayAccessContext *context) = 0;
+
+    virtual std::any visitVariable(ValgoParser::VariableContext *context) = 0;
+
+    virtual std::any visitParenthesized(ValgoParser::ParenthesizedContext *context) = 0;
+
+    virtual std::any visitCall(ValgoParser::CallContext *context) = 0;
+
+    virtual std::any visitCharType(ValgoParser::CharTypeContext *context) = 0;
+
+    virtual std::any visitFloatType(ValgoParser::FloatTypeContext *context) = 0;
+
+    virtual std::any visitArrayType(ValgoParser::ArrayTypeContext *context) = 0;
+
+    virtual std::any visitIntType(ValgoParser::IntTypeContext *context) = 0;
+
+    virtual std::any visitDynamicArrayType(ValgoParser::DynamicArrayTypeContext *context) = 0;
 
 
 };
