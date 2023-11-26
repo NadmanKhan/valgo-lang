@@ -1,15 +1,104 @@
 #include "ASTBuilderVisitor.h"
 
+// Helper functions
+// ----------------------------------------------------------------------
+
+TypeAST *visitType(ValgoParser::TypeContext *ctx, ValgoVisitor *visitor)
+{
+    if (auto p = dynamic_cast<ValgoParser::IntTypeContext *>(ctx)) {
+        return any_cast<TypeAST *>(visitor->visitIntType(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::CharTypeContext *>(ctx)) {
+        return any_cast<TypeAST *>(visitor->visitCharType(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::FloatTypeContext *>(ctx)) {
+        return any_cast<TypeAST *>(visitor->visitFloatType(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::ArrayTypeContext *>(ctx)) {
+        return any_cast<TypeAST *>(visitor->visitArrayType(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::DynamicArrayTypeContext *>(ctx)) {
+        return any_cast<TypeAST *>(visitor->visitDynamicArrayType(p));
+    }
+    else {
+        assert(false);
+    }
+}
+
+ExpressionAST *visitPrimaryExpression(ValgoParser::PrimaryExpressionContext *ctx,
+                                      ValgoVisitor *visitor)
+{
+    if (auto p = dynamic_cast<ValgoParser::IntegerLiteralContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitIntegerLiteral(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::ArrayLiteralContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitArrayLiteral(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::CharLiteralContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitCharLiteral(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::FloatLiteralContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitFloatLiteral(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::ArrayAccessContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitArrayAccess(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::VariableContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitVariable(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::ParenthesizedContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitParenthesized(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::CallContext *>(ctx)) {
+        return any_cast<ExpressionAST *>(visitor->visitCall(p));
+    }
+    else {
+        assert(false);
+    }
+}
+
+StatementAST *visitStatement(ValgoParser::StatementContext *ctx, ValgoVisitor *visitor)
+{
+    if (auto p = dynamic_cast<ValgoParser::ReturnStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitReturnStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::PrintStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitPrintStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::VarDeclarationStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitVarDeclarationStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::AssignmentStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitAssignmentStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::CallStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitCallStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::BlockStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitBlockStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::IfStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitIfStatement(p));
+    }
+    else if (auto p = dynamic_cast<ValgoParser::WhileStatementContext *>(ctx)) {
+        return any_cast<StatementAST *>(visitor->visitWhileStatement(p));
+    }
+    else {
+        assert(false);
+    }
+}
+// ----------------------------------------------------------------------
+
 std::any ASTBuilderVisitor::visitProgram(ValgoParser::ProgramContext *ctx)
 {
     vector<unique_ptr<SubroutineAST>> subroutines;
     for (auto el : ctx->function()) {
-        auto subroutineAST = any_cast<SubroutineAST *>(visit(el));
+        auto subroutineAST = any_cast<SubroutineAST *>(visitFunction(el));
         assert(subroutineAST != nullptr);
         subroutines.push_back(unique_ptr<SubroutineAST>(subroutineAST));
     }
     for (auto el : ctx->procedure()) {
-        auto subroutineAST = any_cast<SubroutineAST *>(visit(el));
+        auto subroutineAST = any_cast<SubroutineAST *>(visitProcedure(el));
         assert(subroutineAST != nullptr);
         subroutines.push_back(unique_ptr<SubroutineAST>(subroutineAST));
     }
@@ -18,11 +107,13 @@ std::any ASTBuilderVisitor::visitProgram(ValgoParser::ProgramContext *ctx)
 
 std::any ASTBuilderVisitor::visitFunction(ValgoParser::FunctionContext *ctx)
 {
-    auto returnType = any_cast<TypeAST *>(visit(ctx->returnType));
-    assert(returnType != nullptr);
+    TypeAST *returnType = nullptr;
+    if (ctx->returnType != nullptr) {
+        returnType = ::visitType(ctx->returnType, this);
+    }
     vector<unique_ptr<TypeAST>> paramTypes;
     for (auto el : ctx->paramTypes) {
-        auto paramType = any_cast<TypeAST *>(visit(el));
+        auto paramType = ::visitType(el, this);
         assert(paramType != nullptr);
         paramTypes.push_back(unique_ptr<TypeAST>(paramType));
     }
@@ -30,20 +121,21 @@ std::any ASTBuilderVisitor::visitFunction(ValgoParser::FunctionContext *ctx)
     for (auto el : ctx->paramNames) {
         paramNames.push_back(el->getText());
     }
-    auto block = any_cast<BlockStatementAST *>(visit(ctx->block()));
+    auto block = any_cast<BlockStatementAST *>(visitBlock(ctx->block()));
     assert(block != nullptr);
+    auto subroutineType = new SubroutineTypeAST(std::move(paramTypes),
+                                                unique_ptr<TypeAST>(returnType));
     return new SubroutineAST(ctx->name->getText(),
-                             unique_ptr<TypeAST>(returnType),
-                             std::move(paramTypes),
                              std::move(paramNames),
-                             unique_ptr<BlockStatementAST>(block));
+                             unique_ptr<BlockStatementAST>(block),
+                             unique_ptr<SubroutineTypeAST>(subroutineType));
 }
 
 std::any ASTBuilderVisitor::visitProcedure(ValgoParser::ProcedureContext *ctx)
 {
     vector<unique_ptr<TypeAST>> paramTypes;
     for (auto el : ctx->paramTypes) {
-        auto paramType = any_cast<TypeAST *>(visit(el));
+        auto paramType = ::visitType(el, this);
         assert(paramType != nullptr);
         paramTypes.push_back(unique_ptr<TypeAST>(paramType));
     }
@@ -51,20 +143,21 @@ std::any ASTBuilderVisitor::visitProcedure(ValgoParser::ProcedureContext *ctx)
     for (auto el : ctx->paramNames) {
         paramNames.push_back(el->getText());
     }
-    auto block = any_cast<BlockStatementAST *>(visit(ctx->block()));
+    auto block = any_cast<BlockStatementAST *>(visitBlock(ctx->block()));
     assert(block != nullptr);
+    auto subroutineType = new SubroutineTypeAST(std::move(paramTypes),
+                                                nullptr);
     return new SubroutineAST(ctx->name->getText(),
-                             nullptr,
-                             std::move(paramTypes),
                              std::move(paramNames),
-                             unique_ptr<BlockStatementAST>(block));
+                             unique_ptr<BlockStatementAST>(block),
+                             unique_ptr<SubroutineTypeAST>(subroutineType));
 }
 
 std::any ASTBuilderVisitor::visitBlock(ValgoParser::BlockContext *ctx)
 {
     vector<unique_ptr<StatementAST>> statements;
     for (auto el : ctx->statement()) {
-        auto statement = any_cast<StatementAST *>(visit(el));
+        auto statement = ::visitStatement(el, this);
         assert(statement != nullptr);
         statements.push_back(unique_ptr<StatementAST>(statement));
     }
@@ -73,7 +166,7 @@ std::any ASTBuilderVisitor::visitBlock(ValgoParser::BlockContext *ctx)
 
 std::any ASTBuilderVisitor::visitReturnStatement(ValgoParser::ReturnStatementContext *ctx)
 {
-    auto expression = any_cast<ExpressionAST *>(visit(ctx->expression()));
+    auto expression = any_cast<ExpressionAST *>(visitExpression(ctx->expression()));
     // expression will be nullptr for procedures
     return new ReturnStatementAST(unique_ptr<ExpressionAST>(expression));
 }
@@ -82,7 +175,7 @@ std::any ASTBuilderVisitor::visitPrintStatement(ValgoParser::PrintStatementConte
 {
     vector<unique_ptr<ExpressionAST>> expressions;
     for (auto el : ctx->expression()) {
-        auto expression = any_cast<ExpressionAST *>(visit(el));
+        auto expression = any_cast<ExpressionAST *>(visitExpression(el));
         assert(expression != nullptr);
         expressions.push_back(unique_ptr<ExpressionAST>(expression));
     }
@@ -91,7 +184,7 @@ std::any ASTBuilderVisitor::visitPrintStatement(ValgoParser::PrintStatementConte
 
 std::any ASTBuilderVisitor::visitVarDeclarationStatement(ValgoParser::VarDeclarationStatementContext *ctx)
 {
-    auto type = any_cast<TypeAST *>(visit(ctx->type()));
+    auto type = ::visitType(ctx->type(), this);
     assert(type != nullptr);
     auto value = any_cast<ExpressionAST *>(visit(ctx->expression()));
     return new VarDeclarationStatementAST(unique_ptr<TypeAST>(type),
@@ -111,7 +204,7 @@ std::any ASTBuilderVisitor::visitCallStatement(ValgoParser::CallStatementContext
 {
     vector<unique_ptr<ExpressionAST>> arguments;
     for (auto el : ctx->expression()) {
-        auto argument = any_cast<ExpressionAST *>(visit(el));
+        auto argument = any_cast<ExpressionAST *>(visitExpression(el));
         assert(argument != nullptr);
         arguments.push_back(unique_ptr<ExpressionAST>(argument));
     }
@@ -121,14 +214,14 @@ std::any ASTBuilderVisitor::visitCallStatement(ValgoParser::CallStatementContext
 
 std::any ASTBuilderVisitor::visitBlockStatement(ValgoParser::BlockStatementContext *ctx)
 {
-    return ValgoBaseVisitor::visitBlock(ctx->block());
+    return visitBlock(ctx->block());
 }
 
 std::any ASTBuilderVisitor::visitIfStatement(ValgoParser::IfStatementContext *ctx)
 {
     auto ifCondition = any_cast<ExpressionAST *>(visit(ctx->ifCondition));
     assert(ifCondition != nullptr);
-    auto ifBlock = any_cast<BlockStatementAST  *>(visit(ctx->ifBlock));
+    auto ifBlock = any_cast<BlockStatementAST *>(visit(ctx->ifBlock));
     assert(ifBlock != nullptr);
     vector<unique_ptr<ExpressionAST>> elseIfConditions;
     for (auto el : ctx->elseIfConditions) {
@@ -153,9 +246,9 @@ std::any ASTBuilderVisitor::visitIfStatement(ValgoParser::IfStatementContext *ct
 
 std::any ASTBuilderVisitor::visitWhileStatement(ValgoParser::WhileStatementContext *ctx)
 {
-    auto condition = any_cast<ExpressionAST *>(visit(ctx->expression()));
+    auto condition = any_cast<ExpressionAST *>(visitExpression(ctx->expression()));
     assert(condition != nullptr);
-    auto block = any_cast<BlockStatementAST *>(visit(ctx->block()));
+    auto block = any_cast<BlockStatementAST *>(visitBlock(ctx->block()));
     assert(block != nullptr);
     return new WhileStatementAST(unique_ptr<ExpressionAST>(condition),
                                  unique_ptr<BlockStatementAST>(block));
@@ -163,36 +256,37 @@ std::any ASTBuilderVisitor::visitWhileStatement(ValgoParser::WhileStatementConte
 
 std::any ASTBuilderVisitor::visitExpression(ValgoParser::ExpressionContext *ctx)
 {
-    return ValgoBaseVisitor::visitBinaryExpression(ctx->binaryExpression());
+    return visitBinaryExpression(ctx->binaryExpression());
 }
 
 std::any ASTBuilderVisitor::visitBinaryExpression(ValgoParser::BinaryExpressionContext *ctx)
 {
-    auto lhs = any_cast<UnaryExpressionAST *>(visit(ctx->unaryExpression()));
-    assert(lhs != nullptr);
-    auto rhs = any_cast<BinaryExpressionAST *>(visit(ctx->binaryExpression()));
-    // rhs will be nullptr if there is no rhs
+    auto lhs =
+        any_cast<UnaryExpressionAST *>(visitUnaryExpression(ctx->unaryExpression()));
+    // lhs may be nullptr SOMETIMES
+    if (lhs == nullptr) {
+        return nullptr;
+    }
+    auto rhs =
+        any_cast<BinaryExpressionAST *>(visitBinaryExpression(ctx->binaryExpression()));
+    // rhs will be nullptr iff it's not a binary expression
     if (rhs == nullptr) {
         return lhs;
     }
-    else {
-        return new BinaryExpressionAST(ctx->op->getText(),
-                                       unique_ptr<UnaryExpressionAST>(lhs),
-                                       unique_ptr<BinaryExpressionAST>(rhs));
-    }
+    return new BinaryExpressionAST(binopOfSymbol.at(ctx->op->getText()),
+                                   unique_ptr<UnaryExpressionAST>(lhs),
+                                   unique_ptr<BinaryExpressionAST>(rhs));
 }
 
 std::any ASTBuilderVisitor::visitUnaryExpression(ValgoParser::UnaryExpressionContext *ctx)
 {
-    auto expression = any_cast<ExpressionAST *>(visit(ctx->primaryExpression()));
-    assert(expression != nullptr);
+    auto expression = ::visitPrimaryExpression(ctx->primaryExpression(), this);
+    // can expression be nullptr? IDK yet
     if (ctx->op != nullptr) {
-        return new UnaryExpressionAST(ctx->op->getText(),
+        return new UnaryExpressionAST(unopOfSymbol.at(ctx->op->getText()),
                                       unique_ptr<ExpressionAST>(expression));
     }
-    else {
-        return expression;
-    }
+    return expression;
 }
 
 std::any ASTBuilderVisitor::visitIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx)
@@ -205,7 +299,7 @@ std::any ASTBuilderVisitor::visitArrayLiteral(ValgoParser::ArrayLiteralContext *
 {
     vector<unique_ptr<ExpressionAST>> elements;
     for (auto el : ctx->expression()) {
-        auto element = any_cast<ExpressionAST *>(visit(el));
+        auto element = any_cast<ExpressionAST *>(visitExpression(el));
         assert(element != nullptr);
         elements.push_back(unique_ptr<ExpressionAST>(element));
     }
@@ -214,8 +308,28 @@ std::any ASTBuilderVisitor::visitArrayLiteral(ValgoParser::ArrayLiteralContext *
 
 std::any ASTBuilderVisitor::visitCharLiteral(ValgoParser::CharLiteralContext *ctx)
 {
-    auto value = ctx->CHAR()->getText()[1];
-    return new CharLiteralAST(value);
+    auto value = ctx->CHAR()->getText();
+    char valueChar = value[1];
+    if (valueChar == '\\') {
+        switch (value[2]) {
+            case 'n':valueChar = '\n';
+                break;
+            case 't':valueChar = '\t';
+                break;
+            case 'r':valueChar = '\r';
+                break;
+            case '0':valueChar = '\0';
+                break;
+            case '\\':valueChar = '\\';
+                break;
+            case '\'':valueChar = '\'';
+                break;
+            case '\"':valueChar = '\"';
+                break;
+            default:assert(false);
+        }
+    }
+    return new CharLiteralAST(valueChar);
 }
 
 std::any ASTBuilderVisitor::visitFloatLiteral(ValgoParser::FloatLiteralContext *ctx)
@@ -226,12 +340,12 @@ std::any ASTBuilderVisitor::visitFloatLiteral(ValgoParser::FloatLiteralContext *
 
 std::any ASTBuilderVisitor::visitArrayAccess(ValgoParser::ArrayAccessContext *ctx)
 {
-    auto array = any_cast<ExpressionAST *>(visit(ctx->expression()));
+    auto array = ::visitPrimaryExpression(ctx->primaryExpression(), this);
     assert(array != nullptr);
-    auto index = any_cast<ExpressionAST *>(visit(ctx->index));
+    auto index = any_cast<ExpressionAST *>(visit(ctx->expression()));
     assert(index != nullptr);
     return new ArrayAccessAST(unique_ptr<ExpressionAST>(array),
-                               unique_ptr<ExpressionAST>(index));
+                              unique_ptr<ExpressionAST>(index));
 }
 
 std::any ASTBuilderVisitor::visitVariable(ValgoParser::VariableContext *ctx)
@@ -248,7 +362,7 @@ std::any ASTBuilderVisitor::visitCall(ValgoParser::CallContext *ctx)
 {
     vector<unique_ptr<ExpressionAST>> arguments;
     for (auto el : ctx->expression()) {
-        auto argument = any_cast<ExpressionAST *>(visit(el));
+        auto argument = any_cast<ExpressionAST *>(visitExpression(el));
         assert(argument != nullptr);
         arguments.push_back(unique_ptr<ExpressionAST>(argument));
     }
@@ -273,7 +387,7 @@ std::any ASTBuilderVisitor::visitFloatType(ValgoParser::FloatTypeContext *ctx)
 
 std::any ASTBuilderVisitor::visitArrayType(ValgoParser::ArrayTypeContext *ctx)
 {
-    auto elementType = any_cast<TypeAST *>(visit(ctx->type()));
+    auto elementType = ::visitType(ctx->type(), this);
     assert(elementType != nullptr);
     auto size = std::stoull(ctx->INT()->getText());
     return new ArrayTypeAST(unique_ptr<TypeAST>(elementType), size);
@@ -281,7 +395,7 @@ std::any ASTBuilderVisitor::visitArrayType(ValgoParser::ArrayTypeContext *ctx)
 
 std::any ASTBuilderVisitor::visitDynamicArrayType(ValgoParser::DynamicArrayTypeContext *ctx)
 {
-    auto elementType = any_cast<TypeAST *>(visit(ctx->type()));
+    auto elementType = ::visitType(ctx->type(), this);
     assert(elementType != nullptr);
     return new DynamicArrayTypeAST(unique_ptr<TypeAST>(elementType));
 }

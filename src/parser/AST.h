@@ -2,20 +2,137 @@
 #define AST_HPP
 
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-using std::cin, std::cout, std::string, std::vector;
+using std::cin, std::cout, std::string, std::vector, std::map;
 using std::unique_ptr, std::make_unique;
+
+// Enums
+// -----------------------------------------------------------------------------
+
+enum BinOp
+{
+    OR,
+    AND,
+    BIT_OR,
+    BIT_XOR,
+    BIT_AND,
+    EQ,
+    NE,
+    LT,
+    GT,
+    LE,
+    GE,
+    CONCAT,
+    APPEND,
+    SHL,
+    SHR,
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+    MOD,
+};
+
+const map<string, BinOp> binopOfSymbol = {
+    {"or", OR},
+    {"and", AND},
+    {"|", BIT_OR},
+    {"~", BIT_XOR},
+    {"&", BIT_AND},
+    {"==", EQ},
+    {"!=", NE},
+    {"<", LT},
+    {">", GT},
+    {"<=", LE},
+    {">=", GE},
+    {"++", CONCAT},
+    {"+:", APPEND},
+    {"<<", SHL},
+    {">>", SHR},
+    {"+", ADD},
+    {"-", SUB},
+    {"*", MUL},
+    {"/", DIV},
+    {"%", MOD},
+};
+
+const map<BinOp, string> symbolOfBinop = {
+    {OR, "or"},
+    {AND, "and"},
+    {BIT_OR, "|"},
+    {BIT_XOR, "~"},
+    {BIT_AND, "&"},
+    {EQ, "=="},
+    {NE, "!="},
+    {LT, "<"},
+    {GT, ">"},
+    {LE, "<="},
+    {GE, ">="},
+    {CONCAT, "++"},
+    {APPEND, "+:"},
+    {SHL, "<<"},
+    {SHR, ">>"},
+    {ADD, "+"},
+    {SUB, "-"},
+    {MUL, "*"},
+    {DIV, "/"},
+    {MOD, "%"},
+};
+
+enum UnOp
+{
+    NOT,
+    BIT_NOT,
+    PLUS,
+    MINUS,
+    INT_CAST,
+    CHAR_CAST,
+    FLOAT_CAST,
+};
+
+const map<string, UnOp> unopOfSymbol = {
+    {"not", NOT},
+    {"~", BIT_NOT},
+    {"+", PLUS},
+    {"-", MINUS},
+    {"int::", INT_CAST},
+    {"char::", CHAR_CAST},
+    {"float::", FLOAT_CAST},
+};
+
+const map<UnOp, string> symbolOfUnop = {
+    {NOT, "not"},
+    {BIT_NOT, "~"},
+    {PLUS, "+"},
+    {MINUS, "-"},
+    {INT_CAST, "int::"},
+    {CHAR_CAST, "char::"},
+    {FLOAT_CAST, "float::"},
+};
+
+enum TypeKind
+{
+    INT,
+    CHAR,
+    FLOAT,
+    ARRAY,
+    DYNAMIC_ARRAY,
+    SUBROUTINE,
+};
+
+// Class declarations
+// -----------------------------------------------------------------------------
 
 // Abstract classes
 class AST;
 class TypeAST;
 class ExpressionAST;
 class StatementAST;
-
 // Concrete classes
 // Types
 class IntTypeAST;
@@ -23,9 +140,10 @@ class CharTypeAST;
 class FloatTypeAST;
 class ArrayTypeAST;
 class DynamicArrayTypeAST;
+class SubroutineTypeAST;
 // Expressions
-class BinaryExpressionAST;
 class UnaryExpressionAST;
+class BinaryExpressionAST;
 class VariableAST;
 class IntegerLiteralAST;
 class FloatLiteralAST;
@@ -46,22 +164,29 @@ class WhileStatementAST;
 class SubroutineAST;
 class ProgramAST;
 
-/// Interface for an Abstract Syntax Tree node
+
+#define CONSTRUCTORS_AND_ASSIGNMENTS(class_name) \
+    class_name (const class_name &) = delete; \
+    class_name &operator=(const class_name &) = delete; \
+    class_name (class_name &&) = default; \
+    class_name &operator=(class_name &&) = default;
+
+// Class definitions
+// -----------------------------------------------------------------------------
+
+// Interface for an Abstract Syntax Tree node
 class AST
 {
 public:
     AST() = default;
     virtual ~AST() = default;
+    CONSTRUCTORS_AND_ASSIGNMENTS(AST)
 
-    virtual string tree() = 0;
+    virtual string toString() = 0;
     virtual string codegen() = 0;
 
-#define DECLARE_AST_METHODS(class_name) \
-    class_name (const class_name &) = delete; \
-    class_name &operator=(const class_name &) = delete; \
-    class_name (class_name &&) = default; \
-    class_name &operator=(class_name &&) = default; \
-    virtual string tree() override; \
+#define AST_METHODS(class_name) \
+    virtual string toString() override; \
     virtual string codegen() override;
 };
 
@@ -70,13 +195,15 @@ class TypeAST: public AST
 public:
     TypeAST() = default;
     virtual ~TypeAST() = default;
+    CONSTRUCTORS_AND_ASSIGNMENTS(TypeAST)
 
-    DECLARE_AST_METHODS(TypeAST)
+    [[nodiscard]] virtual TypeKind kind() const = 0;
     [[nodiscard]] virtual string name() const = 0;
 
-#define DECLARE_TYPE_AST_METHODS(class_name) \
-    DECLARE_AST_METHODS(class_name) \
-    virtual string name() const override;
+#define TYPE_AST_METHODS(class_name) \
+    AST_METHODS(class_name) \
+    [[nodiscard]] virtual TypeKind kind() const override; \
+    [[nodiscard]] virtual string name() const override;
 };
 
 class ExpressionAST: public AST
@@ -84,12 +211,12 @@ class ExpressionAST: public AST
 public:
     ExpressionAST() = default;
     virtual ~ExpressionAST() = default;
+    CONSTRUCTORS_AND_ASSIGNMENTS(ExpressionAST)
 
-    DECLARE_AST_METHODS(ExpressionAST)
     [[nodiscard]] virtual TypeAST *type() const = 0;
 
-#define DECLARE_EXPRESSION_AST_METHODS(class_name) \
-    DECLARE_AST_METHODS(class_name) \
+#define EXPRESSION_AST_METHODS(class_name) \
+    AST_METHODS(class_name) \
     virtual TypeAST *type() const override;
 };
 
@@ -98,35 +225,34 @@ class StatementAST: public AST
 public:
     StatementAST() = default;
     virtual ~StatementAST() = default;
+    CONSTRUCTORS_AND_ASSIGNMENTS(StatementAST)
 
-    DECLARE_AST_METHODS(StatementAST)
-
-#define DECLARE_STATEMENT_AST_METHODS(class_name) \
-    DECLARE_AST_METHODS(class_name)
+#define STATEMENT_AST_METHODS(class_name) \
+    AST_METHODS(class_name)
 };
 
 class IntTypeAST: public TypeAST
 {
 public:
     IntTypeAST() = default;
-
-    DECLARE_TYPE_AST_METHODS(IntTypeAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(IntTypeAST)
+    TYPE_AST_METHODS(IntTypeAST)
 };
 
 class CharTypeAST: public TypeAST
 {
 public:
     CharTypeAST() = default;
-
-    DECLARE_TYPE_AST_METHODS(CharTypeAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(CharTypeAST)
+    TYPE_AST_METHODS(CharTypeAST)
 };
 
 class FloatTypeAST: public TypeAST
 {
 public:
     FloatTypeAST() = default;
-
-    DECLARE_TYPE_AST_METHODS(FloatTypeAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(FloatTypeAST)
+    TYPE_AST_METHODS(FloatTypeAST)
 };
 
 class ArrayTypeAST: public TypeAST
@@ -138,8 +264,8 @@ public:
     ArrayTypeAST(unique_ptr<TypeAST> elementType, size_t size)
         : elementType(std::move(elementType)), size(size)
     {}
-
-    DECLARE_TYPE_AST_METHODS(ArrayTypeAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(ArrayTypeAST)
+    TYPE_AST_METHODS(ArrayTypeAST)
 };
 
 class DynamicArrayTypeAST: public TypeAST
@@ -150,37 +276,56 @@ public:
     DynamicArrayTypeAST(unique_ptr<TypeAST> elementType)
         : elementType(std::move(elementType))
     {}
+    CONSTRUCTORS_AND_ASSIGNMENTS(DynamicArrayTypeAST)
+    TYPE_AST_METHODS(DynamicArrayTypeAST)
+};
 
-    DECLARE_TYPE_AST_METHODS(DynamicArrayTypeAST)
+class SubroutineTypeAST: public TypeAST
+{
+    vector<unique_ptr<TypeAST>> paramTypes;
+    unique_ptr<TypeAST> returnType;
+
+public:
+    explicit SubroutineTypeAST(vector<unique_ptr<TypeAST>> paramTypes,
+                               unique_ptr<TypeAST> returnType = nullptr)
+        : paramTypes(std::move(paramTypes)), returnType(std::move(returnType))
+    {}
+    CONSTRUCTORS_AND_ASSIGNMENTS(SubroutineTypeAST)
+    TYPE_AST_METHODS(SubroutineTypeAST)
+
+    [[nodiscard]] bool isProcedure() const
+    {
+        return returnType == nullptr;
+    }
 };
 
 class BinaryExpressionAST: public ExpressionAST
 {
-    string op;
+    BinOp binop;
     unique_ptr<ExpressionAST> lhs;
     unique_ptr<ExpressionAST> rhs;
 
 public:
-    BinaryExpressionAST(string op,
+    BinaryExpressionAST(BinOp binop,
                         unique_ptr<ExpressionAST> lhs,
                         unique_ptr<ExpressionAST> rhs)
-        : op(std::move(op)), lhs(std::move(lhs)), rhs(std::move(rhs))
+        : binop(binop), lhs(std::move(lhs)), rhs(std::move(rhs))
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(BinaryExpressionAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(BinaryExpressionAST)
+    EXPRESSION_AST_METHODS(BinaryExpressionAST)
 };
 
 class UnaryExpressionAST: public ExpressionAST
 {
-    string op;
+    UnOp unop;
     unique_ptr<ExpressionAST> operand;
 
 public:
-    UnaryExpressionAST(string op, unique_ptr<ExpressionAST> operand)
-        : op(std::move(op)), operand(std::move(operand))
+    UnaryExpressionAST(UnOp unop, unique_ptr<ExpressionAST> operand)
+        : unop(unop), operand(std::move(operand))
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(UnaryExpressionAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(UnaryExpressionAST)
+    EXPRESSION_AST_METHODS(UnaryExpressionAST)
 };
 
 class VariableAST: public ExpressionAST
@@ -191,8 +336,8 @@ public:
     explicit VariableAST(string name)
         : name(std::move(name))
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(VariableAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(VariableAST)
+    EXPRESSION_AST_METHODS(VariableAST)
 };
 
 class IntegerLiteralAST: public ExpressionAST
@@ -203,8 +348,8 @@ public:
     explicit IntegerLiteralAST(int64_t value)
         : value(value)
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(IntegerLiteralAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(IntegerLiteralAST)
+    EXPRESSION_AST_METHODS(IntegerLiteralAST)
 };
 
 class FloatLiteralAST: public ExpressionAST
@@ -215,8 +360,8 @@ public:
     explicit FloatLiteralAST(double value)
         : value(value)
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(FloatLiteralAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(FloatLiteralAST)
+    EXPRESSION_AST_METHODS(FloatLiteralAST)
 };
 
 class CharLiteralAST: public ExpressionAST
@@ -227,8 +372,8 @@ public:
     explicit CharLiteralAST(char value)
         : value(value)
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(CharLiteralAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(CharLiteralAST)
+    EXPRESSION_AST_METHODS(CharLiteralAST)
 };
 
 class ArrayLiteralAST: public ExpressionAST
@@ -239,8 +384,8 @@ public:
     explicit ArrayLiteralAST(vector<unique_ptr<ExpressionAST>> elements)
         : elements(std::move(elements))
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(ArrayLiteralAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(ArrayLiteralAST)
+    EXPRESSION_AST_METHODS(ArrayLiteralAST)
 };
 
 class ArrayAccessAST: public ExpressionAST
@@ -252,8 +397,8 @@ public:
     ArrayAccessAST(unique_ptr<ExpressionAST> array, unique_ptr<ExpressionAST> index)
         : array(std::move(array)), index(std::move(index))
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(ArrayAccessAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(ArrayAccessAST)
+    EXPRESSION_AST_METHODS(ArrayAccessAST)
 };
 
 class CallExpressionAST: public ExpressionAST
@@ -265,8 +410,8 @@ public:
     CallExpressionAST(string funcName, vector<unique_ptr<ExpressionAST>> args)
         : funcName(std::move(funcName)), args(std::move(args))
     {}
-
-    DECLARE_EXPRESSION_AST_METHODS(CallExpressionAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(CallExpressionAST)
+    EXPRESSION_AST_METHODS(CallExpressionAST)
 };
 
 class ReturnStatementAST: public StatementAST
@@ -277,8 +422,8 @@ public:
     explicit ReturnStatementAST(unique_ptr<ExpressionAST> expression)
         : expression(std::move(expression))
     {}
-
-    DECLARE_STATEMENT_AST_METHODS(ReturnStatementAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(ReturnStatementAST)
+    STATEMENT_AST_METHODS(ReturnStatementAST)
 };
 
 class PrintStatementAST: public StatementAST
@@ -289,8 +434,8 @@ public:
     explicit PrintStatementAST(vector<unique_ptr<ExpressionAST>> expressions)
         : expressions(std::move(expressions))
     {}
-
-    DECLARE_STATEMENT_AST_METHODS(PrintStatementAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(PrintStatementAST)
+    STATEMENT_AST_METHODS(PrintStatementAST)
 };
 
 class VarDeclarationStatementAST: public StatementAST
@@ -308,7 +453,7 @@ public:
           value(std::move(value))
     {}
 
-    DECLARE_STATEMENT_AST_METHODS(VarDeclarationStatementAST)
+    STATEMENT_AST_METHODS(VarDeclarationStatementAST)
 };
 
 class AssignmentStatementAST: public StatementAST
@@ -321,7 +466,7 @@ public:
         : name(std::move(name)), value(std::move(value))
     {}
 
-    DECLARE_STATEMENT_AST_METHODS(AssignmentStatementAST)
+    STATEMENT_AST_METHODS(AssignmentStatementAST)
 };
 
 class CallStatementAST: public StatementAST
@@ -334,7 +479,7 @@ public:
         : procName(std::move(procName)), args(std::move(args))
     {}
 
-    DECLARE_STATEMENT_AST_METHODS(CallStatementAST)
+    STATEMENT_AST_METHODS(CallStatementAST)
 };
 
 class BlockStatementAST: public StatementAST
@@ -346,7 +491,7 @@ public:
         : statements(std::move(statements))
     {}
 
-    DECLARE_STATEMENT_AST_METHODS(BlockStatementAST)
+    STATEMENT_AST_METHODS(BlockStatementAST)
 };
 
 class IfStatementAST: public StatementAST
@@ -370,7 +515,7 @@ public:
           elseBlock(std::move(elseBlock))
     {}
 
-    DECLARE_STATEMENT_AST_METHODS(IfStatementAST)
+    STATEMENT_AST_METHODS(IfStatementAST)
 };
 
 class WhileStatementAST: public StatementAST
@@ -383,32 +528,29 @@ public:
                       unique_ptr<BlockStatementAST> block)
         : condition(std::move(condition)), block(std::move(block))
     {}
-
-    DECLARE_STATEMENT_AST_METHODS(WhileStatementAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(WhileStatementAST)
+    STATEMENT_AST_METHODS(WhileStatementAST)
 };
 
 class SubroutineAST: AST
 {
     string name;
-    unique_ptr<TypeAST> returnType; // nullptr for procedures
-    vector<unique_ptr<TypeAST>> paramTypes;
     vector<string> paramNames;
     unique_ptr<BlockStatementAST> block;
+    unique_ptr<SubroutineTypeAST> subroutineType;
 
 public:
     SubroutineAST(string name,
-                  unique_ptr<TypeAST> returnType,
-                  vector<unique_ptr<TypeAST>> paramTypes,
                   vector<string> paramNames,
-                  unique_ptr<BlockStatementAST> block)
+                  unique_ptr<BlockStatementAST> block,
+                  unique_ptr<SubroutineTypeAST> subroutineType)
         : name(std::move(name)),
-          returnType(std::move(returnType)),
-          paramTypes(std::move(paramTypes)),
           paramNames(std::move(paramNames)),
-          block(std::move(block))
+          block(std::move(block)),
+          subroutineType(std::move(subroutineType))
     {}
-
-    DECLARE_AST_METHODS(SubroutineAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(SubroutineAST)
+    AST_METHODS(SubroutineAST)
 };
 
 class ProgramAST: AST
@@ -419,8 +561,8 @@ public:
     explicit ProgramAST(vector<unique_ptr<SubroutineAST>> subroutines)
         : subroutines(std::move(subroutines))
     {}
-
-    DECLARE_AST_METHODS(ProgramAST)
+    CONSTRUCTORS_AND_ASSIGNMENTS(ProgramAST)
+    AST_METHODS(ProgramAST)
 };
 
 #endif //AST_HPP
