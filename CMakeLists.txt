@@ -20,7 +20,9 @@ antlr4_generate(
 # For running the ANTLR4 JAR and generating the lexer, parser, listener, and visitor sources
 add_custom_target(antlr_generate
     ALL
-    DEPENDS "${CMAKE_SOURCE_DIR}/src/grammar/Valgo.g4" ${ANTLR4_SRC_FILES_generated}
+    DEPENDS
+        src/grammar/Valgo.g4
+        ${ANTLR4_SRC_FILES_generated}
 )
 
 # Target: parser
@@ -40,22 +42,20 @@ target_include_directories(parser
 target_link_libraries(parser PUBLIC antlr4_static)
 
 # Target: codegen
-add_library(codegen
-    src/codegen/codegen.cpp
-)
+add_library(codegen src/codegen/codegen.cpp)
+target_include_directories(codegen PUBLIC src/parser)
 target_link_libraries(codegen PUBLIC parser)
-add_dependencies(codegen parser)
-target_include_directories(codegen
-    PUBLIC
-        src/parser
-)
 
 # Target: parser_test
-add_executable(parser_test test/test_parser.cpp)
+add_executable(parser_test
+    test/test_parser.cpp
+    "${CMAKE_BINARY_DIR}/example_program.valgo"
+)
 target_link_libraries(parser_test PRIVATE parser)
 add_custom_command(
-    TARGET parser_test
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/test/example_program.valgo"
-        "${CMAKE_CURRENT_BINARY_DIR}/example_program.valgo"
+    OUTPUT "${CMAKE_BINARY_DIR}/example_program.valgo"
+    MAIN_DEPENDENCY "${CMAKE_SOURCE_DIR}/test/example_program.valgo"
+    COMMAND
+        ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/test/example_program.valgo"
+            "${CMAKE_BINARY_DIR}/example_program.valgo"
 )
