@@ -29,7 +29,7 @@ statement:
     |   'print' expression (',' expression)* ';' #printStatement
     |   type ID '=' expression ';' #varDeclarationStatement
     |   ID '=' expression ';' #assignmentStatement
-    |   ID '(' (expression (',' expression)*)? ')' ';' #callStatement
+    |   ID (expression (',' expression)*)? ';' #callStatement
     |   block #blockStatement
     |   'if' ifCondition=expression ifBlock=block
         ('else if' elseIfConditions+=expression elseIfBlocks+=block)*
