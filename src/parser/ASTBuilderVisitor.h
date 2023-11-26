@@ -8,25 +8,35 @@
 class ASTBuilderVisitor: public ValgoBaseVisitor
 {
 public:
-    std::any visitProg(ValgoParser::ProgContext *ctx) override;
-    std::any visitFunc(ValgoParser::FuncContext *ctx) override;
-    std::any visitProc(ValgoParser::ProcContext *ctx) override;
-    std::any visitProto(ValgoParser::ProtoContext *ctx) override;
+    std::any visitProgram(ValgoParser::ProgramContext *ctx) override;
+    std::any visitFunction(ValgoParser::FunctionContext *ctx) override;
+    std::any visitProcedure(ValgoParser::ProcedureContext *ctx) override;
     std::any visitBlock(ValgoParser::BlockContext *ctx) override;
-    std::any visitExitStmt(ValgoParser::ExitStmtContext *ctx) override;
-    std::any visitReturnStmt(ValgoParser::ReturnStmtContext *ctx) override;
-    std::any visitDeclStmt(ValgoParser::DeclStmtContext *ctx) override;
-    std::any visitAssignStmt(ValgoParser::AssignStmtContext *ctx) override;
-    std::any visitPrintStmt(ValgoParser::PrintStmtContext *ctx) override;
-    std::any visitProcCallStmt(ValgoParser::ProcCallStmtContext *ctx) override;
-    std::any visitIfElseStmt(ValgoParser::IfElseStmtContext *ctx) override;
-    std::any visitBlockStmt(ValgoParser::BlockStmtContext *ctx) override;
-    std::any visitIfElse(ValgoParser::IfElseContext *ctx) override;
-    std::any visitExpr(ValgoParser::ExprContext *ctx) override;
-    std::any visitIntLiteralExpr(ValgoParser::IntLiteralExprContext *ctx) override;
-    std::any visitVariableExpr(ValgoParser::VariableExprContext *ctx) override;
-    std::any visitParenthsizedExpr(ValgoParser::ParenthsizedExprContext *ctx) override;
-    std::any visitFuncCallExpr(ValgoParser::FuncCallExprContext *ctx) override;
+    std::any visitReturnStatement(ValgoParser::ReturnStatementContext *ctx) override;
+    std::any visitPrintStatement(ValgoParser::PrintStatementContext *ctx) override;
+    std::any visitVarDeclarationStatement(ValgoParser::VarDeclarationStatementContext *ctx) override;
+    std::any visitAssignmentStatement(ValgoParser::AssignmentStatementContext *ctx) override;
+    std::any visitCallStatement(ValgoParser::CallStatementContext *ctx) override;
+    std::any visitBlockStatement(ValgoParser::BlockStatementContext *ctx) override;
+    std::any visitIfStatement(ValgoParser::IfStatementContext *ctx) override;
+    std::any visitWhileStatement(ValgoParser::WhileStatementContext *ctx) override;
+    std::any visitExpression(ValgoParser::ExpressionContext *ctx) override;
+    std::any visitBinaryExpression(ValgoParser::BinaryExpressionContext *ctx) override;
+    std::any visitUnaryExpression(ValgoParser::UnaryExpressionContext *ctx) override;
+    std::any visitIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) override;
+    std::any visitArrayLiteral(ValgoParser::ArrayLiteralContext *ctx) override;
+    std::any visitCharLiteral(ValgoParser::CharLiteralContext *ctx) override;
+    std::any visitFloatLiteral(ValgoParser::FloatLiteralContext *ctx) override;
+    std::any visitArrayAccess(ValgoParser::ArrayAccessContext *ctx) override;
+    std::any visitVariable(ValgoParser::VariableContext *ctx) override;
+    std::any visitParenthesized(ValgoParser::ParenthesizedContext *ctx) override;
+    std::any visitCall(ValgoParser::CallContext *ctx) override;
+    std::any visitCharType(ValgoParser::CharTypeContext *ctx) override;
+    std::any visitFloatType(ValgoParser::FloatTypeContext *ctx) override;
+    std::any visitArrayType(ValgoParser::ArrayTypeContext *ctx) override;
+    std::any visitIntType(ValgoParser::IntTypeContext *ctx) override;
+    std::any visitDynamicArrayType(ValgoParser::DynamicArrayTypeContext *ctx) override;
+public:
 
 };
 

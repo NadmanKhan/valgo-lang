@@ -1,111 +1,79 @@
 #include "AST.h"
 
-string ExpressionAST::toString()
+#include <cassert>
+
+
+string TypeAST::tree()
 {
-    return "ExpressionAST";
+    return std::string();
 }
 
-string VariableAST::toString()
+string TypeAST::codegen()
 {
-    return "VariableAST(" + name + ")";
+    return std::string();
 }
 
-string IntLiteralAST::toString()
+string ExpressionAST::tree()
 {
-    return "IntLiteralAST(" + std::to_string(value) + ")";
+    return std::string();
 }
 
-string BinaryExpressionAST::toString()
+string ExpressionAST::codegen()
 {
-    return "BinaryExpressionAST(" + op + ", " + lhs->toString() + ", " + rhs->toString()
-        + ")";
+    return std::string();
 }
 
-string FuncCallExpressionAST::toString()
+string StatementAST::tree()
 {
-    string argsStr;
-    for (auto &arg : args) {
-        argsStr += arg->toString() + ", ";
-    }
-    return "FuncCallExpressionAST(" + name + ", " + argsStr + ")";
+    return std::string();
 }
 
-string StatementAST::toString()
+string StatementAST::codegen()
 {
-    return "StatementAST";
+    return std::string();
 }
 
-string ExitStatementAST::toString()
+string IntTypeAST::tree()
 {
-    return "ExitStatementAST";
+    return TypeAST::tree();
 }
 
-string ReturnStatementAST::toString()
+string IntTypeAST::codegen()
 {
-    return "ReturnStatementAST(" + expression->toString() + ")";
+    return TypeAST::codegen();
 }
 
-string AssignmentStatementAST::toString()
+string IntTypeAST::name() const
 {
-    return "AssignmentStatementAST(" + name + ", " + expression->toString() + ")";
+    return "int";
 }
 
-string DeclarationStatementAST::toString()
+string CharTypeAST::tree()
 {
-    return "DeclarationStatementAST(" + name + ", " + expression->toString() + ")";
+    return TypeAST::tree();
 }
 
-string PrintStatementAST::toString()
+string CharTypeAST::codegen()
 {
-    string argsStr;
-    auto n = expressions.size();
-    for (int i = 0; i < (int) n; i++) {
-        argsStr += expressions[i]->toString();
-        if (i < n - 1) {
-            argsStr += ", ";
-        }
-    }
-    return "PrintStatementAST(" + argsStr + ")";
+    return TypeAST::codegen();
 }
 
-string BlockAST::toString()
+string CharTypeAST::name() const
 {
-    string stmtsStr;
-    for (auto &stmt : statements) {
-        stmtsStr += stmt->toString() + ", ";
-    }
-    return "BlockStatementAST(" + stmtsStr + ")";
+    return "char";
 }
 
-string IfElseAST::toString()
+string FloatTypeAST::tree()
 {
-    return "IfElseAST(" + condition->toString() + ", " + BlockAST::toString() + ", " +
-        elseBlock->toString() + ")";
+    return TypeAST::tree();
 }
 
-string ProcCallStatementAST::toString()
+string FloatTypeAST::codegen()
 {
-    string argsStr;
-    for (auto &arg : args) {
-        argsStr += arg->toString() + ", ";
-    }
-    return "ProcCallStatementAST(" + name + ", " + argsStr + ")";
+    return TypeAST::codegen();
 }
 
-string SubroutineAST::toString()
+string FloatTypeAST::name() const
 {
-    string paramsStr;
-    for (auto &param : params) {
-        paramsStr += param + ", ";
-    }
-    return "SubroutineAST(" + name + ", " + paramsStr + ", " + block->toString() + ")";
-}
-
-string ProgramAST::toString()
-{
-    string subroutinesStr;
-    for (auto &subroutine : subroutines) {
-        subroutinesStr += subroutine->toString() + ", ";
-    }
-    return "ProgramAST(" + subroutinesStr + ")";
+    return "float";
 }
