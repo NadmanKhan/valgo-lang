@@ -111,11 +111,11 @@ std::any ASTBuilderVisitor::visitFunction(ValgoParser::FunctionContext *ctx)
     if (ctx->returnType != nullptr) {
         returnType = ::visitType(ctx->returnType, this);
     }
-    vector<unique_ptr<TypeAST>> paramTypes;
+    vector<shared_ptr<TypeAST>> paramTypes;
     for (auto el : ctx->paramTypes) {
         auto paramType = ::visitType(el, this);
         assert(paramType != nullptr);
-        paramTypes.push_back(unique_ptr<TypeAST>(paramType));
+        paramTypes.push_back(shared_ptr<TypeAST>(paramType));
     }
     vector<string> paramNames;
     for (auto el : ctx->paramNames) {
@@ -133,11 +133,11 @@ std::any ASTBuilderVisitor::visitFunction(ValgoParser::FunctionContext *ctx)
 
 std::any ASTBuilderVisitor::visitProcedure(ValgoParser::ProcedureContext *ctx)
 {
-    vector<unique_ptr<TypeAST>> paramTypes;
+    vector<shared_ptr<TypeAST>> paramTypes;
     for (auto el : ctx->paramTypes) {
         auto paramType = ::visitType(el, this);
         assert(paramType != nullptr);
-        paramTypes.push_back(unique_ptr<TypeAST>(paramType));
+        paramTypes.push_back(shared_ptr<TypeAST>(paramType));
     }
     vector<string> paramNames;
     for (auto el : ctx->paramNames) {

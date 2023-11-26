@@ -9,7 +9,7 @@
 #include <vector>
 
 using std::cin, std::cout, std::string, std::vector, std::map;
-using std::unique_ptr, std::make_unique;
+using std::unique_ptr, std::make_unique, std::shared_ptr, std::make_shared;
 
 // Enums
 // -----------------------------------------------------------------------------
@@ -174,25 +174,27 @@ using SymbolTable = map<string, vector<unique_ptr<TypeAST>>>;
 // Class definitions
 // -----------------------------------------------------------------------------
 
-#define CONSTRUCTORS_AND_ASSIGNMENTS(class_name) \
-    class_name (const class_name &) = delete; \
-    class_name &operator=(const class_name &) = delete; \
+#define MAKE_COPYABLE(class_name) \
+    class_name (const class_name &) = default; \
+    class_name &operator=(const class_name &) = default;
+
+#define MAKE_MOVABLE(class_name) \
     class_name (class_name &&) = default; \
     class_name &operator=(class_name &&) = default;
-
 
 // Interface for an Abstract Syntax Tree node
 class AST
 {
 public:
     AST() = default;
+    MAKE_COPYABLE(AST)
+    MAKE_MOVABLE(AST)
     virtual ~AST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(AST)
 
     virtual string toString() = 0;
     virtual string codegen(SymbolTable &table) = 0;
 
-#define AST_METHODS(class_name) \
+#define OVERRIDE_AST_METHODS(class_name) \
     virtual string toString() override; \
     virtual string codegen(SymbolTable &table) override;
 };
@@ -201,125 +203,133 @@ class TypeAST: public AST
 {
 public:
     TypeAST() = default;
-    virtual ~TypeAST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(TypeAST)
+    MAKE_COPYABLE(TypeAST)
+    MAKE_MOVABLE(TypeAST)
 
     [[nodiscard]] virtual TypeKind kind() const = 0;
     [[nodiscard]] virtual string name() const = 0;
+    virtual bool operator==(const TypeAST &other) const = 0;
 
-#define TYPE_AST_METHODS(class_name) \
-    AST_METHODS(class_name) \
+#define OVERRIDE_TYPE_AST_METHODS(class_name) \
+    OVERRIDE_AST_METHODS(class_name) \
     [[nodiscard]] virtual TypeKind kind() const override; \
-    [[nodiscard]] virtual string name() const override;
-};
-
-class ExpressionAST: public AST
-{
-public:
-    ExpressionAST() = default;
-    virtual ~ExpressionAST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(ExpressionAST)
-
-    [[nodiscard]] virtual TypeKind typeKind() const = 0;
-    [[nodiscard]] virtual string typeName() const = 0;
-
-#define EXPRESSION_AST_METHODS(class_name) \
-    AST_METHODS(class_name) \
-    [[nodiscard]] virtual TypeKind typeKind() const override; \
-    [[nodiscard]] virtual string typeName() const override;
-};
-
-class StatementAST: public AST
-{
-public:
-    StatementAST() = default;
-    virtual ~StatementAST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(StatementAST)
-
-#define STATEMENT_AST_METHODS(class_name) \
-    AST_METHODS(class_name)
+    [[nodiscard]] virtual string name() const override; \
+    virtual bool operator==(const TypeAST &other) const override;
 };
 
 class IntTypeAST: public TypeAST
 {
 public:
     IntTypeAST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(IntTypeAST)
-    TYPE_AST_METHODS(IntTypeAST)
+    MAKE_COPYABLE(IntTypeAST)
+    MAKE_MOVABLE(IntTypeAST)
+    OVERRIDE_TYPE_AST_METHODS(IntTypeAST)
 };
 
 class CharTypeAST: public TypeAST
 {
 public:
     CharTypeAST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(CharTypeAST)
-    TYPE_AST_METHODS(CharTypeAST)
+    MAKE_COPYABLE(CharTypeAST)
+    MAKE_MOVABLE(CharTypeAST)
+    OVERRIDE_TYPE_AST_METHODS(CharTypeAST)
 };
 
 class FloatTypeAST: public TypeAST
 {
 public:
     FloatTypeAST() = default;
-    CONSTRUCTORS_AND_ASSIGNMENTS(FloatTypeAST)
-    TYPE_AST_METHODS(FloatTypeAST)
+    MAKE_COPYABLE(FloatTypeAST)
+    MAKE_MOVABLE(FloatTypeAST)
+    OVERRIDE_TYPE_AST_METHODS(FloatTypeAST)
 };
 
 class ArrayTypeAST: public TypeAST
 {
-    unique_ptr<TypeAST> elementType;
+    shared_ptr<TypeAST> m_elementType;
     size_t size;
 
 public:
-    ArrayTypeAST(unique_ptr<TypeAST> elementType, size_t size)
-        : elementType(std::move(elementType)), size(size)
+    ArrayTypeAST(shared_ptr<TypeAST> elementType, size_t size)
+        : m_elementType(std::move(elementType)), size(size)
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(ArrayTypeAST)
-    TYPE_AST_METHODS(ArrayTypeAST)
+    MAKE_COPYABLE(ArrayTypeAST)
+    MAKE_MOVABLE(ArrayTypeAST)
+    OVERRIDE_TYPE_AST_METHODS(ArrayTypeAST)
 
-    [[nodiscard]] string elementTypeName()
+    [[nodiscard]] shared_ptr<TypeAST> elementType() const
     {
-        return elementType->name();
+        return m_elementType;
     }
 };
 
 class DynamicArrayTypeAST: public TypeAST
 {
-    unique_ptr<TypeAST> elementType;
+    shared_ptr<TypeAST> m_elementType;
 
 public:
-    DynamicArrayTypeAST(unique_ptr<TypeAST> elementType)
-        : elementType(std::move(elementType))
+    explicit DynamicArrayTypeAST(shared_ptr<TypeAST> elementType)
+        : m_elementType(std::move(elementType))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(DynamicArrayTypeAST)
-    TYPE_AST_METHODS(DynamicArrayTypeAST)
+    MAKE_COPYABLE(DynamicArrayTypeAST)
+    MAKE_MOVABLE(DynamicArrayTypeAST)
+    OVERRIDE_TYPE_AST_METHODS(DynamicArrayTypeAST)
 
-    [[nodiscard]] string elementTypeName()
+    [[nodiscard]] shared_ptr<TypeAST> elementType() const
     {
-        return elementType->name();
+        return m_elementType;
     }
 };
 
 class SubroutineTypeAST: public TypeAST
 {
-    vector<unique_ptr<TypeAST>> paramTypes;
-    vector<string> paramNames;
-    unique_ptr<TypeAST> returnType;
+    vector<shared_ptr<TypeAST>> m_paramTypes;
+    vector<string> m_paramNames;
+    shared_ptr<TypeAST> m_returnType;
 
 public:
-    explicit SubroutineTypeAST(vector<unique_ptr<TypeAST>> paramTypes,
-                               vector<string> paramNames,
-                               unique_ptr<TypeAST> returnType = nullptr)
-        : paramTypes(std::move(paramTypes)),
-          paramNames(std::move(paramNames)),
-          returnType(std::move(returnType))
+    SubroutineTypeAST(vector<shared_ptr<TypeAST>> paramTypes,
+                      vector<string> paramNames,
+                      shared_ptr<TypeAST> returnType = nullptr)
+        : m_paramTypes(std::move(paramTypes)),
+          m_paramNames(std::move(paramNames)),
+          m_returnType(std::move(returnType))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(SubroutineTypeAST)
-    TYPE_AST_METHODS(SubroutineTypeAST)
+    MAKE_MOVABLE(SubroutineTypeAST)
+    OVERRIDE_TYPE_AST_METHODS(SubroutineTypeAST)
 
     [[nodiscard]] bool isProcedure() const
     {
-        return returnType == nullptr;
+        return m_returnType == nullptr;
     }
+
+    [[nodiscard]] shared_ptr<TypeAST> returnType() const
+    {
+        return m_returnType;
+    }
+
+    [[nodiscard]] vector<shared_ptr<TypeAST>> paramTypes() const
+    {
+        return m_paramTypes;
+    }
+
+    [[nodiscard]] vector<string> paramNames() const
+    {
+        return m_paramNames;
+    }
+};
+
+class ExpressionAST: public AST
+{
+public:
+    ExpressionAST() = default;
+    MAKE_MOVABLE(ExpressionAST)
+
+    [[nodiscard]] virtual shared_ptr<TypeAST> type() const = 0;
+
+#define OVERRIDE_EXPRESSION_AST_METHODS(class_name) \
+    OVERRIDE_AST_METHODS(class_name) \
+    [[nodiscard]] virtual shared_ptr<TypeAST> type() const override;
 };
 
 class BinaryExpressionAST: public ExpressionAST
@@ -334,8 +344,8 @@ public:
                         unique_ptr<ExpressionAST> rhs)
         : binop(binop), lhs(std::move(lhs)), rhs(std::move(rhs))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(BinaryExpressionAST)
-    EXPRESSION_AST_METHODS(BinaryExpressionAST)
+    MAKE_MOVABLE(BinaryExpressionAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(BinaryExpressionAST)
 };
 
 class UnaryExpressionAST: public ExpressionAST
@@ -347,8 +357,8 @@ public:
     UnaryExpressionAST(UnOp unop, unique_ptr<ExpressionAST> operand)
         : unop(unop), operand(std::move(operand))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(UnaryExpressionAST)
-    EXPRESSION_AST_METHODS(UnaryExpressionAST)
+    MAKE_MOVABLE(UnaryExpressionAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(UnaryExpressionAST)
 };
 
 class VariableAST: public ExpressionAST
@@ -359,8 +369,8 @@ public:
     explicit VariableAST(string name)
         : name(std::move(name))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(VariableAST)
-    EXPRESSION_AST_METHODS(VariableAST)
+    MAKE_MOVABLE(VariableAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(VariableAST)
 };
 
 class IntegerLiteralAST: public ExpressionAST
@@ -371,8 +381,8 @@ public:
     explicit IntegerLiteralAST(int64_t value)
         : value(value)
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(IntegerLiteralAST)
-    EXPRESSION_AST_METHODS(IntegerLiteralAST)
+    MAKE_MOVABLE(IntegerLiteralAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(IntegerLiteralAST)
 };
 
 class FloatLiteralAST: public ExpressionAST
@@ -383,8 +393,8 @@ public:
     explicit FloatLiteralAST(double value)
         : value(value)
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(FloatLiteralAST)
-    EXPRESSION_AST_METHODS(FloatLiteralAST)
+    MAKE_MOVABLE(FloatLiteralAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(FloatLiteralAST)
 };
 
 class CharLiteralAST: public ExpressionAST
@@ -395,8 +405,8 @@ public:
     explicit CharLiteralAST(char value)
         : value(value)
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(CharLiteralAST)
-    EXPRESSION_AST_METHODS(CharLiteralAST)
+    MAKE_MOVABLE(CharLiteralAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(CharLiteralAST)
 };
 
 class ArrayLiteralAST: public ExpressionAST
@@ -407,8 +417,8 @@ public:
     explicit ArrayLiteralAST(vector<unique_ptr<ExpressionAST>> elements)
         : elements(std::move(elements))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(ArrayLiteralAST)
-    EXPRESSION_AST_METHODS(ArrayLiteralAST)
+    MAKE_MOVABLE(ArrayLiteralAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(ArrayLiteralAST)
 };
 
 class ArrayAccessAST: public ExpressionAST
@@ -420,8 +430,8 @@ public:
     ArrayAccessAST(unique_ptr<ExpressionAST> array, unique_ptr<ExpressionAST> index)
         : array(std::move(array)), index(std::move(index))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(ArrayAccessAST)
-    EXPRESSION_AST_METHODS(ArrayAccessAST)
+    MAKE_MOVABLE(ArrayAccessAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(ArrayAccessAST)
 };
 
 class CallExpressionAST: public ExpressionAST
@@ -433,8 +443,19 @@ public:
     CallExpressionAST(string funcName, vector<unique_ptr<ExpressionAST>> args)
         : funcName(std::move(funcName)), args(std::move(args))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(CallExpressionAST)
-    EXPRESSION_AST_METHODS(CallExpressionAST)
+    MAKE_MOVABLE(CallExpressionAST)
+    OVERRIDE_EXPRESSION_AST_METHODS(CallExpressionAST)
+};
+
+class StatementAST: public AST
+{
+public:
+    StatementAST() = default;
+    virtual ~StatementAST() = default;
+    MAKE_MOVABLE(StatementAST)
+
+#define OVERRIDE_STATEMENT_AST_METHODS(class_name) \
+    OVERRIDE_AST_METHODS(class_name)
 };
 
 class ReturnStatementAST: public StatementAST
@@ -445,8 +466,8 @@ public:
     explicit ReturnStatementAST(unique_ptr<ExpressionAST> expression)
         : expression(std::move(expression))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(ReturnStatementAST)
-    STATEMENT_AST_METHODS(ReturnStatementAST)
+    MAKE_MOVABLE(ReturnStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(ReturnStatementAST)
 };
 
 class PrintStatementAST: public StatementAST
@@ -457,8 +478,8 @@ public:
     explicit PrintStatementAST(vector<unique_ptr<ExpressionAST>> expressions)
         : expressions(std::move(expressions))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(PrintStatementAST)
-    STATEMENT_AST_METHODS(PrintStatementAST)
+    MAKE_MOVABLE(PrintStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(PrintStatementAST)
 };
 
 class VarDeclarationStatementAST: public StatementAST
@@ -476,7 +497,7 @@ public:
           value(std::move(value))
     {}
 
-    STATEMENT_AST_METHODS(VarDeclarationStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(VarDeclarationStatementAST)
 };
 
 class AssignmentStatementAST: public StatementAST
@@ -489,7 +510,7 @@ public:
         : name(std::move(name)), value(std::move(value))
     {}
 
-    STATEMENT_AST_METHODS(AssignmentStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(AssignmentStatementAST)
 };
 
 class CallStatementAST: public StatementAST
@@ -502,7 +523,7 @@ public:
         : procName(std::move(procName)), args(std::move(args))
     {}
 
-    STATEMENT_AST_METHODS(CallStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(CallStatementAST)
 };
 
 class BlockStatementAST: public StatementAST
@@ -514,7 +535,7 @@ public:
         : statements(std::move(statements))
     {}
 
-    STATEMENT_AST_METHODS(BlockStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(BlockStatementAST)
 };
 
 class IfStatementAST: public StatementAST
@@ -538,7 +559,7 @@ public:
           elseBlock(std::move(elseBlock))
     {}
 
-    STATEMENT_AST_METHODS(IfStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(IfStatementAST)
 };
 
 class WhileStatementAST: public StatementAST
@@ -551,8 +572,8 @@ public:
                       unique_ptr<BlockStatementAST> block)
         : condition(std::move(condition)), block(std::move(block))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(WhileStatementAST)
-    STATEMENT_AST_METHODS(WhileStatementAST)
+    MAKE_MOVABLE(WhileStatementAST)
+    OVERRIDE_STATEMENT_AST_METHODS(WhileStatementAST)
 };
 
 class SubroutineAST: AST
@@ -569,8 +590,8 @@ public:
           name(std::move(name)),
           block(std::move(block))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(SubroutineAST)
-    AST_METHODS(SubroutineAST)
+    MAKE_MOVABLE(SubroutineAST)
+    OVERRIDE_AST_METHODS(SubroutineAST)
 };
 
 class ProgramAST: AST
@@ -581,8 +602,8 @@ public:
     explicit ProgramAST(vector<unique_ptr<SubroutineAST>> subroutines)
         : subroutines(std::move(subroutines))
     {}
-    CONSTRUCTORS_AND_ASSIGNMENTS(ProgramAST)
-    AST_METHODS(ProgramAST)
+    MAKE_MOVABLE(ProgramAST)
+    OVERRIDE_AST_METHODS(ProgramAST)
 };
 
 #endif //AST_HPP

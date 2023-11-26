@@ -39,17 +39,6 @@ target_include_directories(parser
 )
 target_link_libraries(parser PUBLIC antlr4_static)
 
-# Target: codegen
-add_library(codegen
-    src/codegen/codegen.cpp
-)
-target_link_libraries(codegen PUBLIC parser)
-add_dependencies(codegen parser)
-target_include_directories(codegen
-    PUBLIC
-        src/parser
-)
-
 # Target: parser_test
 add_executable(parser_test test/test_parser.cpp)
 target_link_libraries(parser_test PRIVATE parser)
@@ -59,3 +48,19 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/test/example_program.valgo"
         "${CMAKE_CURRENT_BINARY_DIR}/example_program.valgo"
 )
+
+
+# Target: codegen
+add_library(codegen
+        src/codegen/codegen.cpp
+)
+target_link_libraries(codegen PUBLIC parser)
+add_dependencies(codegen parser)
+target_include_directories(codegen
+        PUBLIC
+        src/parser
+)
+
+# Target: codegen_test
+add_executable(codegen_test test/test_codegen.cpp)
+target_link_libraries(codegen_test PRIVATE codegen)
