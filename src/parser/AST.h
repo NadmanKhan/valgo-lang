@@ -128,12 +128,12 @@ enum TypeKind
 // Class declarations
 // -----------------------------------------------------------------------------
 
-// Abstract classes
+// Abstract classes:
 class AST;
 class TypeAST;
 class ExpressionAST;
 class StatementAST;
-// Concrete classes
+// Concrete classes:
 // Types
 class IntTypeAST;
 class CharTypeAST;
@@ -164,6 +164,12 @@ class WhileStatementAST;
 class SubroutineAST;
 class ProgramAST;
 
+// Typedefs
+// -----------------------------------------------------------------------------
+using SymbolTable = map<string, unique_ptr<TypeAST>>;
+
+// Class definitions
+// -----------------------------------------------------------------------------
 
 #define CONSTRUCTORS_AND_ASSIGNMENTS(class_name) \
     class_name (const class_name &) = delete; \
@@ -171,8 +177,6 @@ class ProgramAST;
     class_name (class_name &&) = default; \
     class_name &operator=(class_name &&) = default;
 
-// Class definitions
-// -----------------------------------------------------------------------------
 
 // Interface for an Abstract Syntax Tree node
 class AST
@@ -183,11 +187,11 @@ public:
     CONSTRUCTORS_AND_ASSIGNMENTS(AST)
 
     virtual string toString() = 0;
-    virtual string codegen() = 0;
+    virtual string codegen(SymbolTable &typeOfSymbol) = 0;
 
 #define AST_METHODS(class_name) \
     virtual string toString() override; \
-    virtual string codegen() override;
+    virtual string codegen(SymbolTable &typeOfSymbol) override;
 };
 
 class TypeAST: public AST
