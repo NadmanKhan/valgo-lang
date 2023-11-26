@@ -7,11 +7,6 @@ string IntTypeAST::toString()
     return "IntTypeAST";
 }
 
-string IntTypeAST::codegen()
-{
-    return "int64_t";
-}
-
 TypeKind IntTypeAST::kind() const
 {
     return TypeKind::INT;
@@ -25,11 +20,6 @@ string IntTypeAST::name() const
 string CharTypeAST::toString()
 {
     return "CharTypeAST";
-}
-
-string CharTypeAST::codegen()
-{
-    return "char";
 }
 
 TypeKind CharTypeAST::kind() const
@@ -47,11 +37,6 @@ string FloatTypeAST::toString()
     return "FloatTypeAST";
 }
 
-string FloatTypeAST::codegen()
-{
-    return "double";
-}
-
 TypeKind FloatTypeAST::kind() const
 {
     return TypeKind::FLOAT;
@@ -67,11 +52,6 @@ string ArrayTypeAST::toString()
     return "ArrayTypeAST";
 }
 
-string ArrayTypeAST::codegen()
-{
-    auto t = elementType->codegen();
-    return "std::array<" + t + ", " + std::to_string(size) + ">";
-}
 
 TypeKind ArrayTypeAST::kind() const
 {
@@ -89,12 +69,6 @@ string DynamicArrayTypeAST::toString()
     return "DynamicArrayTypeAST";
 }
 
-string DynamicArrayTypeAST::codegen()
-{
-    auto t = elementType->codegen();
-    return "std::vector<" + t + ">";
-}
-
 TypeKind DynamicArrayTypeAST::kind() const
 {
     return TypeKind::DYNAMIC_ARRAY;
@@ -110,19 +84,6 @@ string SubroutineTypeAST::toString()
 {
     return "SubroutineTypeAST";
 }
-
-string SubroutineTypeAST::codegen()
-{
-    string paramTypesStr;
-    for (int i = 0; i < (int)paramTypes.size(); ++i) {
-        paramTypesStr += paramTypes[i]->codegen();
-        if (i != (int)paramTypes.size() - 1) {
-            paramTypesStr += ", ";
-        }
-    }
-    return "std::function<" + returnType->codegen() + "(" + paramTypesStr + ")>";
-}
-
 TypeKind SubroutineTypeAST::kind() const
 {
     return TypeKind::SUBROUTINE;
@@ -165,8 +126,8 @@ string UnaryExpressionAST::toString()
         operand->toString() + ")";
 }
 
-TypeAST *IntegerLiteralAST::type() const
+TypeKind IntegerLiteralAST::typeKind() const
 {
-    return new IntTypeAST();
+    return TypeKind::INT;
 }
 

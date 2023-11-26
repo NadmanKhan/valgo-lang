@@ -39,6 +39,17 @@ target_include_directories(parser
 )
 target_link_libraries(parser PUBLIC antlr4_static)
 
+# Target: codegen
+add_library(codegen
+    src/codegen/codegen.cpp
+)
+target_link_libraries(codegen PUBLIC parser)
+add_dependencies(codegen parser)
+target_include_directories(codegen
+    PUBLIC
+        src/parser
+)
+
 # Target: parser_test
 add_executable(parser_test test/test_parser.cpp)
 target_link_libraries(parser_test PRIVATE parser)
