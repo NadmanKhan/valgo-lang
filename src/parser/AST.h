@@ -93,6 +93,7 @@ enum UnOp
     INT_CAST,
     CHAR_CAST,
     FLOAT_CAST,
+    LENGTH_OF,
 };
 
 const map<string, UnOp> unopOfSymbol = {
@@ -103,6 +104,7 @@ const map<string, UnOp> unopOfSymbol = {
     {"int::", INT_CAST},
     {"char::", CHAR_CAST},
     {"float::", FLOAT_CAST},
+    {"#", LENGTH_OF},
 };
 
 const map<UnOp, string> symbolOfUnop = {
@@ -113,6 +115,7 @@ const map<UnOp, string> symbolOfUnop = {
     {INT_CAST, "int::"},
     {CHAR_CAST, "char::"},
     {FLOAT_CAST, "float::"},
+    {LENGTH_OF, "#"},
 };
 
 enum TypeKind
@@ -187,11 +190,11 @@ public:
     CONSTRUCTORS_AND_ASSIGNMENTS(AST)
 
     virtual string toString() = 0;
-    virtual string codegen(SymbolTable &typeOfSymbol) = 0;
+    virtual string codegen(SymbolTable &table) = 0;
 
 #define AST_METHODS(class_name) \
     virtual string toString() override; \
-    virtual string codegen(SymbolTable &typeOfSymbol) override;
+    virtual string codegen(SymbolTable &table) override;
 };
 
 class TypeAST: public AST

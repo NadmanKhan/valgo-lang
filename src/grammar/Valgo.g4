@@ -14,7 +14,7 @@ function:
         block;
 
 procedure:
-        '#' name=ID
+        '@' name=ID
         (
             '$' paramTypes+=type paramNames+=ID
             (',' '$' paramTypes+=type paramNames+=ID)*
@@ -42,22 +42,43 @@ expression:
         binaryExpression;
 
 binaryExpression:
+        // logical
         unaryExpression (op='or' binaryExpression)?
     |   unaryExpression (op='and' binaryExpression)?
+        // bitwise
     |   unaryExpression (op='|' binaryExpression)?
     |   unaryExpression (op='~' binaryExpression)? // xor
     |   unaryExpression (op='&' binaryExpression)?
+        // equality/relational
     |   unaryExpression (op=('==' | '!=') binaryExpression)?
     |   unaryExpression (op=('<' | '>' | '<=' | '>=') binaryExpression)?
-    |   unaryExpression (op='++' binaryExpression)? // concat dynamic arrays
-    |   unaryExpression (op='+:' binaryExpression)? // append to dynamic array
+        // dynamic array operations
+    |   unaryExpression (op='++' binaryExpression)? // concatenate
+    |   unaryExpression (op='+:' binaryExpression)? // append
+        // bit shift
     |   unaryExpression (op=('<<' | '>>') binaryExpression)?
+        // additive
     |   unaryExpression (op=('+' | '-') binaryExpression)?
+        // multiplicative
     |   unaryExpression (op=('*' | '/' | '%') binaryExpression)?
     ;
 
 unaryExpression:
-        op=('+' | '-' | 'not' | '~' | 'int::' | 'char::' | 'float::')?
+        op=
+        // additive
+        ('+'
+        | '-'
+        // logical
+        | 'not'
+        // bitwise
+        | '~'
+        // type cast
+        | 'int::'
+        | 'char::'
+        | 'float::'
+        // "length of"
+        | '#'
+        )?
         primaryExpression;
 
 primaryExpression:
