@@ -213,11 +213,11 @@ public:
     virtual ~ExpressionAST() = default;
     CONSTRUCTORS_AND_ASSIGNMENTS(ExpressionAST)
 
-    [[nodiscard]] virtual TypeAST *type() const = 0;
+    [[nodiscard]] virtual TypeKind typeKind() const = 0;
 
 #define EXPRESSION_AST_METHODS(class_name) \
     AST_METHODS(class_name) \
-    virtual TypeAST *type() const override;
+    [[nodiscard]] virtual TypeKind typeKind() const override;
 };
 
 class StatementAST: public AST

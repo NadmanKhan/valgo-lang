@@ -140,7 +140,7 @@ string SubroutineTypeAST::name() const
     return "(" + paramTypesStr + ") -> " + returnType->name();
 }
 
-TypeAST *BinaryExpressionAST::type() const
+TypeKind BinaryExpressionAST::typeKind() const
 {
     // TODO: implement
 }
@@ -153,7 +153,7 @@ string BinaryExpressionAST::toString()
         rhs->toString() + ")";
 }
 
-TypeAST *UnaryExpressionAST::type() const
+TypeKind UnaryExpressionAST::typeKind() const
 {
     // TODO: implement
 }
