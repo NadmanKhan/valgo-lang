@@ -75,7 +75,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) override {
+  virtual std::any visitCall(ValgoParser::CallContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -83,15 +83,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitCharLiteral(ValgoParser::CharLiteralContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitFloatLiteral(ValgoParser::FloatLiteralContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitArrayAccess(ValgoParser::ArrayAccessContext *ctx) override {
+  virtual std::any visitParenthesized(ValgoParser::ParenthesizedContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -99,11 +91,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitParenthesized(ValgoParser::ParenthesizedContext *ctx) override {
+  virtual std::any visitIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitCall(ValgoParser::CallContext *ctx) override {
+  virtual std::any visitFloatLiteral(ValgoParser::FloatLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCharLiteral(ValgoParser::CharLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitArrayAccess(ValgoParser::ArrayAccessContext *ctx) override {
     return visitChildren(ctx);
   }
 

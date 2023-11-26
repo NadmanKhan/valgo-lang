@@ -49,21 +49,21 @@ public:
 
     virtual std::any visitUnaryExpression(ValgoParser::UnaryExpressionContext *context) = 0;
 
-    virtual std::any visitIntegerLiteral(ValgoParser::IntegerLiteralContext *context) = 0;
+    virtual std::any visitCall(ValgoParser::CallContext *context) = 0;
 
     virtual std::any visitArrayLiteral(ValgoParser::ArrayLiteralContext *context) = 0;
 
-    virtual std::any visitCharLiteral(ValgoParser::CharLiteralContext *context) = 0;
-
-    virtual std::any visitFloatLiteral(ValgoParser::FloatLiteralContext *context) = 0;
-
-    virtual std::any visitArrayAccess(ValgoParser::ArrayAccessContext *context) = 0;
+    virtual std::any visitParenthesized(ValgoParser::ParenthesizedContext *context) = 0;
 
     virtual std::any visitVariable(ValgoParser::VariableContext *context) = 0;
 
-    virtual std::any visitParenthesized(ValgoParser::ParenthesizedContext *context) = 0;
+    virtual std::any visitIntegerLiteral(ValgoParser::IntegerLiteralContext *context) = 0;
 
-    virtual std::any visitCall(ValgoParser::CallContext *context) = 0;
+    virtual std::any visitFloatLiteral(ValgoParser::FloatLiteralContext *context) = 0;
+
+    virtual std::any visitCharLiteral(ValgoParser::CharLiteralContext *context) = 0;
+
+    virtual std::any visitArrayAccess(ValgoParser::ArrayAccessContext *context) = 0;
 
     virtual std::any visitCharType(ValgoParser::CharTypeContext *context) = 0;
 

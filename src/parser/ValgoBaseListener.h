@@ -61,29 +61,29 @@ public:
   virtual void enterUnaryExpression(ValgoParser::UnaryExpressionContext * /*ctx*/) override { }
   virtual void exitUnaryExpression(ValgoParser::UnaryExpressionContext * /*ctx*/) override { }
 
-  virtual void enterIntegerLiteral(ValgoParser::IntegerLiteralContext * /*ctx*/) override { }
-  virtual void exitIntegerLiteral(ValgoParser::IntegerLiteralContext * /*ctx*/) override { }
+  virtual void enterCall(ValgoParser::CallContext * /*ctx*/) override { }
+  virtual void exitCall(ValgoParser::CallContext * /*ctx*/) override { }
 
   virtual void enterArrayLiteral(ValgoParser::ArrayLiteralContext * /*ctx*/) override { }
   virtual void exitArrayLiteral(ValgoParser::ArrayLiteralContext * /*ctx*/) override { }
 
-  virtual void enterCharLiteral(ValgoParser::CharLiteralContext * /*ctx*/) override { }
-  virtual void exitCharLiteral(ValgoParser::CharLiteralContext * /*ctx*/) override { }
-
-  virtual void enterFloatLiteral(ValgoParser::FloatLiteralContext * /*ctx*/) override { }
-  virtual void exitFloatLiteral(ValgoParser::FloatLiteralContext * /*ctx*/) override { }
-
-  virtual void enterArrayAccess(ValgoParser::ArrayAccessContext * /*ctx*/) override { }
-  virtual void exitArrayAccess(ValgoParser::ArrayAccessContext * /*ctx*/) override { }
+  virtual void enterParenthesized(ValgoParser::ParenthesizedContext * /*ctx*/) override { }
+  virtual void exitParenthesized(ValgoParser::ParenthesizedContext * /*ctx*/) override { }
 
   virtual void enterVariable(ValgoParser::VariableContext * /*ctx*/) override { }
   virtual void exitVariable(ValgoParser::VariableContext * /*ctx*/) override { }
 
-  virtual void enterParenthesized(ValgoParser::ParenthesizedContext * /*ctx*/) override { }
-  virtual void exitParenthesized(ValgoParser::ParenthesizedContext * /*ctx*/) override { }
+  virtual void enterIntegerLiteral(ValgoParser::IntegerLiteralContext * /*ctx*/) override { }
+  virtual void exitIntegerLiteral(ValgoParser::IntegerLiteralContext * /*ctx*/) override { }
 
-  virtual void enterCall(ValgoParser::CallContext * /*ctx*/) override { }
-  virtual void exitCall(ValgoParser::CallContext * /*ctx*/) override { }
+  virtual void enterFloatLiteral(ValgoParser::FloatLiteralContext * /*ctx*/) override { }
+  virtual void exitFloatLiteral(ValgoParser::FloatLiteralContext * /*ctx*/) override { }
+
+  virtual void enterCharLiteral(ValgoParser::CharLiteralContext * /*ctx*/) override { }
+  virtual void exitCharLiteral(ValgoParser::CharLiteralContext * /*ctx*/) override { }
+
+  virtual void enterArrayAccess(ValgoParser::ArrayAccessContext * /*ctx*/) override { }
+  virtual void exitArrayAccess(ValgoParser::ArrayAccessContext * /*ctx*/) override { }
 
   virtual void enterCharType(ValgoParser::CharTypeContext * /*ctx*/) override { }
   virtual void exitCharType(ValgoParser::CharTypeContext * /*ctx*/) override { }

@@ -57,25 +57,26 @@ binaryExpression:
     ;
 
 unaryExpression:
-        op=('+' | '-' | 'not' | '~')? primaryExpression;
+        op=('+' | '-' | 'not' | '~' | 'int::' | 'char::' | 'float::')?
+        primaryExpression;
 
 primaryExpression:
-        literal=INT #integerLiteral
-    |   '[' (values+=expression (',' values+=expression)*)? ']' #arrayLiteral
-    |   literal=CHAR #charLiteral
-    |   literal=FLOAT #floatLiteral
-    |   name=ID '[' index=expression ']' #arrayAccess
-    |   name=ID #variable
+        INT #integerLiteral
+    |   '[' (expression (',' expression)*)? ']' #arrayLiteral
+    |   CHAR #charLiteral
+    |   FLOAT #floatLiteral
+    |   primaryExpression '[' expression ']' #arrayAccess
+    |   ID #variable
     |   '(' expression ')' #parenthesized
-    |   name=ID '(' (args+=expression (',' args+=expression)*)? ')' #call
+    |   ID '(' (expression (',' expression)*)? ')' #call
     ;
 
 type:
         'int' #intType
     |   'char' #charType
     |   'float' #floatType
-    |   base=type '[' size=INT ']' #arrayType
-    |   base=type '[' '..' ']' #dynamicArrayType
+    |   type '[' INT ']' #arrayType
+    |   type '[' '..' ']' #dynamicArrayType
     ;
 
 ID:         [a-zA-Z]+[a-zA-Z0-9_]*;

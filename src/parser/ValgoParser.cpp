@@ -61,17 +61,18 @@ void valgoParserInitialize() {
       "'print'", "'='", "'if'", "'else if'", "'else'", "'while'", "'or'", 
       "'and'", "'|'", "'~'", "'&'", "'=='", "'!='", "'<'", "'>'", "'<='", 
       "'>='", "'++'", "'+:'", "'<<'", "'>>'", "'+'", "'-'", "'*'", "'/'", 
-      "'%'", "'not'", "'['", "']'", "'int'", "'char'", "'float'", "'..'"
+      "'%'", "'not'", "'int::'", "'char::'", "'float::'", "'['", "']'", 
+      "'int'", "'char'", "'float'", "'..'"
     },
     std::vector<std::string>{
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
       "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
-      "", "", "", "", "", "", "", "", "", "ID", "INT", "FLOAT", "CHAR", 
-      "COMMENT", "WS"
+      "", "", "", "", "", "", "", "", "", "", "", "", "ID", "INT", "FLOAT", 
+      "CHAR", "COMMENT", "WS"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,48,268,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,51,274,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,1,0,1,0,4,0,23,8,0,11,0,12,0,24,1,0,1,0,1,1,1,1,
   	1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,1,38,8,1,10,1,12,1,41,9,1,3,1,43,8,1,1,
   	1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,5,2,58,8,2,10,2,12,
@@ -85,85 +86,87 @@ void valgoParserInitialize() {
   	6,165,8,6,1,6,1,6,1,6,3,6,170,8,6,1,6,1,6,1,6,3,6,175,8,6,1,6,1,6,1,6,
   	3,6,180,8,6,1,6,1,6,1,6,3,6,185,8,6,1,6,1,6,1,6,3,6,190,8,6,1,6,1,6,1,
   	6,3,6,195,8,6,1,6,1,6,1,6,3,6,200,8,6,3,6,202,8,6,1,7,3,7,205,8,7,1,7,
-  	1,7,1,8,1,8,1,8,1,8,1,8,5,8,214,8,8,10,8,12,8,217,9,8,3,8,219,8,8,1,8,
-  	1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,
-  	8,239,8,8,10,8,12,8,242,9,8,3,8,244,8,8,1,8,3,8,247,8,8,1,9,1,9,1,9,1,
-  	9,3,9,253,8,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,5,9,263,8,9,10,9,12,9,266,
-  	9,9,1,9,0,1,18,10,0,2,4,6,8,10,12,14,16,18,0,6,1,0,21,22,1,0,23,26,1,
-  	0,29,30,1,0,31,32,1,0,33,35,3,0,19,19,31,32,36,36,316,0,22,1,0,0,0,2,
-  	28,1,0,0,0,4,47,1,0,0,0,6,66,1,0,0,0,8,137,1,0,0,0,10,139,1,0,0,0,12,
-  	201,1,0,0,0,14,204,1,0,0,0,16,246,1,0,0,0,18,252,1,0,0,0,20,23,3,2,1,
-  	0,21,23,3,4,2,0,22,20,1,0,0,0,22,21,1,0,0,0,23,24,1,0,0,0,24,22,1,0,0,
-  	0,24,25,1,0,0,0,25,26,1,0,0,0,26,27,5,0,0,1,27,1,1,0,0,0,28,29,3,18,9,
-  	0,29,30,5,43,0,0,30,42,5,1,0,0,31,32,3,18,9,0,32,39,5,43,0,0,33,34,5,
-  	2,0,0,34,35,3,18,9,0,35,36,5,43,0,0,36,38,1,0,0,0,37,33,1,0,0,0,38,41,
-  	1,0,0,0,39,37,1,0,0,0,39,40,1,0,0,0,40,43,1,0,0,0,41,39,1,0,0,0,42,31,
-  	1,0,0,0,42,43,1,0,0,0,43,44,1,0,0,0,44,45,5,3,0,0,45,46,3,6,3,0,46,3,
-  	1,0,0,0,47,48,5,4,0,0,48,62,5,43,0,0,49,50,5,5,0,0,50,51,3,18,9,0,51,
-  	59,5,43,0,0,52,53,5,2,0,0,53,54,5,5,0,0,54,55,3,18,9,0,55,56,5,43,0,0,
-  	56,58,1,0,0,0,57,52,1,0,0,0,58,61,1,0,0,0,59,57,1,0,0,0,59,60,1,0,0,0,
-  	60,63,1,0,0,0,61,59,1,0,0,0,62,49,1,0,0,0,62,63,1,0,0,0,63,64,1,0,0,0,
-  	64,65,3,6,3,0,65,5,1,0,0,0,66,70,5,6,0,0,67,69,3,8,4,0,68,67,1,0,0,0,
-  	69,72,1,0,0,0,70,68,1,0,0,0,70,71,1,0,0,0,71,73,1,0,0,0,72,70,1,0,0,0,
-  	73,74,5,7,0,0,74,7,1,0,0,0,75,77,5,8,0,0,76,78,3,10,5,0,77,76,1,0,0,0,
-  	77,78,1,0,0,0,78,79,1,0,0,0,79,138,5,9,0,0,80,81,5,10,0,0,81,86,3,10,
-  	5,0,82,83,5,2,0,0,83,85,3,10,5,0,84,82,1,0,0,0,85,88,1,0,0,0,86,84,1,
-  	0,0,0,86,87,1,0,0,0,87,89,1,0,0,0,88,86,1,0,0,0,89,90,5,9,0,0,90,138,
-  	1,0,0,0,91,92,3,18,9,0,92,93,5,43,0,0,93,94,5,11,0,0,94,95,3,10,5,0,95,
-  	96,5,9,0,0,96,138,1,0,0,0,97,98,5,43,0,0,98,99,5,11,0,0,99,100,3,10,5,
-  	0,100,101,5,9,0,0,101,138,1,0,0,0,102,103,5,43,0,0,103,112,5,1,0,0,104,
-  	109,3,10,5,0,105,106,5,2,0,0,106,108,3,10,5,0,107,105,1,0,0,0,108,111,
-  	1,0,0,0,109,107,1,0,0,0,109,110,1,0,0,0,110,113,1,0,0,0,111,109,1,0,0,
-  	0,112,104,1,0,0,0,112,113,1,0,0,0,113,114,1,0,0,0,114,115,5,3,0,0,115,
-  	138,5,9,0,0,116,138,3,6,3,0,117,118,5,12,0,0,118,119,3,10,5,0,119,126,
-  	3,6,3,0,120,121,5,13,0,0,121,122,3,10,5,0,122,123,3,6,3,0,123,125,1,0,
-  	0,0,124,120,1,0,0,0,125,128,1,0,0,0,126,124,1,0,0,0,126,127,1,0,0,0,127,
-  	131,1,0,0,0,128,126,1,0,0,0,129,130,5,14,0,0,130,132,3,6,3,0,131,129,
-  	1,0,0,0,131,132,1,0,0,0,132,138,1,0,0,0,133,134,5,15,0,0,134,135,3,10,
-  	5,0,135,136,3,6,3,0,136,138,1,0,0,0,137,75,1,0,0,0,137,80,1,0,0,0,137,
-  	91,1,0,0,0,137,97,1,0,0,0,137,102,1,0,0,0,137,116,1,0,0,0,137,117,1,0,
-  	0,0,137,133,1,0,0,0,138,9,1,0,0,0,139,140,3,12,6,0,140,11,1,0,0,0,141,
-  	144,3,14,7,0,142,143,5,16,0,0,143,145,3,12,6,0,144,142,1,0,0,0,144,145,
-  	1,0,0,0,145,202,1,0,0,0,146,149,3,14,7,0,147,148,5,17,0,0,148,150,3,12,
-  	6,0,149,147,1,0,0,0,149,150,1,0,0,0,150,202,1,0,0,0,151,154,3,14,7,0,
-  	152,153,5,18,0,0,153,155,3,12,6,0,154,152,1,0,0,0,154,155,1,0,0,0,155,
-  	202,1,0,0,0,156,159,3,14,7,0,157,158,5,19,0,0,158,160,3,12,6,0,159,157,
-  	1,0,0,0,159,160,1,0,0,0,160,202,1,0,0,0,161,164,3,14,7,0,162,163,5,20,
-  	0,0,163,165,3,12,6,0,164,162,1,0,0,0,164,165,1,0,0,0,165,202,1,0,0,0,
-  	166,169,3,14,7,0,167,168,7,0,0,0,168,170,3,12,6,0,169,167,1,0,0,0,169,
-  	170,1,0,0,0,170,202,1,0,0,0,171,174,3,14,7,0,172,173,7,1,0,0,173,175,
-  	3,12,6,0,174,172,1,0,0,0,174,175,1,0,0,0,175,202,1,0,0,0,176,179,3,14,
-  	7,0,177,178,5,27,0,0,178,180,3,12,6,0,179,177,1,0,0,0,179,180,1,0,0,0,
-  	180,202,1,0,0,0,181,184,3,14,7,0,182,183,5,28,0,0,183,185,3,12,6,0,184,
-  	182,1,0,0,0,184,185,1,0,0,0,185,202,1,0,0,0,186,189,3,14,7,0,187,188,
-  	7,2,0,0,188,190,3,12,6,0,189,187,1,0,0,0,189,190,1,0,0,0,190,202,1,0,
-  	0,0,191,194,3,14,7,0,192,193,7,3,0,0,193,195,3,12,6,0,194,192,1,0,0,0,
-  	194,195,1,0,0,0,195,202,1,0,0,0,196,199,3,14,7,0,197,198,7,4,0,0,198,
-  	200,3,12,6,0,199,197,1,0,0,0,199,200,1,0,0,0,200,202,1,0,0,0,201,141,
-  	1,0,0,0,201,146,1,0,0,0,201,151,1,0,0,0,201,156,1,0,0,0,201,161,1,0,0,
-  	0,201,166,1,0,0,0,201,171,1,0,0,0,201,176,1,0,0,0,201,181,1,0,0,0,201,
-  	186,1,0,0,0,201,191,1,0,0,0,201,196,1,0,0,0,202,13,1,0,0,0,203,205,7,
-  	5,0,0,204,203,1,0,0,0,204,205,1,0,0,0,205,206,1,0,0,0,206,207,3,16,8,
-  	0,207,15,1,0,0,0,208,247,5,44,0,0,209,218,5,37,0,0,210,215,3,10,5,0,211,
-  	212,5,2,0,0,212,214,3,10,5,0,213,211,1,0,0,0,214,217,1,0,0,0,215,213,
-  	1,0,0,0,215,216,1,0,0,0,216,219,1,0,0,0,217,215,1,0,0,0,218,210,1,0,0,
-  	0,218,219,1,0,0,0,219,220,1,0,0,0,220,247,5,38,0,0,221,247,5,46,0,0,222,
-  	247,5,45,0,0,223,224,5,43,0,0,224,225,5,37,0,0,225,226,3,10,5,0,226,227,
-  	5,38,0,0,227,247,1,0,0,0,228,247,5,43,0,0,229,230,5,1,0,0,230,231,3,10,
-  	5,0,231,232,5,3,0,0,232,247,1,0,0,0,233,234,5,43,0,0,234,243,5,1,0,0,
-  	235,240,3,10,5,0,236,237,5,2,0,0,237,239,3,10,5,0,238,236,1,0,0,0,239,
-  	242,1,0,0,0,240,238,1,0,0,0,240,241,1,0,0,0,241,244,1,0,0,0,242,240,1,
-  	0,0,0,243,235,1,0,0,0,243,244,1,0,0,0,244,245,1,0,0,0,245,247,5,3,0,0,
-  	246,208,1,0,0,0,246,209,1,0,0,0,246,221,1,0,0,0,246,222,1,0,0,0,246,223,
-  	1,0,0,0,246,228,1,0,0,0,246,229,1,0,0,0,246,233,1,0,0,0,247,17,1,0,0,
-  	0,248,249,6,9,-1,0,249,253,5,39,0,0,250,253,5,40,0,0,251,253,5,41,0,0,
-  	252,248,1,0,0,0,252,250,1,0,0,0,252,251,1,0,0,0,253,264,1,0,0,0,254,255,
-  	10,2,0,0,255,256,5,37,0,0,256,257,5,44,0,0,257,263,5,38,0,0,258,259,10,
-  	1,0,0,259,260,5,37,0,0,260,261,5,42,0,0,261,263,5,38,0,0,262,254,1,0,
-  	0,0,262,258,1,0,0,0,263,266,1,0,0,0,264,262,1,0,0,0,264,265,1,0,0,0,265,
-  	19,1,0,0,0,266,264,1,0,0,0,36,22,24,39,42,59,62,70,77,86,109,112,126,
-  	131,137,144,149,154,159,164,169,174,179,184,189,194,199,201,204,215,218,
-  	240,243,246,252,262,264
+  	1,7,1,8,1,8,1,8,1,8,1,8,1,8,5,8,215,8,8,10,8,12,8,218,9,8,3,8,220,8,8,
+  	1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,235,8,8,10,8,
+  	12,8,238,9,8,3,8,240,8,8,1,8,3,8,243,8,8,1,8,1,8,1,8,1,8,1,8,5,8,250,
+  	8,8,10,8,12,8,253,9,8,1,9,1,9,1,9,1,9,3,9,259,8,9,1,9,1,9,1,9,1,9,1,9,
+  	1,9,1,9,1,9,5,9,269,8,9,10,9,12,9,272,9,9,1,9,0,2,16,18,10,0,2,4,6,8,
+  	10,12,14,16,18,0,6,1,0,21,22,1,0,23,26,1,0,29,30,1,0,31,32,1,0,33,35,
+  	3,0,19,19,31,32,36,39,322,0,22,1,0,0,0,2,28,1,0,0,0,4,47,1,0,0,0,6,66,
+  	1,0,0,0,8,137,1,0,0,0,10,139,1,0,0,0,12,201,1,0,0,0,14,204,1,0,0,0,16,
+  	242,1,0,0,0,18,258,1,0,0,0,20,23,3,2,1,0,21,23,3,4,2,0,22,20,1,0,0,0,
+  	22,21,1,0,0,0,23,24,1,0,0,0,24,22,1,0,0,0,24,25,1,0,0,0,25,26,1,0,0,0,
+  	26,27,5,0,0,1,27,1,1,0,0,0,28,29,3,18,9,0,29,30,5,46,0,0,30,42,5,1,0,
+  	0,31,32,3,18,9,0,32,39,5,46,0,0,33,34,5,2,0,0,34,35,3,18,9,0,35,36,5,
+  	46,0,0,36,38,1,0,0,0,37,33,1,0,0,0,38,41,1,0,0,0,39,37,1,0,0,0,39,40,
+  	1,0,0,0,40,43,1,0,0,0,41,39,1,0,0,0,42,31,1,0,0,0,42,43,1,0,0,0,43,44,
+  	1,0,0,0,44,45,5,3,0,0,45,46,3,6,3,0,46,3,1,0,0,0,47,48,5,4,0,0,48,62,
+  	5,46,0,0,49,50,5,5,0,0,50,51,3,18,9,0,51,59,5,46,0,0,52,53,5,2,0,0,53,
+  	54,5,5,0,0,54,55,3,18,9,0,55,56,5,46,0,0,56,58,1,0,0,0,57,52,1,0,0,0,
+  	58,61,1,0,0,0,59,57,1,0,0,0,59,60,1,0,0,0,60,63,1,0,0,0,61,59,1,0,0,0,
+  	62,49,1,0,0,0,62,63,1,0,0,0,63,64,1,0,0,0,64,65,3,6,3,0,65,5,1,0,0,0,
+  	66,70,5,6,0,0,67,69,3,8,4,0,68,67,1,0,0,0,69,72,1,0,0,0,70,68,1,0,0,0,
+  	70,71,1,0,0,0,71,73,1,0,0,0,72,70,1,0,0,0,73,74,5,7,0,0,74,7,1,0,0,0,
+  	75,77,5,8,0,0,76,78,3,10,5,0,77,76,1,0,0,0,77,78,1,0,0,0,78,79,1,0,0,
+  	0,79,138,5,9,0,0,80,81,5,10,0,0,81,86,3,10,5,0,82,83,5,2,0,0,83,85,3,
+  	10,5,0,84,82,1,0,0,0,85,88,1,0,0,0,86,84,1,0,0,0,86,87,1,0,0,0,87,89,
+  	1,0,0,0,88,86,1,0,0,0,89,90,5,9,0,0,90,138,1,0,0,0,91,92,3,18,9,0,92,
+  	93,5,46,0,0,93,94,5,11,0,0,94,95,3,10,5,0,95,96,5,9,0,0,96,138,1,0,0,
+  	0,97,98,5,46,0,0,98,99,5,11,0,0,99,100,3,10,5,0,100,101,5,9,0,0,101,138,
+  	1,0,0,0,102,103,5,46,0,0,103,112,5,1,0,0,104,109,3,10,5,0,105,106,5,2,
+  	0,0,106,108,3,10,5,0,107,105,1,0,0,0,108,111,1,0,0,0,109,107,1,0,0,0,
+  	109,110,1,0,0,0,110,113,1,0,0,0,111,109,1,0,0,0,112,104,1,0,0,0,112,113,
+  	1,0,0,0,113,114,1,0,0,0,114,115,5,3,0,0,115,138,5,9,0,0,116,138,3,6,3,
+  	0,117,118,5,12,0,0,118,119,3,10,5,0,119,126,3,6,3,0,120,121,5,13,0,0,
+  	121,122,3,10,5,0,122,123,3,6,3,0,123,125,1,0,0,0,124,120,1,0,0,0,125,
+  	128,1,0,0,0,126,124,1,0,0,0,126,127,1,0,0,0,127,131,1,0,0,0,128,126,1,
+  	0,0,0,129,130,5,14,0,0,130,132,3,6,3,0,131,129,1,0,0,0,131,132,1,0,0,
+  	0,132,138,1,0,0,0,133,134,5,15,0,0,134,135,3,10,5,0,135,136,3,6,3,0,136,
+  	138,1,0,0,0,137,75,1,0,0,0,137,80,1,0,0,0,137,91,1,0,0,0,137,97,1,0,0,
+  	0,137,102,1,0,0,0,137,116,1,0,0,0,137,117,1,0,0,0,137,133,1,0,0,0,138,
+  	9,1,0,0,0,139,140,3,12,6,0,140,11,1,0,0,0,141,144,3,14,7,0,142,143,5,
+  	16,0,0,143,145,3,12,6,0,144,142,1,0,0,0,144,145,1,0,0,0,145,202,1,0,0,
+  	0,146,149,3,14,7,0,147,148,5,17,0,0,148,150,3,12,6,0,149,147,1,0,0,0,
+  	149,150,1,0,0,0,150,202,1,0,0,0,151,154,3,14,7,0,152,153,5,18,0,0,153,
+  	155,3,12,6,0,154,152,1,0,0,0,154,155,1,0,0,0,155,202,1,0,0,0,156,159,
+  	3,14,7,0,157,158,5,19,0,0,158,160,3,12,6,0,159,157,1,0,0,0,159,160,1,
+  	0,0,0,160,202,1,0,0,0,161,164,3,14,7,0,162,163,5,20,0,0,163,165,3,12,
+  	6,0,164,162,1,0,0,0,164,165,1,0,0,0,165,202,1,0,0,0,166,169,3,14,7,0,
+  	167,168,7,0,0,0,168,170,3,12,6,0,169,167,1,0,0,0,169,170,1,0,0,0,170,
+  	202,1,0,0,0,171,174,3,14,7,0,172,173,7,1,0,0,173,175,3,12,6,0,174,172,
+  	1,0,0,0,174,175,1,0,0,0,175,202,1,0,0,0,176,179,3,14,7,0,177,178,5,27,
+  	0,0,178,180,3,12,6,0,179,177,1,0,0,0,179,180,1,0,0,0,180,202,1,0,0,0,
+  	181,184,3,14,7,0,182,183,5,28,0,0,183,185,3,12,6,0,184,182,1,0,0,0,184,
+  	185,1,0,0,0,185,202,1,0,0,0,186,189,3,14,7,0,187,188,7,2,0,0,188,190,
+  	3,12,6,0,189,187,1,0,0,0,189,190,1,0,0,0,190,202,1,0,0,0,191,194,3,14,
+  	7,0,192,193,7,3,0,0,193,195,3,12,6,0,194,192,1,0,0,0,194,195,1,0,0,0,
+  	195,202,1,0,0,0,196,199,3,14,7,0,197,198,7,4,0,0,198,200,3,12,6,0,199,
+  	197,1,0,0,0,199,200,1,0,0,0,200,202,1,0,0,0,201,141,1,0,0,0,201,146,1,
+  	0,0,0,201,151,1,0,0,0,201,156,1,0,0,0,201,161,1,0,0,0,201,166,1,0,0,0,
+  	201,171,1,0,0,0,201,176,1,0,0,0,201,181,1,0,0,0,201,186,1,0,0,0,201,191,
+  	1,0,0,0,201,196,1,0,0,0,202,13,1,0,0,0,203,205,7,5,0,0,204,203,1,0,0,
+  	0,204,205,1,0,0,0,205,206,1,0,0,0,206,207,3,16,8,0,207,15,1,0,0,0,208,
+  	209,6,8,-1,0,209,243,5,47,0,0,210,219,5,40,0,0,211,216,3,10,5,0,212,213,
+  	5,2,0,0,213,215,3,10,5,0,214,212,1,0,0,0,215,218,1,0,0,0,216,214,1,0,
+  	0,0,216,217,1,0,0,0,217,220,1,0,0,0,218,216,1,0,0,0,219,211,1,0,0,0,219,
+  	220,1,0,0,0,220,221,1,0,0,0,221,243,5,41,0,0,222,243,5,49,0,0,223,243,
+  	5,48,0,0,224,243,5,46,0,0,225,226,5,1,0,0,226,227,3,10,5,0,227,228,5,
+  	3,0,0,228,243,1,0,0,0,229,230,5,46,0,0,230,239,5,1,0,0,231,236,3,10,5,
+  	0,232,233,5,2,0,0,233,235,3,10,5,0,234,232,1,0,0,0,235,238,1,0,0,0,236,
+  	234,1,0,0,0,236,237,1,0,0,0,237,240,1,0,0,0,238,236,1,0,0,0,239,231,1,
+  	0,0,0,239,240,1,0,0,0,240,241,1,0,0,0,241,243,5,3,0,0,242,208,1,0,0,0,
+  	242,210,1,0,0,0,242,222,1,0,0,0,242,223,1,0,0,0,242,224,1,0,0,0,242,225,
+  	1,0,0,0,242,229,1,0,0,0,243,251,1,0,0,0,244,245,10,4,0,0,245,246,5,40,
+  	0,0,246,247,3,10,5,0,247,248,5,41,0,0,248,250,1,0,0,0,249,244,1,0,0,0,
+  	250,253,1,0,0,0,251,249,1,0,0,0,251,252,1,0,0,0,252,17,1,0,0,0,253,251,
+  	1,0,0,0,254,255,6,9,-1,0,255,259,5,42,0,0,256,259,5,43,0,0,257,259,5,
+  	44,0,0,258,254,1,0,0,0,258,256,1,0,0,0,258,257,1,0,0,0,259,270,1,0,0,
+  	0,260,261,10,2,0,0,261,262,5,40,0,0,262,263,5,47,0,0,263,269,5,41,0,0,
+  	264,265,10,1,0,0,265,266,5,40,0,0,266,267,5,45,0,0,267,269,5,41,0,0,268,
+  	260,1,0,0,0,268,264,1,0,0,0,269,272,1,0,0,0,270,268,1,0,0,0,270,271,1,
+  	0,0,0,271,19,1,0,0,0,272,270,1,0,0,0,37,22,24,39,42,59,62,70,77,86,109,
+  	112,126,131,137,144,149,154,159,164,169,174,179,184,189,194,199,201,204,
+  	216,219,236,239,242,251,258,268,270
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -284,9 +287,9 @@ ValgoParser::ProgramContext* ValgoParser::program() {
       setState(22);
       _errHandler->sync(this);
       switch (_input->LA(1)) {
-        case ValgoParser::T__38:
-        case ValgoParser::T__39:
-        case ValgoParser::T__40: {
+        case ValgoParser::T__41:
+        case ValgoParser::T__42:
+        case ValgoParser::T__43: {
           setState(20);
           function();
           break;
@@ -305,7 +308,7 @@ ValgoParser::ProgramContext* ValgoParser::program() {
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 3848290697232) != 0));
+      ((1ULL << _la) & 30786325577744) != 0));
     setState(26);
     match(ValgoParser::EOF);
    
@@ -395,7 +398,7 @@ ValgoParser::FunctionContext* ValgoParser::function() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 3848290697216) != 0)) {
+      ((1ULL << _la) & 30786325577728) != 0)) {
       setState(31);
       antlrcpp::downCast<FunctionContext *>(_localctx)->typeContext = type(0);
       antlrcpp::downCast<FunctionContext *>(_localctx)->paramTypes.push_back(antlrcpp::downCast<FunctionContext *>(_localctx)->typeContext);
@@ -607,7 +610,7 @@ ValgoParser::BlockContext* ValgoParser::block() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 12644383757632) != 0)) {
+      ((1ULL << _la) & 101155069793600) != 0)) {
       setState(67);
       statement();
       setState(72);
@@ -908,7 +911,7 @@ ValgoParser::StatementContext* ValgoParser::statement() {
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 132153996738562) != 0)) {
+        ((1ULL << _la) & 1057667909419010) != 0)) {
         setState(76);
         expression();
       }
@@ -983,7 +986,7 @@ ValgoParser::StatementContext* ValgoParser::statement() {
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 132153996738562) != 0)) {
+        ((1ULL << _la) & 1057667909419010) != 0)) {
         setState(104);
         expression();
         setState(109);
@@ -1522,12 +1525,12 @@ ValgoParser::UnaryExpressionContext* ValgoParser::unaryExpression() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 75162451968) != 0)) {
+      ((1ULL << _la) & 1037235126272) != 0)) {
       setState(203);
       antlrcpp::downCast<UnaryExpressionContext *>(_localctx)->op = _input->LT(1);
       _la = _input->LA(1);
       if (!((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 75162451968) != 0))) {
+        ((1ULL << _la) & 1037235126272) != 0))) {
         antlrcpp::downCast<UnaryExpressionContext *>(_localctx)->op = _errHandler->recoverInline(this);
       }
       else {
@@ -1536,7 +1539,7 @@ ValgoParser::UnaryExpressionContext* ValgoParser::unaryExpression() {
       }
     }
     setState(206);
-    primaryExpression();
+    primaryExpression(0);
    
   }
   catch (RecognitionException &e) {
@@ -1752,8 +1755,8 @@ std::any ValgoParser::CharLiteralContext::accept(tree::ParseTreeVisitor *visitor
 }
 //----------------- ArrayAccessContext ------------------------------------------------------------------
 
-tree::TerminalNode* ValgoParser::ArrayAccessContext::ID() {
-  return getToken(ValgoParser::ID, 0);
+ValgoParser::PrimaryExpressionContext* ValgoParser::ArrayAccessContext::primaryExpression() {
+  return getRuleContext<ValgoParser::PrimaryExpressionContext>(0);
 }
 
 ValgoParser::ExpressionContext* ValgoParser::ArrayAccessContext::expression() {
@@ -1779,144 +1782,147 @@ std::any ValgoParser::ArrayAccessContext::accept(tree::ParseTreeVisitor *visitor
   else
     return visitor->visitChildren(this);
 }
+
 ValgoParser::PrimaryExpressionContext* ValgoParser::primaryExpression() {
-  PrimaryExpressionContext *_localctx = _tracker.createInstance<PrimaryExpressionContext>(_ctx, getState());
-  enterRule(_localctx, 16, ValgoParser::RulePrimaryExpression);
-  size_t _la = 0;
+   return primaryExpression(0);
+}
+
+ValgoParser::PrimaryExpressionContext* ValgoParser::primaryExpression(int precedence) {
+  ParserRuleContext *parentContext = _ctx;
+  size_t parentState = getState();
+  ValgoParser::PrimaryExpressionContext *_localctx = _tracker.createInstance<PrimaryExpressionContext>(_ctx, parentState);
+  ValgoParser::PrimaryExpressionContext *previousContext = _localctx;
+  (void)previousContext; // Silence compiler, in case the context is not used by generated code.
+  size_t startState = 16;
+  enterRecursionRule(_localctx, 16, ValgoParser::RulePrimaryExpression, precedence);
+
+    size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
 #else
   auto onExit = finally([=] {
 #endif
-    exitRule();
+    unrollRecursionContexts(parentContext);
   });
   try {
-    setState(246);
+    size_t alt;
+    enterOuterAlt(_localctx, 1);
+    setState(242);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 32, _ctx)) {
     case 1: {
-      _localctx = _tracker.createInstance<ValgoParser::IntegerLiteralContext>(_localctx);
-      enterOuterAlt(_localctx, 1);
-      setState(208);
-      antlrcpp::downCast<IntegerLiteralContext *>(_localctx)->literal = match(ValgoParser::INT);
+      _localctx = _tracker.createInstance<IntegerLiteralContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+
+      setState(209);
+      match(ValgoParser::INT);
       break;
     }
 
     case 2: {
-      _localctx = _tracker.createInstance<ValgoParser::ArrayLiteralContext>(_localctx);
-      enterOuterAlt(_localctx, 2);
-      setState(209);
-      match(ValgoParser::T__36);
-      setState(218);
+      _localctx = _tracker.createInstance<ArrayLiteralContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(210);
+      match(ValgoParser::T__39);
+      setState(219);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 132153996738562) != 0)) {
-        setState(210);
-        antlrcpp::downCast<ArrayLiteralContext *>(_localctx)->expressionContext = expression();
-        antlrcpp::downCast<ArrayLiteralContext *>(_localctx)->values.push_back(antlrcpp::downCast<ArrayLiteralContext *>(_localctx)->expressionContext);
-        setState(215);
+        ((1ULL << _la) & 1057667909419010) != 0)) {
+        setState(211);
+        expression();
+        setState(216);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == ValgoParser::T__1) {
-          setState(211);
-          match(ValgoParser::T__1);
           setState(212);
-          antlrcpp::downCast<ArrayLiteralContext *>(_localctx)->expressionContext = expression();
-          antlrcpp::downCast<ArrayLiteralContext *>(_localctx)->values.push_back(antlrcpp::downCast<ArrayLiteralContext *>(_localctx)->expressionContext);
-          setState(217);
+          match(ValgoParser::T__1);
+          setState(213);
+          expression();
+          setState(218);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
       }
-      setState(220);
-      match(ValgoParser::T__37);
+      setState(221);
+      match(ValgoParser::T__40);
       break;
     }
 
     case 3: {
-      _localctx = _tracker.createInstance<ValgoParser::CharLiteralContext>(_localctx);
-      enterOuterAlt(_localctx, 3);
-      setState(221);
-      antlrcpp::downCast<CharLiteralContext *>(_localctx)->literal = match(ValgoParser::CHAR);
+      _localctx = _tracker.createInstance<CharLiteralContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(222);
+      match(ValgoParser::CHAR);
       break;
     }
 
     case 4: {
-      _localctx = _tracker.createInstance<ValgoParser::FloatLiteralContext>(_localctx);
-      enterOuterAlt(_localctx, 4);
-      setState(222);
-      antlrcpp::downCast<FloatLiteralContext *>(_localctx)->literal = match(ValgoParser::FLOAT);
+      _localctx = _tracker.createInstance<FloatLiteralContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(223);
+      match(ValgoParser::FLOAT);
       break;
     }
 
     case 5: {
-      _localctx = _tracker.createInstance<ValgoParser::ArrayAccessContext>(_localctx);
-      enterOuterAlt(_localctx, 5);
-      setState(223);
-      antlrcpp::downCast<ArrayAccessContext *>(_localctx)->name = match(ValgoParser::ID);
+      _localctx = _tracker.createInstance<VariableContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
       setState(224);
-      match(ValgoParser::T__36);
-      setState(225);
-      antlrcpp::downCast<ArrayAccessContext *>(_localctx)->index = expression();
-      setState(226);
-      match(ValgoParser::T__37);
+      match(ValgoParser::ID);
       break;
     }
 
     case 6: {
-      _localctx = _tracker.createInstance<ValgoParser::VariableContext>(_localctx);
-      enterOuterAlt(_localctx, 6);
-      setState(228);
-      antlrcpp::downCast<VariableContext *>(_localctx)->name = match(ValgoParser::ID);
-      break;
-    }
-
-    case 7: {
-      _localctx = _tracker.createInstance<ValgoParser::ParenthesizedContext>(_localctx);
-      enterOuterAlt(_localctx, 7);
-      setState(229);
+      _localctx = _tracker.createInstance<ParenthesizedContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(225);
       match(ValgoParser::T__0);
-      setState(230);
+      setState(226);
       expression();
-      setState(231);
+      setState(227);
       match(ValgoParser::T__2);
       break;
     }
 
-    case 8: {
-      _localctx = _tracker.createInstance<ValgoParser::CallContext>(_localctx);
-      enterOuterAlt(_localctx, 8);
-      setState(233);
-      antlrcpp::downCast<CallContext *>(_localctx)->name = match(ValgoParser::ID);
-      setState(234);
+    case 7: {
+      _localctx = _tracker.createInstance<CallContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(229);
+      match(ValgoParser::ID);
+      setState(230);
       match(ValgoParser::T__0);
-      setState(243);
+      setState(239);
       _errHandler->sync(this);
 
       _la = _input->LA(1);
       if ((((_la & ~ 0x3fULL) == 0) &&
-        ((1ULL << _la) & 132153996738562) != 0)) {
-        setState(235);
-        antlrcpp::downCast<CallContext *>(_localctx)->expressionContext = expression();
-        antlrcpp::downCast<CallContext *>(_localctx)->args.push_back(antlrcpp::downCast<CallContext *>(_localctx)->expressionContext);
-        setState(240);
+        ((1ULL << _la) & 1057667909419010) != 0)) {
+        setState(231);
+        expression();
+        setState(236);
         _errHandler->sync(this);
         _la = _input->LA(1);
         while (_la == ValgoParser::T__1) {
-          setState(236);
+          setState(232);
           match(ValgoParser::T__1);
-          setState(237);
-          antlrcpp::downCast<CallContext *>(_localctx)->expressionContext = expression();
-          antlrcpp::downCast<CallContext *>(_localctx)->args.push_back(antlrcpp::downCast<CallContext *>(_localctx)->expressionContext);
-          setState(242);
+          setState(233);
+          expression();
+          setState(238);
           _errHandler->sync(this);
           _la = _input->LA(1);
         }
       }
-      setState(245);
+      setState(241);
       match(ValgoParser::T__2);
       break;
     }
@@ -1924,14 +1930,38 @@ ValgoParser::PrimaryExpressionContext* ValgoParser::primaryExpression() {
     default:
       break;
     }
-   
+    _ctx->stop = _input->LT(-1);
+    setState(251);
+    _errHandler->sync(this);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 33, _ctx);
+    while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
+      if (alt == 1) {
+        if (!_parseListeners.empty())
+          triggerExitRuleEvent();
+        previousContext = _localctx;
+        auto newContext = _tracker.createInstance<ArrayAccessContext>(_tracker.createInstance<PrimaryExpressionContext>(parentContext, parentState));
+        _localctx = newContext;
+        pushNewRecursionContext(newContext, startState, RulePrimaryExpression);
+        setState(244);
+
+        if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
+        setState(245);
+        match(ValgoParser::T__39);
+        setState(246);
+        expression();
+        setState(247);
+        match(ValgoParser::T__40); 
+      }
+      setState(253);
+      _errHandler->sync(this);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 33, _ctx);
+    }
   }
   catch (RecognitionException &e) {
     _errHandler->reportError(this, e);
     _localctx->exception = std::current_exception();
     _errHandler->recover(this, _localctx->exception);
   }
-
   return _localctx;
 }
 
@@ -2093,34 +2123,34 @@ ValgoParser::TypeContext* ValgoParser::type(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(252);
+    setState(258);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case ValgoParser::T__38: {
+      case ValgoParser::T__41: {
         _localctx = _tracker.createInstance<IntTypeContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
 
-        setState(249);
-        match(ValgoParser::T__38);
+        setState(255);
+        match(ValgoParser::T__41);
         break;
       }
 
-      case ValgoParser::T__39: {
+      case ValgoParser::T__42: {
         _localctx = _tracker.createInstance<CharTypeContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(250);
-        match(ValgoParser::T__39);
+        setState(256);
+        match(ValgoParser::T__42);
         break;
       }
 
-      case ValgoParser::T__40: {
+      case ValgoParser::T__43: {
         _localctx = _tracker.createInstance<FloatTypeContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(251);
-        match(ValgoParser::T__40);
+        setState(257);
+        match(ValgoParser::T__43);
         break;
       }
 
@@ -2128,48 +2158,46 @@ ValgoParser::TypeContext* ValgoParser::type(int precedence) {
       throw NoViableAltException(this);
     }
     _ctx->stop = _input->LT(-1);
-    setState(264);
+    setState(270);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 35, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 36, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
         if (!_parseListeners.empty())
           triggerExitRuleEvent();
         previousContext = _localctx;
-        setState(262);
+        setState(268);
         _errHandler->sync(this);
-        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 34, _ctx)) {
+        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 35, _ctx)) {
         case 1: {
           auto newContext = _tracker.createInstance<ArrayTypeContext>(_tracker.createInstance<TypeContext>(parentContext, parentState));
           _localctx = newContext;
-          newContext->base = previousContext;
           pushNewRecursionContext(newContext, startState, RuleType);
-          setState(254);
+          setState(260);
 
           if (!(precpred(_ctx, 2))) throw FailedPredicateException(this, "precpred(_ctx, 2)");
-          setState(255);
-          match(ValgoParser::T__36);
-          setState(256);
-          antlrcpp::downCast<ArrayTypeContext *>(_localctx)->size = match(ValgoParser::INT);
-          setState(257);
-          match(ValgoParser::T__37);
+          setState(261);
+          match(ValgoParser::T__39);
+          setState(262);
+          match(ValgoParser::INT);
+          setState(263);
+          match(ValgoParser::T__40);
           break;
         }
 
         case 2: {
           auto newContext = _tracker.createInstance<DynamicArrayTypeContext>(_tracker.createInstance<TypeContext>(parentContext, parentState));
           _localctx = newContext;
-          newContext->base = previousContext;
           pushNewRecursionContext(newContext, startState, RuleType);
-          setState(258);
+          setState(264);
 
           if (!(precpred(_ctx, 1))) throw FailedPredicateException(this, "precpred(_ctx, 1)");
-          setState(259);
-          match(ValgoParser::T__36);
-          setState(260);
-          match(ValgoParser::T__41);
-          setState(261);
-          match(ValgoParser::T__37);
+          setState(265);
+          match(ValgoParser::T__39);
+          setState(266);
+          match(ValgoParser::T__44);
+          setState(267);
+          match(ValgoParser::T__40);
           break;
         }
 
@@ -2177,9 +2205,9 @@ ValgoParser::TypeContext* ValgoParser::type(int precedence) {
           break;
         } 
       }
-      setState(266);
+      setState(272);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 35, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 36, _ctx);
     }
   }
   catch (RecognitionException &e) {
@@ -2192,7 +2220,18 @@ ValgoParser::TypeContext* ValgoParser::type(int precedence) {
 
 bool ValgoParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
+    case 8: return primaryExpressionSempred(antlrcpp::downCast<PrimaryExpressionContext *>(context), predicateIndex);
     case 9: return typeSempred(antlrcpp::downCast<TypeContext *>(context), predicateIndex);
+
+  default:
+    break;
+  }
+  return true;
+}
+
+bool ValgoParser::primaryExpressionSempred(PrimaryExpressionContext *_localctx, size_t predicateIndex) {
+  switch (predicateIndex) {
+    case 0: return precpred(_ctx, 4);
 
   default:
     break;
@@ -2202,8 +2241,8 @@ bool ValgoParser::sempred(RuleContext *context, size_t ruleIndex, size_t predica
 
 bool ValgoParser::typeSempred(TypeContext *_localctx, size_t predicateIndex) {
   switch (predicateIndex) {
-    case 0: return precpred(_ctx, 2);
-    case 1: return precpred(_ctx, 1);
+    case 1: return precpred(_ctx, 2);
+    case 2: return precpred(_ctx, 1);
 
   default:
     break;

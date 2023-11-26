@@ -2,45 +2,14 @@
 
 #include <cassert>
 
-
-string TypeAST::tree()
+string IntTypeAST::toString()
 {
-    return std::string();
-}
-
-string TypeAST::codegen()
-{
-    return std::string();
-}
-
-string ExpressionAST::tree()
-{
-    return std::string();
-}
-
-string ExpressionAST::codegen()
-{
-    return std::string();
-}
-
-string StatementAST::tree()
-{
-    return std::string();
-}
-
-string StatementAST::codegen()
-{
-    return std::string();
-}
-
-string IntTypeAST::tree()
-{
-    return TypeAST::tree();
+    return "IntTypeAST";
 }
 
 string IntTypeAST::codegen()
 {
-    return TypeAST::codegen();
+    return "int64_t";
 }
 
 string IntTypeAST::name() const
@@ -48,14 +17,14 @@ string IntTypeAST::name() const
     return "int";
 }
 
-string CharTypeAST::tree()
+string CharTypeAST::toString()
 {
-    return TypeAST::tree();
+    return "CharTypeAST";
 }
 
 string CharTypeAST::codegen()
 {
-    return TypeAST::codegen();
+    return "char";
 }
 
 string CharTypeAST::name() const
@@ -63,17 +32,61 @@ string CharTypeAST::name() const
     return "char";
 }
 
-string FloatTypeAST::tree()
+string FloatTypeAST::toString()
 {
-    return TypeAST::tree();
+    return "FloatTypeAST";
 }
 
 string FloatTypeAST::codegen()
 {
-    return TypeAST::codegen();
+    return "double";
 }
 
 string FloatTypeAST::name() const
 {
     return "float";
+}
+
+string ArrayTypeAST::toString()
+{
+    return "ArrayTypeAST";
+}
+
+string ArrayTypeAST::codegen()
+{
+    auto t = elementType->codegen();
+    return "std::array<" + t + ", " + std::to_string(size) + ">";
+}
+
+string ArrayTypeAST::name() const
+{
+    auto t = elementType->name();
+    return t + "[" + std::to_string(size) + "]";
+}
+
+string DynamicArrayTypeAST::toString()
+{
+    return "DynamicArrayTypeAST";
+}
+
+string DynamicArrayTypeAST::codegen()
+{
+    auto t = elementType->codegen();
+    return "std::vector<" + t + ">";
+}
+
+string DynamicArrayTypeAST::name() const
+{
+    auto t = elementType->name();
+    return t + "[..]";
+}
+
+TypeAST *BinaryExpressionAST::type() const
+{
+    // TODO: implement
+}
+
+string BinaryExpressionAST::toString()
+{
+    return std::string();
 }

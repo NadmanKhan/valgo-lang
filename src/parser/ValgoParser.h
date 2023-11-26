@@ -18,8 +18,9 @@ public:
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
     T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, T__37 = 38, 
-    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, ID = 43, INT = 44, FLOAT = 45, 
-    CHAR = 46, COMMENT = 47, WS = 48
+    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, T__43 = 44, 
+    T__44 = 45, ID = 46, INT = 47, FLOAT = 48, CHAR = 49, COMMENT = 50, 
+    WS = 51
   };
 
   enum {
@@ -325,9 +326,6 @@ public:
   public:
     CallContext(PrimaryExpressionContext *ctx);
 
-    antlr4::Token *name = nullptr;
-    ValgoParser::ExpressionContext *expressionContext = nullptr;
-    std::vector<ExpressionContext *> args;
     antlr4::tree::TerminalNode *ID();
     std::vector<ExpressionContext *> expression();
     ExpressionContext* expression(size_t i);
@@ -341,8 +339,6 @@ public:
   public:
     ArrayLiteralContext(PrimaryExpressionContext *ctx);
 
-    ValgoParser::ExpressionContext *expressionContext = nullptr;
-    std::vector<ExpressionContext *> values;
     std::vector<ExpressionContext *> expression();
     ExpressionContext* expression(size_t i);
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -366,7 +362,6 @@ public:
   public:
     VariableContext(PrimaryExpressionContext *ctx);
 
-    antlr4::Token *name = nullptr;
     antlr4::tree::TerminalNode *ID();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -378,7 +373,6 @@ public:
   public:
     IntegerLiteralContext(PrimaryExpressionContext *ctx);
 
-    antlr4::Token *literal = nullptr;
     antlr4::tree::TerminalNode *INT();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -390,7 +384,6 @@ public:
   public:
     FloatLiteralContext(PrimaryExpressionContext *ctx);
 
-    antlr4::Token *literal = nullptr;
     antlr4::tree::TerminalNode *FLOAT();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -402,7 +395,6 @@ public:
   public:
     CharLiteralContext(PrimaryExpressionContext *ctx);
 
-    antlr4::Token *literal = nullptr;
     antlr4::tree::TerminalNode *CHAR();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -414,9 +406,7 @@ public:
   public:
     ArrayAccessContext(PrimaryExpressionContext *ctx);
 
-    antlr4::Token *name = nullptr;
-    ValgoParser::ExpressionContext *index = nullptr;
-    antlr4::tree::TerminalNode *ID();
+    PrimaryExpressionContext *primaryExpression();
     ExpressionContext *expression();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -425,7 +415,7 @@ public:
   };
 
   PrimaryExpressionContext* primaryExpression();
-
+  PrimaryExpressionContext* primaryExpression(int precedence);
   class  TypeContext : public antlr4::ParserRuleContext {
   public:
     TypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -463,8 +453,6 @@ public:
   public:
     ArrayTypeContext(TypeContext *ctx);
 
-    ValgoParser::TypeContext *base = nullptr;
-    antlr4::Token *size = nullptr;
     TypeContext *type();
     antlr4::tree::TerminalNode *INT();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -487,7 +475,6 @@ public:
   public:
     DynamicArrayTypeContext(TypeContext *ctx);
 
-    ValgoParser::TypeContext *base = nullptr;
     TypeContext *type();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -500,6 +487,7 @@ public:
 
   bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
 
+  bool primaryExpressionSempred(PrimaryExpressionContext *_localctx, size_t predicateIndex);
   bool typeSempred(TypeContext *_localctx, size_t predicateIndex);
 
   // By default the static state used to implement the parser is lazily initialized during the first

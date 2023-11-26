@@ -59,29 +59,29 @@ public:
   virtual void enterUnaryExpression(ValgoParser::UnaryExpressionContext *ctx) = 0;
   virtual void exitUnaryExpression(ValgoParser::UnaryExpressionContext *ctx) = 0;
 
-  virtual void enterIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) = 0;
-  virtual void exitIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) = 0;
+  virtual void enterCall(ValgoParser::CallContext *ctx) = 0;
+  virtual void exitCall(ValgoParser::CallContext *ctx) = 0;
 
   virtual void enterArrayLiteral(ValgoParser::ArrayLiteralContext *ctx) = 0;
   virtual void exitArrayLiteral(ValgoParser::ArrayLiteralContext *ctx) = 0;
 
-  virtual void enterCharLiteral(ValgoParser::CharLiteralContext *ctx) = 0;
-  virtual void exitCharLiteral(ValgoParser::CharLiteralContext *ctx) = 0;
-
-  virtual void enterFloatLiteral(ValgoParser::FloatLiteralContext *ctx) = 0;
-  virtual void exitFloatLiteral(ValgoParser::FloatLiteralContext *ctx) = 0;
-
-  virtual void enterArrayAccess(ValgoParser::ArrayAccessContext *ctx) = 0;
-  virtual void exitArrayAccess(ValgoParser::ArrayAccessContext *ctx) = 0;
+  virtual void enterParenthesized(ValgoParser::ParenthesizedContext *ctx) = 0;
+  virtual void exitParenthesized(ValgoParser::ParenthesizedContext *ctx) = 0;
 
   virtual void enterVariable(ValgoParser::VariableContext *ctx) = 0;
   virtual void exitVariable(ValgoParser::VariableContext *ctx) = 0;
 
-  virtual void enterParenthesized(ValgoParser::ParenthesizedContext *ctx) = 0;
-  virtual void exitParenthesized(ValgoParser::ParenthesizedContext *ctx) = 0;
+  virtual void enterIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) = 0;
+  virtual void exitIntegerLiteral(ValgoParser::IntegerLiteralContext *ctx) = 0;
 
-  virtual void enterCall(ValgoParser::CallContext *ctx) = 0;
-  virtual void exitCall(ValgoParser::CallContext *ctx) = 0;
+  virtual void enterFloatLiteral(ValgoParser::FloatLiteralContext *ctx) = 0;
+  virtual void exitFloatLiteral(ValgoParser::FloatLiteralContext *ctx) = 0;
+
+  virtual void enterCharLiteral(ValgoParser::CharLiteralContext *ctx) = 0;
+  virtual void exitCharLiteral(ValgoParser::CharLiteralContext *ctx) = 0;
+
+  virtual void enterArrayAccess(ValgoParser::ArrayAccessContext *ctx) = 0;
+  virtual void exitArrayAccess(ValgoParser::ArrayAccessContext *ctx) = 0;
 
   virtual void enterCharType(ValgoParser::CharTypeContext *ctx) = 0;
   virtual void exitCharType(ValgoParser::CharTypeContext *ctx) = 0;
