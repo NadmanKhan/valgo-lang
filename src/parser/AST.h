@@ -149,8 +149,8 @@ class UnaryExpressionAST;
 class BinaryExpressionAST;
 class VariableAST;
 class IntegerLiteralAST;
-class FloatLiteralAST;
 class CharLiteralAST;
+class FloatLiteralAST;
 class ArrayLiteralAST;
 class ArrayAccessAST;
 class CallExpressionAST;
@@ -169,7 +169,7 @@ class ProgramAST;
 
 // Typedefs
 // -----------------------------------------------------------------------------
-using SymbolTable = map<string, unique_ptr<TypeAST>>;
+using SymbolTable = map<string, vector<unique_ptr<TypeAST>>>;
 
 // Class definitions
 // -----------------------------------------------------------------------------
@@ -221,10 +221,12 @@ public:
     CONSTRUCTORS_AND_ASSIGNMENTS(ExpressionAST)
 
     [[nodiscard]] virtual TypeKind typeKind() const = 0;
+    [[nodiscard]] virtual string typeName() const = 0;
 
 #define EXPRESSION_AST_METHODS(class_name) \
     AST_METHODS(class_name) \
-    [[nodiscard]] virtual TypeKind typeKind() const override;
+    [[nodiscard]] virtual TypeKind typeKind() const override; \
+    [[nodiscard]] virtual string typeName() const override;
 };
 
 class StatementAST: public AST
@@ -273,6 +275,11 @@ public:
     {}
     CONSTRUCTORS_AND_ASSIGNMENTS(ArrayTypeAST)
     TYPE_AST_METHODS(ArrayTypeAST)
+
+    [[nodiscard]] string elementTypeName()
+    {
+        return elementType->name();
+    }
 };
 
 class DynamicArrayTypeAST: public TypeAST
@@ -285,17 +292,26 @@ public:
     {}
     CONSTRUCTORS_AND_ASSIGNMENTS(DynamicArrayTypeAST)
     TYPE_AST_METHODS(DynamicArrayTypeAST)
+
+    [[nodiscard]] string elementTypeName()
+    {
+        return elementType->name();
+    }
 };
 
 class SubroutineTypeAST: public TypeAST
 {
     vector<unique_ptr<TypeAST>> paramTypes;
+    vector<string> paramNames;
     unique_ptr<TypeAST> returnType;
 
 public:
     explicit SubroutineTypeAST(vector<unique_ptr<TypeAST>> paramTypes,
+                               vector<string> paramNames,
                                unique_ptr<TypeAST> returnType = nullptr)
-        : paramTypes(std::move(paramTypes)), returnType(std::move(returnType))
+        : paramTypes(std::move(paramTypes)),
+          paramNames(std::move(paramNames)),
+          returnType(std::move(returnType))
     {}
     CONSTRUCTORS_AND_ASSIGNMENTS(SubroutineTypeAST)
     TYPE_AST_METHODS(SubroutineTypeAST)
@@ -541,20 +557,17 @@ public:
 
 class SubroutineAST: AST
 {
-    string name;
-    vector<string> paramNames;
-    unique_ptr<BlockStatementAST> block;
     unique_ptr<SubroutineTypeAST> subroutineType;
+    string name;
+    unique_ptr<BlockStatementAST> block;
 
 public:
-    SubroutineAST(string name,
-                  vector<string> paramNames,
-                  unique_ptr<BlockStatementAST> block,
-                  unique_ptr<SubroutineTypeAST> subroutineType)
-        : name(std::move(name)),
-          paramNames(std::move(paramNames)),
-          block(std::move(block)),
-          subroutineType(std::move(subroutineType))
+    SubroutineAST(unique_ptr<SubroutineTypeAST> subroutineType,
+                  string name,
+                  unique_ptr<BlockStatementAST> block)
+        : subroutineType(std::move(subroutineType)),
+          name(std::move(name)),
+          block(std::move(block))
     {}
     CONSTRUCTORS_AND_ASSIGNMENTS(SubroutineAST)
     AST_METHODS(SubroutineAST)

@@ -124,11 +124,11 @@ std::any ASTBuilderVisitor::visitFunction(ValgoParser::FunctionContext *ctx)
     auto block = any_cast<BlockStatementAST *>(visitBlock(ctx->block()));
     assert(block != nullptr);
     auto subroutineType = new SubroutineTypeAST(std::move(paramTypes),
+                                                std::move(paramNames),
                                                 unique_ptr<TypeAST>(returnType));
-    return new SubroutineAST(ctx->name->getText(),
-                             std::move(paramNames),
-                             unique_ptr<BlockStatementAST>(block),
-                             unique_ptr<SubroutineTypeAST>(subroutineType));
+    return new SubroutineAST(unique_ptr<SubroutineTypeAST>(subroutineType),
+                             ctx->name->getText(),
+                             unique_ptr<BlockStatementAST>(block));
 }
 
 std::any ASTBuilderVisitor::visitProcedure(ValgoParser::ProcedureContext *ctx)
@@ -146,11 +146,11 @@ std::any ASTBuilderVisitor::visitProcedure(ValgoParser::ProcedureContext *ctx)
     auto block = any_cast<BlockStatementAST *>(visitBlock(ctx->block()));
     assert(block != nullptr);
     auto subroutineType = new SubroutineTypeAST(std::move(paramTypes),
+                                                std::move(paramNames),
                                                 nullptr);
-    return new SubroutineAST(ctx->name->getText(),
-                             std::move(paramNames),
-                             unique_ptr<BlockStatementAST>(block),
-                             unique_ptr<SubroutineTypeAST>(subroutineType));
+    return new SubroutineAST(unique_ptr<SubroutineTypeAST>(subroutineType),
+                             ctx->name->getText(),
+                             unique_ptr<BlockStatementAST>(block));
 }
 
 std::any ASTBuilderVisitor::visitBlock(ValgoParser::BlockContext *ctx)

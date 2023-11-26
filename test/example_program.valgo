@@ -15,11 +15,11 @@ int cmp(int a, int b) {
  * Add two numbers and set the result to the first number.
  * Procedures take arguments by reference and return nothing.
  */
-#increase $int a, $int b {
+@increase $int a, $int b {
     a = a + b;
 }
 
-#main {
+@main {
     int a = 1;
 
     print cmp(a, 3);
