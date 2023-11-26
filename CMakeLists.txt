@@ -4,36 +4,40 @@ project(Valgo LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 
-
 find_package(antlr4-generator REQUIRED)
 find_package(antlr4-runtime REQUIRED)
 
-
-# define the command to be run for building the files in the ANTLR4_SRC_FILES_valgo list
-antlr4_generate(valgo "${CMAKE_SOURCE_DIR}/src/grammar/Valgo.g4" BOTH LISTENER VISITOR)
-
-# Target: grammar
-# For running the ANTLR4 JAR and generating the lexer, parser, listener, and visitor sources
-add_custom_target(grammar
-    ALL
-    DEPENDS "${CMAKE_SOURCE_DIR}/src/grammar/Valgo.g4" ${ANTLR4_SRC_FILES_valgo}
+# set up the command to be run for building the files in the for the `antlr_generate` target
+antlr4_generate(
+    generated
+    "${CMAKE_SOURCE_DIR}/src/grammar/Valgo.g4"
+    BOTH # both lexer and parser
+    ON # listener
+    ON # visitor
 )
 
-
-list(REMOVE_AT ANTLR4_SRC_FILES_valgo 0 1) # remove Valgo.tokens and Valgo.interp
+# Target: antlr_generate
+# For running the ANTLR4 JAR and generating the lexer, parser, listener, and visitor sources
+add_custom_target(antlr_generate
+    ALL
+    DEPENDS "${CMAKE_SOURCE_DIR}/src/grammar/Valgo.g4" ${ANTLR4_SRC_FILES_generated}
+)
 
 # Target: parser
 add_library(parser
-    ${ANTLR4_SRC_FILES_valgo}
+    ${ANTLR4_SRC_FILES_generated}
     src/parser/AST.h
     src/parser/AST.cpp
     src/parser/ASTBuilderVisitor.h
     src/parser/ASTBuilderVisitor.cpp
 )
-add_dependencies(parser grammar)
-target_include_directories(parser PUBLIC ${ANTLR4_INCLUDE_DIR} ${ANTLR4_INCLUDE_DIR_valgo})
-target_link_libraries(parser PRIVATE antlr4-runtime)
-
+add_dependencies(parser antlr_generate)
+target_include_directories(parser
+    PUBLIC
+        ${ANTLR4_INCLUDE_DIR}
+        ${ANTLR4_INCLUDE_DIR_generated}
+)
+target_link_libraries(parser PUBLIC antlr4_static)
 
 # Target: parser_test
 add_executable(parser_test test/test_parser.cpp)

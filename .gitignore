@@ -771,7 +771,7 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion,cmake,codeblocks,conan,emacs,rider,sublimetext,vcpkg,vim,visualstudio,visualstudiocode
 
 
-### PVS Studio ###
+### PVS-Studio ###
 .PVS-Studio/
 *.cfg
 *.i
