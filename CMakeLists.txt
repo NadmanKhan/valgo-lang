@@ -35,16 +35,25 @@ add_library(parser
 )
 add_dependencies(parser antlr_generate)
 target_include_directories(parser
-    PUBLIC
-        ${ANTLR4_INCLUDE_DIR}
-        ${ANTLR4_INCLUDE_DIR_generated}
+    PRIVATE ${ANTLR4_INCLUDE_DIR}
+    PUBLIC ${ANTLR4_INCLUDE_DIR_generated}
 )
 target_link_libraries(parser PUBLIC antlr4_static)
+
+# Target: codegen
+add_library(codegen src/codegen/codegen.cpp)
+target_include_directories(codegen PUBLIC src/parser)
+target_link_libraries(codegen PUBLIC parser)
 
 # Target: parser_test
 add_executable(parser_test
     test/test_parser.cpp
     "${CMAKE_BINARY_DIR}/example_program.valgo"
+)
+target_include_directories(parser_test
+    PRIVATE
+        ${ANTLR4_INCLUDE_DIR}
+        ${ANTLR4_INCLUDE_DIR_generated}
 )
 target_link_libraries(parser_test PRIVATE parser)
 add_custom_command(
@@ -55,18 +64,29 @@ add_custom_command(
             "${CMAKE_BINARY_DIR}/example_program.valgo"
 )
 
-
-# Target: codegen
-add_library(codegen
-        src/codegen/codegen.cpp
-)
-target_link_libraries(codegen PUBLIC parser)
-add_dependencies(codegen parser)
-target_include_directories(codegen
-        PUBLIC
-        src/parser
-)
-
 # Target: codegen_test
-add_executable(codegen_test test/test_codegen.cpp)
+add_executable(codegen_test
+    test/test_codegen.cpp
+    "${CMAKE_BINARY_DIR}/example_program.valgo"
+)
+target_include_directories(codegen_test
+    PRIVATE
+        ${ANTLR4_INCLUDE_DIR}
+        ${ANTLR4_INCLUDE_DIR_generated}
+)
 target_link_libraries(codegen_test PRIVATE codegen)
+
+# Target: valgo
+# The compiler itself
+add_executable(valgo
+    src/main.cpp
+    "${CMAKE_BINARY_DIR}/example_program.valgo"
+)
+target_include_directories(valgo
+    PRIVATE
+        ${ANTLR4_INCLUDE_DIR}
+        ${ANTLR4_INCLUDE_DIR_generated}
+        src/parser
+        src/codegen
+)
+target_link_libraries(valgo PRIVATE parser codegen)
