@@ -48,6 +48,6 @@ int main(const int argc, const char* const argv[])
     std::cout << command << std::endl;
     system(command.c_str());
 
-//    if (!(argc >= 4 && std::string(argv[3]) != "yes"))
-//        std::system("rm __tmp.cpp");
+    if (!(argc >= 4 && std::string(argv[3]) != "yes"))
+        std::system("rm __tmp.cpp");
 }
