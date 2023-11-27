@@ -21,12 +21,12 @@ int main() {
     }
 
     ValgoParser parser(&tokens);
-//    tree::ParseTree *tree = parser.program();
-//    std::cout << tree->toStringTree(&parser) << std::endl << std::endl;
+    ValgoParser::ProgramContext *programTree = parser.program();
+    std::cout << programTree->toStringTree(&parser) << std::endl << std::endl;
 
     // Build AST
     ASTBuilderVisitor astBuilderVisitor;
-    auto ast = any_cast<ProgramAST *>(astBuilderVisitor.visitProgram(parser.program()));
+    auto ast = any_cast<ProgramAST *>(astBuilderVisitor.visitProgram(programTree));
     std::cout << ast->toString() << std::endl;
 
     SymbolTable symbolTable;

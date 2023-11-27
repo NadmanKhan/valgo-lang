@@ -66,7 +66,7 @@ binaryExpression:
 unaryExpression:
         op=
         // additive
-        ('+'
+        ( '+'
         | '-'
         // logical
         | 'not'

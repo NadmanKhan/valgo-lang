@@ -192,6 +192,9 @@ shared_ptr<TypeAST> UnaryExpressionAST::type() const
     auto operandType = operand->type();
     auto kind = operandType->kind();
     switch (unop) {
+        case NONE: {
+            return operandType;
+        }
         case NOT: {
             assert(kind == TypeKind::INT
                        || kind == TypeKind::CHAR);
@@ -231,7 +234,7 @@ shared_ptr<TypeAST> UnaryExpressionAST::type() const
             return make_unique<IntTypeAST>();
         }
         default: {
-            assert(false);
+//            assert(false);
         }
     }
 }
@@ -319,7 +322,7 @@ shared_ptr<TypeAST> BinaryExpressionAST::type() const
             return make_unique<IntTypeAST>();
         }
         default: {
-            assert(false);
+//            assert(false);
         }
     }
 }
@@ -563,6 +566,9 @@ string SubroutineTypeAST::codegen(SymbolTable &table)
 string UnaryExpressionAST::codegen(SymbolTable &table)
 {
     switch (unop) {
+        case UnOp::NONE: {
+            return operand->codegen(table);
+        }
         case UnOp::NOT: {
             assert(operand->type()->kind() == TypeKind::INT
                        || operand->type()->kind() == TypeKind::CHAR);
@@ -605,7 +611,7 @@ string UnaryExpressionAST::codegen(SymbolTable &table)
             return "static_cast<int64_t>(" + operand->codegen(table) + ").size()";
         }
         default: {
-            throw std::runtime_error("Unknown unary operator");
+//            throw std::runtime_error("Unknown unary operator");
         }
     }
 }
@@ -731,7 +737,7 @@ string BinaryExpressionAST::codegen(SymbolTable &table)
             return "(" + lhs->codegen(table) + ") % (" + rhs->codegen(table) + ")";
         }
         default: {
-            throw std::runtime_error("Unknown binary operator");
+//            throw std::runtime_error("Unknown binary operator");
         }
     }
 }

@@ -86,6 +86,7 @@ const map<BinOp, string> symbolOfBinop = {
 
 enum UnOp
 {
+    NONE,
     NOT,
     BIT_NOT,
     PLUS,
@@ -97,6 +98,7 @@ enum UnOp
 };
 
 const map<string, UnOp> unopOfSymbol = {
+    {"", NONE},
     {"not", NOT},
     {"~", BIT_NOT},
     {"+", PLUS},
@@ -108,6 +110,7 @@ const map<string, UnOp> unopOfSymbol = {
 };
 
 const map<UnOp, string> symbolOfUnop = {
+    {NONE, ""},
     {NOT, "not"},
     {BIT_NOT, "~"},
     {PLUS, "+"},
