@@ -29,8 +29,33 @@ int cmp(int a, int b) {
     int b = 0;
     int c = cmp(a, b);
     print a, b, c;
+
+    int[..] list = [0, 1, 2];
+    // extend the list to 10 elements
+    while #list < 10 {
+        list = push(list, #list);
+    }
+
+    // print the list
+    int i = 0;
+    while i < #list {
+        print list[i];
+        i = i + 1;
+    }
+
+    // double the list and print it
+    list = list ++: list;
+    while i < #list {
+        print list[i];
+        i = i + 1;
+    }
 }
 
 int sum(int x, int y) {
     return x + y;
+}
+
+int[..] push(int[..] list, int x) {
+    int[..] new_list = list <<: x;
+    return new_list;
 }

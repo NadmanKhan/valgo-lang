@@ -53,8 +53,8 @@ binaryExpression:
     |   unaryExpression (op=('==' | '!=') binaryExpression)?
     |   unaryExpression (op=('<' | '>' | '<=' | '>=') binaryExpression)?
         // dynamic array operations
-    |   unaryExpression (op='++' binaryExpression)? // concatenate
-    |   unaryExpression (op='+:' binaryExpression)? // append
+    |   unaryExpression (op='++:' binaryExpression)? // concatenate
+    |   unaryExpression (op='<<:' binaryExpression)? // append
         // bit shift
     |   unaryExpression (op=('<<' | '>>') binaryExpression)?
         // additive

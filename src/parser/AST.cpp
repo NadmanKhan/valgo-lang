@@ -611,7 +611,7 @@ string UnaryExpressionAST::codegen(SymbolTable &table)
         case UnOp::LENGTH_OF: {
             assert(operand->type()->kind() == TypeKind::ARRAY
                        || operand->type()->kind() == TypeKind::DYNAMIC_ARRAY);
-            return "static_cast<int64_t>(" + operand->codegen(table) + ").size()";
+            return "static_cast<int64_t>(" + operand->codegen(table) + ".size())";
         }
         default: {
             throw std::runtime_error("Unknown unary operator");
@@ -684,11 +684,11 @@ string BinaryExpressionAST::codegen(SymbolTable &table)
         case BinOp::CONCAT: {
             assert(lhs->type()->kind() == TypeKind::DYNAMIC_ARRAY);
             assert(rhs->type()->kind() == TypeKind::DYNAMIC_ARRAY);
-            return "(" + lhs->codegen(table) + ") + (" + rhs->codegen(table) + ")";
+            return "valgo::concat(" + lhs->codegen(table) + ", " + rhs->codegen(table) + ")";
         }
         case BinOp::APPEND: {
             assert(lhs->type()->kind() == TypeKind::DYNAMIC_ARRAY);
-            return "(" + lhs->codegen(table) + ").push_back(" + rhs->codegen(table) + ")";
+            return "valgo::append(" + lhs->codegen(table) + ", " + rhs->codegen(table) + ")";
         }
         case BinOp::SHL: {
             assert(lhs->type()->kind() == TypeKind::INT
@@ -925,6 +925,22 @@ string ProgramAST::codegen(SymbolTable &table)
     result += "#include <array>\n";
     result += "#include <string>\n";
     result += "\n";
+    {
+        // some functions needed by valgo semantics
+        result += "namespace valgo {\n";
+        result += "template <typename T>\n";
+        result += "std::vector<T> append(std::vector<T> a, const T &b) {\n";
+        result += "    a.push_back(b);\n";
+        result += "    return a;\n";
+        result += "}\n";
+        result += "template <typename T>\n";
+        result += "std::vector<T> concat(std::vector<T> a, std::vector<T> b) {\n";
+        result += "    a.insert(a.end(), b.begin(), b.end());\n";
+        result += "    return a;\n";
+        result += "}\n";
+        result += "} // namespace valgo\n";
+        result += "\n";
+    }
     for (int i = 0; i < (int)subroutines.size(); ++i) {
         result += subroutines[i]->codegen(table);
         result += "\n\n";
