@@ -40,12 +40,14 @@ int main(const int argc, const char* const argv[])
 
     std::ofstream os {"__tmp.cpp"};
     std::cerr << cxxCode << std::endl;
-    os << cxxCode;
+    os << cxxCode << std::endl;
 
-    std::string command {"g++ -std=c++17 __tmp.cpp -o "};
+    std::string command {"g++ -std=c++17 -o "};
     command += argv[2];
-    std::system(command.c_str());
+    command += " __tmp.cpp ";
+    std::cout << command << std::endl;
+    system(command.c_str());
 
-    if (!(argc >= 4 && std::string(argv[3]) != "yes"))
-        std::system("rm __tmp.cpp");
+//    if (!(argc >= 4 && std::string(argv[3]) != "yes"))
+//        std::system("rm __tmp.cpp");
 }

@@ -487,7 +487,7 @@ public:
 
 class VarDeclarationStatementAST: public StatementAST
 {
-    unique_ptr<TypeAST> type;
+    shared_ptr<TypeAST> type;
     string name;
     unique_ptr<ExpressionAST> value;
 

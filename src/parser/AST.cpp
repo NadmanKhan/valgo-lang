@@ -235,9 +235,10 @@ shared_ptr<TypeAST> UnaryExpressionAST::type() const
             return make_unique<IntTypeAST>();
         }
         default: {
-//            assert(false);
+            assert(false);
         }
     }
+    return {};
 }
 
 string BinaryExpressionAST::toString()
@@ -323,9 +324,10 @@ shared_ptr<TypeAST> BinaryExpressionAST::type() const
             return make_unique<IntTypeAST>();
         }
         default: {
-//            assert(false);
+            assert(false);
         }
     }
+    return {};
 }
 
 string VariableAST::toString()
@@ -612,7 +614,7 @@ string UnaryExpressionAST::codegen(SymbolTable &table)
             return "static_cast<int64_t>(" + operand->codegen(table) + ").size()";
         }
         default: {
-//            throw std::runtime_error("Unknown unary operator");
+            throw std::runtime_error("Unknown unary operator");
         }
     }
 }
@@ -738,7 +740,7 @@ string BinaryExpressionAST::codegen(SymbolTable &table)
             return "(" + lhs->codegen(table) + ") % (" + rhs->codegen(table) + ")";
         }
         default: {
-//            throw std::runtime_error("Unknown binary operator");
+            throw std::runtime_error("Unknown binary operator");
         }
     }
 }
@@ -832,6 +834,7 @@ string PrintStatementAST::codegen(SymbolTable &table)
 
 string VarDeclarationStatementAST::codegen(SymbolTable &table)
 {
+    table[name].push_back(unique_ptr<TypeAST>(type.get()));
     return type->codegen(table) + " "
         + name + " = "
         + value->codegen(table) + ";";
@@ -896,12 +899,32 @@ string SubroutineAST::codegen(SymbolTable &table)
     if (name == "main") {
         return "int main(int argc, char **argv) " + block->codegen(table);
     }
-    return "auto " + name + subroutineType->codegen(table) + " " + block->codegen(table);
+    else {
+//    return "auto " + name + subroutineType->codegen(table) + " " + block->codegen(table);
+        string result;
+        if (subroutineType->returnType() == nullptr) {
+            result += "void";
+        } else {
+            result += subroutineType->returnType()->codegen(table);
+        }
+        result += " " + name + subroutineType->codegen(table);
+        // remove the "-> void" part
+        while (result.back() != ')') {
+            result.pop_back();
+        }
+        result += " " + block->codegen(table);
+        return result;
+    }
 }
 
 string ProgramAST::codegen(SymbolTable &table)
 {
-    string result = "#include <bits/stdc++.h>\n\n";
+    string result;
+    result += "#include <iostream>\n";
+    result += "#include <vector>\n";
+    result += "#include <array>\n";
+    result += "#include <string>\n";
+    result += "\n";
     for (int i = 0; i < (int)subroutines.size(); ++i) {
         result += subroutines[i]->codegen(table);
         result += "\n\n";
