@@ -1,5 +1,6 @@
 #include "AST.h"
 
+#define NDEBUG
 #include <cassert>
 
 // TypeAST ---------------------------------------------------------------------
@@ -826,7 +827,7 @@ string PrintStatementAST::codegen(SymbolTable &table)
             argsStr += " << ' '";
         }
     }
-    return "std::cout" + argsStr + " << '\n';";
+    return "std::cout" + argsStr + " << '\\n';";
 }
 
 string VarDeclarationStatementAST::codegen(SymbolTable &table)
@@ -852,7 +853,8 @@ string CallStatementAST::codegen(SymbolTable &table)
         }
         else {
             string varName = "_var" + std::to_string(i);
-            declsStr += "auto " + varName + " = " + args[i]->codegen(table) + ";\n";
+            declsStr += args[i]->type()->codegen(table) + " " +
+                varName + " = " + args[i]->codegen(table) + ";\n";
             argsStr += varName;
         }
         if (i != (int) args.size() - 1) {
@@ -906,3 +908,5 @@ string ProgramAST::codegen(SymbolTable &table)
     }
     return result;
 }
+
+#undef NDEBUG

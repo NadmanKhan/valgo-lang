@@ -29,8 +29,8 @@ std::string transpile(antlr4::ANTLRFileStream fileStream)
 
 int main(const int argc, const char* const argv[])
 {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <input-file.valgo> <output-file>\n";
+    if (argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " <input-file.valgo> <output-file> [<keep-cxx-file>(yes/no)]\n";
         return EXIT_FAILURE;
     }
 
@@ -46,5 +46,6 @@ int main(const int argc, const char* const argv[])
     command += argv[2];
     std::system(command.c_str());
 
-    std::system("rm __tmp.cpp");
+    if (!(argc >= 4 && std::string(argv[3]) != "yes"))
+        std::system("rm __tmp.cpp");
 }
