@@ -42,12 +42,19 @@ int main(const int argc, const char* const argv[])
     std::cerr << cxxCode << std::endl;
     os << cxxCode << std::endl;
 
+    os.close();
+
     std::string command {"g++ -std=c++17 -o "};
     command += argv[2];
     command += " __tmp.cpp ";
     std::cout << command << std::endl;
     system(command.c_str());
 
-    if (!(argc >= 4 && std::string(argv[3]) != "yes"))
+    if (!(argc >= 4 && std::string(argv[3]) != "yes")){
+#ifdef _WIN32
+        std::system("del __tmp.cpp");
+#else
         std::system("rm __tmp.cpp");
+#endif
+    }
 }
